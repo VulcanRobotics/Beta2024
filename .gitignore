@@ -6,5 +6,3 @@ build/*
 *.class
 *.wpilog
 simgui-window.json
-
-

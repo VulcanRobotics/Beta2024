@@ -19,7 +19,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 import java.util.Queue;
 
-/** 1218's custom IO implementation for the NavX gyro used in our robots **/
+/** 1218's custom IO implementation for the NavX gyro used in our robots * */
 public class GyroIONavX implements GyroIO {
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
   private final Queue<Double> yawPositionQueue;
@@ -47,9 +47,9 @@ public class GyroIONavX implements GyroIO {
     inputs.yawPosition = Rotation2d.fromDegrees(currentYaw);
 
     /*  As far as I (YK) can tell, yaw velocity isn't used for any odometry calculations,
-        only for logging/debugging. Since the NavX doesn't provide yaw velocity itsef,
-        we take the difference between the current and last yaw values and divide
-        by the time between readings (should be 1/250 seconds, or 250 Hz). */
+    only for logging/debugging. Since the NavX doesn't provide yaw velocity itsef,
+    we take the difference between the current and last yaw values and divide
+    by the time between readings (should be 1/250 seconds, or 250 Hz). */
     inputs.yawVelocityRadPerSec =
         Units.degreesToRadians((currentYaw - lastYaw) / Module.ODOMETRY_FREQUENCY);
 

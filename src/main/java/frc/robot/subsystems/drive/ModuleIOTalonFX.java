@@ -67,27 +67,27 @@ public class ModuleIOTalonFX implements ModuleIO {
   public ModuleIOTalonFX(int index) {
     switch (index) {
       case 0:
-        driveTalon = new TalonFX(21);
-        turnTalon = new TalonFX(25);
-        cancoder = new CANcoder(35);
+        driveTalon = new TalonFX(21, "DriveSubsystemCANivore");
+        turnTalon = new TalonFX(25, "DriveSubsystemCANivore");
+        cancoder = new CANcoder(35, "DriveSubsystemCANivore");
         absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
         break;
       case 1:
-        driveTalon = new TalonFX(22);
-        turnTalon = new TalonFX(26);
-        cancoder = new CANcoder(36);
+        driveTalon = new TalonFX(22, "DriveSubsystemCANivore");
+        turnTalon = new TalonFX(26, "DriveSubsystemCANivore");
+        cancoder = new CANcoder(36, "DriveSubsystemCANivore");
         absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
         break;
       case 2:
-        driveTalon = new TalonFX(23);
-        turnTalon = new TalonFX(27);
-        cancoder = new CANcoder(37);
+        driveTalon = new TalonFX(23, "DriveSubsystemCANivore");
+        turnTalon = new TalonFX(27, "DriveSubsystemCANivore");
+        cancoder = new CANcoder(37, "DriveSubsystemCANivore");
         absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
         break;
       case 3:
-        driveTalon = new TalonFX(24);
-        turnTalon = new TalonFX(28);
-        cancoder = new CANcoder(38);
+        driveTalon = new TalonFX(24, "DriveSubsystemCANivore");
+        turnTalon = new TalonFX(28, "DriveSubsystemCANivore");
+        cancoder = new CANcoder(38, "DriveSubsystemCANivore");
         absoluteEncoderOffset = new Rotation2d(0.0); // MUST BE CALIBRATED
         break;
       default:

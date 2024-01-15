@@ -14,11 +14,3 @@ Necessary features that will be added in the future:
 * Support for a shooter
 * Support for an intake
 * Integration of Limelight and AprilTag tracking to enhance odometry and shooting accuracy
-
-
-
-
-
-
-
-

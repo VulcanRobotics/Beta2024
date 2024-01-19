@@ -1,7 +1,7 @@
 {
   "Docking": {
     "Data": [
-      "DockNode  ID=0x00000001 Pos=250,130 Size=750,32 Selected=0x3E3C37F1"
+      "DockNode  ID=0x00000001 Pos=250,130 Size=750,32 Selected=0x48913727"
     ]
   },
   "MainWindow": {
@@ -12,8 +12,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "160",
-      "ypos": "615"
+      "xpos": "1230",
+      "ypos": "500"
     }
   },
   "Window": {

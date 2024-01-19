@@ -76,10 +76,10 @@ public class RobotContainer {
             new Drive(
                 // new GyroIOPigeon2(true),
                 new GyroIONavX(),
-                new ModuleIOTalonFX(0),
-                new ModuleIOTalonFX(1),
                 new ModuleIOTalonFX(2),
-                new ModuleIOTalonFX(3));
+                new ModuleIOTalonFX(0),
+                new ModuleIOTalonFX(3),
+                new ModuleIOTalonFX(1));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         break;
 

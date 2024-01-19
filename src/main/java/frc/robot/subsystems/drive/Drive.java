@@ -29,6 +29,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
@@ -140,6 +141,11 @@ public class Drive extends SubsystemBase {
       // Apply the twist (change since last sample) to the current pose
       pose = pose.exp(twist);
     }
+
+    SmartDashboard.putNumber("FL encoder val", modules[0].getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("FR encoder val", modules[1].getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("BL encoder val", modules[2].getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
   }
 
   /**

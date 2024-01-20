@@ -12,14 +12,19 @@
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "1230",
-      "ypos": "500"
+      "xpos": "990",
+      "ypos": "502"
     }
   },
   "Window": {
+    "###/SmartDashboard/Auto Choices": {
+      "Collapsed": "0",
+      "Pos": "527,413",
+      "Size": "254,54"
+    },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "5,372",
+      "Pos": "196,379",
       "Size": "283,146"
     },
     "###Joysticks": {

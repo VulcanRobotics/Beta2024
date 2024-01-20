@@ -21,9 +21,15 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.FeedForwardCharacterization;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShootCommand;
+import frc.robot.commands.WinchCommands;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 // import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -50,9 +56,12 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Flywheel flywheel;
+  private final ShooterSubsystem shooterSubsystem;
+  private final WinchSubsystem winchSubsystem;
 
   // Controller
-  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController driverController = new CommandXboxController(0);
+  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -81,6 +90,8 @@ public class RobotContainer {
                 new ModuleIOTalonFX(3),
                 new ModuleIOTalonFX(1));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
+        shooterSubsystem = new ShooterSubsystem();
+        winchSubsystem = new WinchSubsystem();
         break;
 
       case SIM:
@@ -93,6 +104,8 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim());
         flywheel = new Flywheel(new FlywheelIOSim());
+        shooterSubsystem = new ShooterSubsystem();
+        winchSubsystem = new WinchSubsystem();
         break;
 
       default:
@@ -105,6 +118,8 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
         flywheel = new Flywheel(new FlywheelIO() {});
+        shooterSubsystem = new ShooterSubsystem();
+        winchSubsystem = new WinchSubsystem();
         break;
     }
 
@@ -137,14 +152,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -controller.getLeftY(),
-            () -> -controller.getLeftX(),
-            () -> -controller.getRightX()));
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-    controller
+            () -> -driverController.getLeftY(),
+            () -> -driverController.getLeftX(),
+            () -> -driverController.getRightX()));
+    driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
+    driverController
         .b()
         .onTrue(
             Commands.runOnce(
@@ -153,11 +169,34 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
                     drive)
                 .ignoringDisable(true));
-    controller
+    driverController
         .a()
         .whileTrue(
             Commands.startEnd(
                 () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
+    // Operator
+
+    winchSubsystem.setDefaultCommand(
+        WinchCommands.winchDrive(winchSubsystem, () -> operatorController.getLeftY()));
+
+    operatorController.rightTrigger().whileTrue(new ShootCommand(shooterSubsystem, false));
+    operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem, false));
+    operatorController
+        .povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  shooterSubsystem.savedShootSpeed -= 0.1;
+                  shooterSubsystem.savedShootSpeed = Math.min(shooterSubsystem.savedShootSpeed, 0);
+                }));
+    operatorController
+        .povUp()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  shooterSubsystem.savedShootSpeed += 0.1;
+                  shooterSubsystem.savedShootSpeed = Math.max(shooterSubsystem.savedShootSpeed, 1);
+                }));
   }
 
   /**

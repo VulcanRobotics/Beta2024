@@ -1,52 +1,60 @@
 {
   "Docking": {
     "Data": [
-      "DockNode  ID=0x00000001 Pos=250,130 Size=750,32 Selected=0x48913727"
+      "DockNode  ID=0x00000001 Pos=128,49 Size=750,32 Selected=0x48913727",
+      "DockNode  ID=0x00000002 Pos=196,379 Size=283,146 Selected=0x138219D4"
     ]
   },
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "712",
+      "height": "551",
       "maximized": "0",
       "style": "0",
       "userScale": "2",
       "width": "1280",
-      "xpos": "990",
-      "ypos": "502"
+      "xpos": "160",
+      "ypos": "319"
     }
   },
   "Window": {
     "###/SmartDashboard/Auto Choices": {
       "Collapsed": "0",
-      "Pos": "527,413",
+      "Pos": "486,380",
       "Size": "254,54"
+    },
+    "###/SmartDashboard/VisionSystemSim-main/Sim Field": {
+      "Collapsed": "0",
+      "Pos": "225,51",
+      "Size": "746,321"
     },
     "###FMS": {
       "Collapsed": "0",
+      "DockId": "0x00000002,0",
       "Pos": "196,379",
       "Size": "283,146"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "225,191",
-      "Size": "796,189"
+      "DockId": "0x00000002,1",
+      "Pos": "196,379",
+      "Size": "283,146"
     },
     "###Keyboard 0 Settings": {
       "Collapsed": "0",
       "DockId": "0x00000001,1",
-      "Pos": "250,130",
+      "Pos": "128,49",
       "Size": "750,32"
     },
     "###NetworkTables": {
-      "Collapsed": "1",
-      "Pos": "175,19",
-      "Size": "750,185"
+      "Collapsed": "0",
+      "Pos": "201,17",
+      "Size": "750,32"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",
       "DockId": "0x00000001,0",
-      "Pos": "250,130",
+      "Pos": "128,49",
       "Size": "750,32"
     },
     "###Other Devices": {
@@ -62,7 +70,7 @@
     "###Timing": {
       "Collapsed": "0",
       "Pos": "5,150",
-      "Size": "141,127"
+      "Size": "141,150"
     },
     "Debug##Default": {
       "Collapsed": "0",

@@ -28,6 +28,7 @@ import frc.robot.commands.FeedForwardCharacterization;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.WinchCommands;
+import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.subsystems.drive.Drive;
@@ -58,6 +59,7 @@ public class RobotContainer {
   private final Flywheel flywheel;
   private final ShooterSubsystem shooterSubsystem;
   private final WinchSubsystem winchSubsystem;
+  private final PhotonVisionSubsystem vision;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -92,6 +94,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         shooterSubsystem = new ShooterSubsystem();
         winchSubsystem = new WinchSubsystem();
+        vision = new PhotonVisionSubsystem(drive);
         break;
 
       case SIM:
@@ -106,6 +109,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
         winchSubsystem = new WinchSubsystem();
+        vision = new PhotonVisionSubsystem(drive);
         break;
 
       default:
@@ -120,6 +124,7 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIO() {});
         shooterSubsystem = new ShooterSubsystem();
         winchSubsystem = new WinchSubsystem();
+        vision = new PhotonVisionSubsystem(drive);
         break;
     }
 

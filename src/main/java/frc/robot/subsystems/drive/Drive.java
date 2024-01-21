@@ -20,6 +20,7 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -249,5 +250,15 @@ public class Drive extends SubsystemBase {
       new Translation2d(-TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0),
       new Translation2d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0)
     };
+  }
+
+  public Pose2d[] getModulePoses() {
+    Pose2d[] modulePoses = new Pose2d[modules.length];
+    for (int i = 0; i < modules.length; i++) {
+      var module = modules[i];
+      modulePoses[i] =
+          getPose().transformBy(new Transform2d(getModuleTranslations()[i], module.getAngle()));
+    }
+    return modulePoses;
   }
 }

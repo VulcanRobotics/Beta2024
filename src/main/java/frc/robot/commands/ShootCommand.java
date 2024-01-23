@@ -27,7 +27,7 @@ public class ShootCommand extends Command {
   public void execute() {
     shooterSubsystem.SetShooter(shooterSubsystem.savedShootSpeed);
 
-    shooterSubsystem.SetFeeder(0.5f);
+    shooterSubsystem.SetFeeder(0.1f);
   }
 
   @Override

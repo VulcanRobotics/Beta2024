@@ -179,8 +179,8 @@ public class RobotContainer {
     winchSubsystem.setDefaultCommand(
         WinchCommands.winchDrive(winchSubsystem, () -> operatorController.getLeftY()));
 
-    operatorController.rightTrigger().whileTrue(new ShootCommand(shooterSubsystem, false));
-    operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem, false));
+    operatorController.button(8).whileTrue(new ShootCommand(shooterSubsystem, false));
+    operatorController.button(7).whileTrue(new IntakeCommand(shooterSubsystem, false));
     operatorController
         .povDown()
         .onTrue(

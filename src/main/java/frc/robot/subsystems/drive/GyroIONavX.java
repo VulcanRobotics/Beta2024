@@ -23,6 +23,8 @@ import java.util.Queue;
 public class GyroIONavX implements GyroIO {
   private final AHRS navX = new AHRS(SPI.Port.kMXP);
   private final Queue<Double> yawPositionQueue;
+  private final Queue<Double> yawTimestampQueue;
+
   private double lastYaw;
 
   public GyroIONavX() {
@@ -36,6 +38,7 @@ public class GyroIONavX implements GyroIO {
     As far as I (YK) can tell, it's fine to have both the SparkMaxOdometry and
     PhoenixOdometry thread objects running simultaneously. The yaw readings are
     stored in yawPositionQueue and then streamed to the GyroIOInputs in updateInputs(). */
+    yawTimestampQueue = SparkMaxOdometryThread.getInstance().makeTimestampQueue();
     yawPositionQueue = SparkMaxOdometryThread.getInstance().registerSignal(() -> navX.getYaw());
   }
 
@@ -53,11 +56,14 @@ public class GyroIONavX implements GyroIO {
     inputs.yawVelocityRadPerSec =
         Units.degreesToRadians((currentYaw - lastYaw) / Module.ODOMETRY_FREQUENCY);
 
+    inputs.odometryYawTimestamps =
+        yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
     inputs.odometryYawPositions =
         yawPositionQueue.stream()
             .map((Double value) -> Rotation2d.fromDegrees(value))
             .toArray(Rotation2d[]::new);
 
+    yawTimestampQueue.clear();
     yawPositionQueue.clear(); // Clear out our thread queue
 
     lastYaw = currentYaw; // Save the current yaw value; now it's lastYaw

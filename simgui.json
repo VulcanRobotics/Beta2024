@@ -68,8 +68,7 @@
           "length": 0.6000000238418579,
           "width": 0.5
         },
-        "bottom": 544,
-        "builtin": "2024 Crescendo",
+        "bottom": 1476,
         "cameras": {
           "arrowColor": [
             0.29535865783691406,
@@ -84,10 +83,10 @@
           "weight": 1.0,
           "width": 1.0
         },
-        "height": 8.013679504394531,
-        "left": 46,
-        "right": 1088,
-        "top": 36,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
         "visibleTargetPoses": {
           "arrows": false,
           "image": "tag-blue.png",

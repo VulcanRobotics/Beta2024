@@ -167,13 +167,11 @@ public class PhotonVisionSubsystem extends SubsystemBase {
           // Change our trust in the measurement based on the tags we can see
           var estStdDevs = getEstimationStdDevs(estPose);
 
-          /*  YK: Integrating vision into the odometry estimate isn't straightforward.
-          The way this Drive code computes odometry is different from the standard
-          WPILib SwerveDrivePoseEstimator class. We'll try to integrate the vision
-          estimate... eventually. One potential method is here:
-          https://github.com/Mechanical-Advantage/RobotCode2023/blob/main/src/main/java/org/littletonrobotics/frc2023/util/PoseEstimator.java */
-          // drive.addVisionMeasurement(
-          //        est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+          // Updated to take advantage of new AdvancedSwerveDrive Project, which incorporates
+          // a SwerveDrivePoseEstimator in Drive, making it easy to update the pose position
+          // with vision estimates.
+          drive.addVisionMeasurement(
+              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
         });
   }
 

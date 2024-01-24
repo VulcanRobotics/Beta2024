@@ -17,6 +17,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.Queue;
 
 /** 1218's custom IO implementation for the NavX gyro used in our robots * */
@@ -45,6 +46,7 @@ public class GyroIONavX implements GyroIO {
         -navX.getYaw(); // NavX yaw direction (+CW) is opposite WPILib standard (+CCW)
     inputs.connected = navX.isConnected();
     inputs.yawPosition = Rotation2d.fromDegrees(currentYaw);
+    SmartDashboard.putNumber("Gyro Yaw", currentYaw);
 
     /*  As far as I (YK) can tell, yaw velocity isn't used for any odometry calculations,
     only for logging/debugging. Since the NavX doesn't provide yaw velocity itsef,

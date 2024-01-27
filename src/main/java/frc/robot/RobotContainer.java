@@ -23,11 +23,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.ClimbCommands;
+import frc.robot.commands.DispenseCommand;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.FeedForwardCharacterization;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.SetArmPosition;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.WinchCommands;
+import frc.robot.subsystems.ClimbSubsystem;
+// import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.subsystems.drive.Drive;
@@ -58,6 +64,8 @@ public class RobotContainer {
   private final Flywheel flywheel;
   private final ShooterSubsystem shooterSubsystem;
   private final WinchSubsystem winchSubsystem;
+  private final ClimbSubsystem climbSubsystem;
+  // private final PhotonVisionSubsystem vision;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -85,13 +93,15 @@ public class RobotContainer {
             new Drive(
                 // new GyroIOPigeon2(true),
                 new GyroIONavX(),
-                new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(0),
-                new ModuleIOTalonFX(3),
-                new ModuleIOTalonFX(1));
+                new ModuleIOTalonFX(1),
+                new ModuleIOTalonFX(2),
+                new ModuleIOTalonFX(3));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         shooterSubsystem = new ShooterSubsystem();
         winchSubsystem = new WinchSubsystem();
+        climbSubsystem = new ClimbSubsystem();
+        // vision = new PhotonVisionSubsystem(drive);
         break;
 
       case SIM:
@@ -106,6 +116,8 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
         winchSubsystem = new WinchSubsystem();
+        climbSubsystem = new ClimbSubsystem();
+        // vision = new PhotonVisionSubsystem(drive);
         break;
 
       default:
@@ -120,6 +132,8 @@ public class RobotContainer {
         flywheel = new Flywheel(new FlywheelIO() {});
         shooterSubsystem = new ShooterSubsystem();
         winchSubsystem = new WinchSubsystem();
+        climbSubsystem = new ClimbSubsystem();
+        // vision = new PhotonVisionSubsystem(drive);
         break;
     }
 
@@ -161,12 +175,14 @@ public class RobotContainer {
             () -> -driverController.getRightX()));
     driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     driverController
-        .b()
+        .y()
         .onTrue(
             Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+                    () -> {
+                      drive.setPose(new Pose2d(drive.getPose().getTranslation(), new Rotation2d()));
+
+                      drive.zeroGyro();
+                    },
                     drive)
                 .ignoringDisable(true));
     driverController
@@ -177,10 +193,23 @@ public class RobotContainer {
     // Operator
 
     winchSubsystem.setDefaultCommand(
-        WinchCommands.winchDrive(winchSubsystem, () -> operatorController.getLeftY()));
+        WinchCommands.winchDrive(winchSubsystem, () -> operatorController.getRightY()));
+
+    climbSubsystem.setDefaultCommand(
+        ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getLeftY()));
+
+    operatorController.povDown().whileTrue(new SetArmPosition(winchSubsystem, 0.0));
+    operatorController
+        .button(10)
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  winchSubsystem.updateEncoderOffset();
+                }));
 
     operatorController.button(8).whileTrue(new ShootCommand(shooterSubsystem, false));
     operatorController.button(7).whileTrue(new IntakeCommand(shooterSubsystem, false));
+    operatorController.button(5).whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController
         .povDown()
         .onTrue(
@@ -189,6 +218,7 @@ public class RobotContainer {
                   shooterSubsystem.savedShootSpeed -= 0.1;
                   shooterSubsystem.savedShootSpeed = Math.min(shooterSubsystem.savedShootSpeed, 0);
                 }));
+
     operatorController
         .povUp()
         .onTrue(

@@ -18,6 +18,7 @@ public class ShootCommand extends Command {
     stopMotors = stop;
   }
 
+  private double shootSpeed = 90;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -26,8 +27,9 @@ public class ShootCommand extends Command {
   @Override
   public void execute() {
     shooterSubsystem.SetShooter(shooterSubsystem.savedShootSpeed);
-
-    shooterSubsystem.SetFeeder(0.1f);
+    if (shooterSubsystem.getAverageShootSpeed() >= shootSpeed) {
+      shooterSubsystem.SetFeeder(1);
+    }
   }
 
   @Override

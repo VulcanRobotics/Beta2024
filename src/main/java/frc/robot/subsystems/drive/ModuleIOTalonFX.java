@@ -70,25 +70,27 @@ public class ModuleIOTalonFX implements ModuleIO {
         driveTalon = new TalonFX(21, "DriveSubsystemCANivore");
         turnTalon = new TalonFX(25, "DriveSubsystemCANivore");
         cancoder = new CANcoder(35, "DriveSubsystemCANivore");
-        absoluteEncoderOffset = Rotation2d.fromDegrees(-154.866797); // MUST BE CALIBRATED -73.5562
+        absoluteEncoderOffset =
+            Rotation2d.fromDegrees(108.465 + 180); // MUST BE CALIBRATED -73.5562
         break;
       case 1:
         driveTalon = new TalonFX(22, "DriveSubsystemCANivore");
         turnTalon = new TalonFX(26, "DriveSubsystemCANivore");
         cancoder = new CANcoder(36, "DriveSubsystemCANivore");
-        absoluteEncoderOffset = Rotation2d.fromDegrees(159.359765); // MUST BE CALIBRATED 61.4976
+        absoluteEncoderOffset = Rotation2d.fromDegrees(63.382 + 180); // MUST BE CALIBRATED 61.4976
         break;
       case 2:
         driveTalon = new TalonFX(23, "DriveSubsystemCANivore");
         turnTalon = new TalonFX(27, "DriveSubsystemCANivore");
         cancoder = new CANcoder(37, "DriveSubsystemCANivore");
-        absoluteEncoderOffset = Rotation2d.fromDegrees(57.69375); // MUST BE CALIBRATED 110.6015
+        absoluteEncoderOffset = Rotation2d.fromDegrees(147.763); // MUST BE CALIBRATED 110.6015
         break;
       case 3:
         driveTalon = new TalonFX(24, "DriveSubsystemCANivore");
         turnTalon = new TalonFX(28, "DriveSubsystemCANivore");
         cancoder = new CANcoder(38, "DriveSubsystemCANivore");
-        absoluteEncoderOffset = Rotation2d.fromDegrees(210.621093); // MUST BE CALIBRATED -35.4339)
+        absoluteEncoderOffset =
+            Rotation2d.fromDegrees(114.783 + 180); // MUST BE CALIBRATED -35.4339)
         break;
       default:
         throw new RuntimeException("Invalid module index");
@@ -187,6 +189,7 @@ public class ModuleIOTalonFX implements ModuleIO {
 
   @Override
   public void setTurnVoltage(double volts) {
+    // Comment this out to read encoder offsets
     turnTalon.setControl(new VoltageOut(volts));
   }
 

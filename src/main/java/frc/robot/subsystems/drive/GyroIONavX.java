@@ -64,4 +64,9 @@ public class GyroIONavX implements GyroIO {
 
     lastYaw = currentYaw; // Save the current yaw value; now it's lastYaw
   }
+
+  @Override
+  public void zeroGyro() {
+    navX.zeroYaw();
+  }
 }

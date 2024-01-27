@@ -32,8 +32,8 @@ import edu.wpi.first.math.numbers.N3;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  // public static final Mode currentMode = Mode.REAL;
-  public static final Mode currentMode = Mode.SIM;
+  public static final Mode currentMode = Mode.REAL;
+  // public static final Mode currentMode = Mode.SIM;
 
   public static enum Mode {
     /** Running on a real robot. */

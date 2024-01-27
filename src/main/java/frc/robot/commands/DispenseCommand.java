@@ -8,13 +8,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class IntakeCommand extends Command {
+public class DispenseCommand extends Command {
   ShooterSubsystem shooterSubsystem;
-  boolean stopShooter;
 
-  public IntakeCommand(ShooterSubsystem shooter, boolean stop) {
+  public DispenseCommand(ShooterSubsystem shooter) {
     this.shooterSubsystem = shooter;
-    stopShooter = stop;
   }
 
   // Called when the command is initially scheduled.
@@ -24,19 +22,16 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooterSubsystem.intakeSensor.get()) { // TURN BACK ON
-      shooterSubsystem.SetIntake(0);
-      shooterSubsystem.SetFeeder(0);
-    } else {
-      shooterSubsystem.SetIntake(0.5f);
-      shooterSubsystem.SetFeeder(0.35f);
-    }
+    shooterSubsystem.SetIntake(-0.5f);
+    shooterSubsystem.SetFeeder(-0.5f);
+    shooterSubsystem.SetShooter(-0.25f);
   }
 
   @Override
   public void end(boolean interrupted) {
     shooterSubsystem.SetIntake(0);
     shooterSubsystem.SetFeeder(0);
+    shooterSubsystem.SetShooter(0);
     super.end(interrupted);
   }
 

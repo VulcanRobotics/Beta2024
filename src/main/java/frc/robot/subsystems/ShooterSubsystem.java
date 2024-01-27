@@ -4,6 +4,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -28,5 +29,16 @@ public class ShooterSubsystem extends SubsystemBase {
   public void SetShooter(float speed) {
     leftMotor.set(-speed);
     rightMotor.set(-speed);
+  }
+
+  public double getAverageShootSpeed() {
+    double avgSpeed =
+        (leftMotor.getVelocity().getValueAsDouble() + rightMotor.getVelocity().getValueAsDouble())
+            / 2;
+    return -avgSpeed;
+  }
+
+  public void periodic() {
+    SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
   }
 }

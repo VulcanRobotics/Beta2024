@@ -24,7 +24,7 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!shooterSubsystem.intakeSensor.get()) {
+    if (false) { //TURN BACK ON
       shooterSubsystem.SetIntake(0);
       shooterSubsystem.SetFeeder(0);
     } else {

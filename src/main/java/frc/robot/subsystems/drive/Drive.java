@@ -154,9 +154,37 @@ public class Drive extends SubsystemBase {
     }
 
     // Update odometry
-    double[] sampleTimestamps =
-        modules[0].getOdometryTimestamps(); // All signals are sampled together
-    int sampleCount = sampleTimestamps.length;
+    // double[] sampleTimestamps =
+    //    modules[0].getOdometryTimestamps(); // This assumes that all module signals are sampled
+    // together?
+    //    int sampleCount = sampleTimestamps.length;
+    int sampleCount =
+        gyroInputs.connected ? gyroInputs.odometryYawPositions.length : Integer.MAX_VALUE;
+    for (int i = 0; i < 4; i++) {
+      // Determine the minimum number of odometry samples (across swerve modules and gyro
+      // timestamps)
+      sampleCount = Math.min(sampleCount, modules[i].getOdometryPositions().length);
+    }
+
+    // Average the timestamp values
+    double[] mod0timeStamps = modules[0].getOdometryTimestamps();
+    double[] mod1timeStamps = modules[1].getOdometryTimestamps();
+    double[] mod2timeStamps = modules[2].getOdometryTimestamps();
+    double[] mod3timeStamps = modules[3].getOdometryTimestamps();
+
+    double[] sampleTimestamps = new double[sampleCount];
+    for (int i = 0; i < sampleCount; i++) {
+      sampleTimestamps[i] =
+          (mod0timeStamps[i] + mod1timeStamps[i] + mod2timeStamps[i] + mod3timeStamps[i]);
+      if (gyroInputs.connected) {
+        sampleTimestamps[i] += gyroInputs.odometryYawTimestamps[i];
+        sampleTimestamps[i] /= 5.0; // Average across 5 values (4 modules and gyro yaw)
+      } else {
+        sampleTimestamps[i] /= 4.0; // Average across only 4 values (4 modules)
+      }
+    }
+    Logger.recordOutput("Odometry/Timestamps", sampleTimestamps);
+
     for (int i = 0; i < sampleCount; i++) {
       // Read wheel positions and deltas from each module
       SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
@@ -185,6 +213,7 @@ public class Drive extends SubsystemBase {
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }
 
+    SmartDashboard.putNumber("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
     SmartDashboard.putNumber("FL encoder val", modules[0].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("FR encoder val", modules[1].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("BL encoder val", modules[2].getPosition().angle.getDegrees());

@@ -21,12 +21,16 @@ public class WinchSubsystem extends SubsystemBase {
     encoderOffset = m_ArmMotor1.getPosition().getValueAsDouble();
   }
 
+  public double getEncoderOffset() {
+    return encoderOffset;
+  }
+
   public void setWinchSpeed(double speed) {
     m_ArmMotor1.set(0.2 * speed);
   }
 
   public void periodic() {
-    SmartDashboard.putNumber("Arm Encoder Value", getArmEncoder());
+    SmartDashboard.putNumber("Arm Encoder Value", m_ArmMotor1.getPosition().getValueAsDouble());
     SmartDashboard.putString("Brake Mode", m_ArmMotor1.getConfigurator().toString());
   }
 }

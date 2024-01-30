@@ -192,10 +192,10 @@ public class RobotContainer {
     // Operator
 
     winchSubsystem.setDefaultCommand(
-        WinchCommands.winchDrive(winchSubsystem, () -> operatorController.getRightY()));
+        WinchCommands.winchDrive(winchSubsystem, () -> operatorController.getLeftY()));
 
     climbSubsystem.setDefaultCommand(
-        ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getLeftY()));
+        ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getRightY()));
 
     operatorController.povDown().whileTrue(new SetArmPosition(winchSubsystem, 0.0));
     operatorController

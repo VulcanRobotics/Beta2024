@@ -38,6 +38,9 @@ public final class Constants {
 
   public final class ArmConstants {
 
+    public static final int kGuideMotorPort = 15;
+    public static final int kFollowMotorPort = 14;
+
     public static final double kArmKP = 0.5;
     public static final double kArmKI = 0.0;
     public static final double kArmKD = 0.1;

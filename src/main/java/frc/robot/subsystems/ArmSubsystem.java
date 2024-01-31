@@ -1,7 +1,8 @@
 package frc.robot.subsystems;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -10,6 +11,7 @@ import frc.robot.util.*;
 public class ArmSubsystem extends SubsystemBase {
   public final TalonFX m_ArmMotor1 = new TalonFX(15, "rio");
   public final TalonFX m_ArmMotor2 = new TalonFX(14, "rio");
+  private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
 
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
@@ -18,7 +20,8 @@ public class ArmSubsystem extends SubsystemBase {
     slot0Configs.kS = ArmConstants.kArmKS; // Add 0.25 V output to overcome static friction
     slot0Configs.kV = ArmConstants.kArmKV; // A velocity target of 1 rps results in 0.12 V output
     slot0Configs.kA = ArmConstants.kArmKA; // An acceleration of 1 rps/s requires 0.01 V output
-    slot0Configs.kP = ArmConstants.kArmKP; // A position error of 2.5 rotations results in 12 V output
+    slot0Configs.kP =
+        ArmConstants.kArmKP; // A position error of 2.5 rotations results in 12 V output
     slot0Configs.kI = ArmConstants.kArmKI; // no output for integrated error
     slot0Configs.kD = ArmConstants.kArmKD; // A velocity error of 1 rps results in 0.1 V output
 
@@ -45,17 +48,17 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   /**
-   * This method sets the integrated encoder of TalonFX to 0. Without an absolute encoder present, this
-   * should be done before the start of every match.
+   * This method sets the integrated encoder of TalonFX to 0. Without an absolute encoder present,
+   * this should be done before the start of every match.
    */
   public void zeroArmEncoder() {
     m_ArmMotor1.setPosition(0.0);
   }
 
   public void setArmSpeed(double speed) {
-    speed = speed *= 0.2;
+    speed = speed *= 0.6;
     m_ArmMotor1.set(speed);
-    m_ArmMotor2.set(speed);
+    m_ArmMotor2.setControl(m_follow);
   }
 
   public void periodic() {

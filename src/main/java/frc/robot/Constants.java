@@ -43,14 +43,14 @@ public final class Constants {
 
     public static final double kArmKP = 0.5;
     public static final double kArmKI = 0.0;
-    public static final double kArmKD = 0.1;
+    public static final double kArmKD = 0.05;
 
     public static final double kArmKS = 0.25;
     public static final double kArmKV = 0.12;
     public static final double kArmKA = 0.01;
 
-    public static final double kArmTargetVelocity = 80; // Rotations per second
-    public static final double kArmTargetAcceleration = 200; // rps/s
+    public static final double kArmTargetVelocity = 300; // Rotations per second
+    public static final double kArmTargetAcceleration = 500; // rps/s
     public static final double kArmTargetJerk = 1600; // rps/s/s
 
     public static final boolean kArm1Inverted = false;
@@ -61,12 +61,5 @@ public final class Constants {
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
     public static final double kArmPoseTrap = 0.0;
-
-    public static enum ArmMode {
-      AMP,
-      SPEAKER,
-      INTAKE,
-      TRAP
-    }
   }
 }

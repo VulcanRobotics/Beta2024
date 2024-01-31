@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 179.9343491472177,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "SimplePaths",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

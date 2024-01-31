@@ -40,7 +40,7 @@ public class GyroIONavX implements GyroIO {
     PhoenixOdometry thread objects running simultaneously. The yaw readings are
     stored in yawPositionQueue and then streamed to the GyroIOInputs in updateInputs(). */
     yawTimestampQueue = SparkMaxOdometryThread.getInstance().makeTimestampQueue();
-    yawPositionQueue = SparkMaxOdometryThread.getInstance().registerSignal(() -> navX.getYaw());
+    yawPositionQueue = SparkMaxOdometryThread.getInstance().registerSignal(() -> -navX.getYaw());
   }
 
   @Override

@@ -22,7 +22,7 @@ public class WinchCommands {
 
           // speed *= speed;
 
-          winchSubsystem.setWinchSpeed(MathUtil.clamp(speed, -1, 1));
+          winchSubsystem.setArmSpeed(MathUtil.clamp(speed, -1, 1));
         },
         winchSubsystem);
   }

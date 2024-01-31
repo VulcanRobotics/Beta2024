@@ -31,10 +31,10 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SetArmPosition;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.WinchCommands;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 // import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 // import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -62,7 +62,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Flywheel flywheel;
   private final ShooterSubsystem shooterSubsystem;
-  private final WinchSubsystem winchSubsystem;
+  private final ArmSubsystem armSubsystem;
   private final ClimbSubsystem climbSubsystem;
   // private final PhotonVisionSubsystem vision;
 
@@ -98,7 +98,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(3));
         flywheel = new Flywheel(new FlywheelIOTalonFX());
         shooterSubsystem = new ShooterSubsystem();
-        winchSubsystem = new WinchSubsystem();
+        armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
         // vision = new PhotonVisionSubsystem(drive);
         break;
@@ -114,7 +114,7 @@ public class RobotContainer {
                 new ModuleIOSim());
         flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
-        winchSubsystem = new WinchSubsystem();
+        armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
         // vision = new PhotonVisionSubsystem(drive);
         break;
@@ -130,7 +130,7 @@ public class RobotContainer {
                 new ModuleIO() {});
         flywheel = new Flywheel(new FlywheelIO() {});
         shooterSubsystem = new ShooterSubsystem();
-        winchSubsystem = new WinchSubsystem();
+        armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
         // vision = new PhotonVisionSubsystem(drive);
         break;
@@ -191,19 +191,22 @@ public class RobotContainer {
                 () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
     // Operator
 
-    winchSubsystem.setDefaultCommand(
-        WinchCommands.winchDrive(winchSubsystem, () -> operatorController.getLeftY()));
+    armSubsystem.setDefaultCommand(
+        WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()));
 
     climbSubsystem.setDefaultCommand(
         ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getRightY()));
 
-    operatorController.povDown().whileTrue(new SetArmPosition(winchSubsystem, 0.0));
+    // Move arm to zero position
+    operatorController.povDown().whileTrue(new SetArmPosition(armSubsystem, 0.0));
+
+    // Reset arm motor 1 encoder to 0 rotations
     operatorController
         .button(10)
         .onTrue(
             new InstantCommand(
                 () -> {
-                  winchSubsystem.updateEncoderOffset();
+                  armSubsystem.zeroArmEncoder();
                 }));
 
     operatorController.button(8).whileTrue(new ShootCommand(shooterSubsystem, false));

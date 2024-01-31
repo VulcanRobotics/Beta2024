@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.92148307580599,
-      "y": 4.581777309584229
+      "x": 1.3661693665979928,
+      "y": 5.777387369589555
     },
     "rotation": 0
   },
@@ -12,20 +12,27 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "JustStraightForward"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Straight Path"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         }
       ]
     }
   },
-  "folder": "TestAutons",
+  "folder": null,
   "choreoAuto": false
 }

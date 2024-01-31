@@ -142,6 +142,10 @@ public class RobotContainer {
         Commands.startEnd(
                 () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
             .withTimeout(5.0));
+
+    NamedCommands.registerCommand(
+        "Intake", new IntakeCommand(shooterSubsystem, false).withTimeout(3));
+
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up feedforward characterization

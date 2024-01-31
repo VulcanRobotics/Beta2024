@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3661693665979928,
-      "y": 5.777387369589555
+      "x": 1.3725925246794313,
+      "y": 5.554193612600709
     },
     "rotation": 0
   },
@@ -18,7 +18,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Straight Path"
+                  "pathName": "ForwardAndBackward"
                 }
               },
               {
@@ -33,6 +33,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "TestAutons",
   "choreoAuto": false
 }

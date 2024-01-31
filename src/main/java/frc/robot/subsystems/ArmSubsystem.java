@@ -15,7 +15,9 @@ public class ArmSubsystem extends SubsystemBase {
 
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
+
     // set slot 0 gains
+
     var slot0Configs = talonFXConfigs.Slot0;
     slot0Configs.kS = ArmConstants.kArmKS; // Add 0.25 V output to overcome static friction
     slot0Configs.kV = ArmConstants.kArmKV; // A velocity target of 1 rps results in 0.12 V output
@@ -38,6 +40,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor2.getConfigurator().apply(talonFXConfigs);
     TalonUtil.setBrakeMode(m_ArmMotor1);
     TalonUtil.setBrakeMode(m_ArmMotor2);
+
     // Maybe put these booleans in constants
     m_ArmMotor1.setInverted(false);
     m_ArmMotor2.setInverted(true);

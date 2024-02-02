@@ -57,9 +57,9 @@ public final class Constants {
     public static final boolean kArm2Inverted = true;
 
     // Fill these with actual values.
-    public static final double kArmPoseAmp = 0.0;
+    public static final double kArmPoseAmp = 76.0;
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
-    public static final double kArmPoseTrap = 0.0;
+    public static final double kArmPoseTrap = 76.0;
   }
 }

@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ClimbCommands;
 import frc.robot.commands.DispenseCommand;
 import frc.robot.commands.DriveCommands;
@@ -47,7 +48,6 @@ import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
-import frc.robot.subsystems.flywheel.FlywheelIOTalonFX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
@@ -96,7 +96,8 @@ public class RobotContainer {
                 new ModuleIOTalonFX(1),
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
-        flywheel = new Flywheel(new FlywheelIOTalonFX());
+        // flywheel = new Flywheel(new FlywheelIOTalonFX());
+        flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
@@ -145,6 +146,11 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "Intake", new IntakeCommand(shooterSubsystem, false).withTimeout(3));
+
+    NamedCommands.registerCommand(
+        "ArmToIntake", new SetArmPosition(armSubsystem, 0).withTimeout(2));
+
+    NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem, true).withTimeout(3));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -201,10 +207,23 @@ public class RobotContainer {
     climbSubsystem.setDefaultCommand(
         ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getRightY()));
 
-    // Move arm to zero position
-    operatorController.povDown().whileTrue(new SetArmPosition(armSubsystem, 0.0));
+    operatorController
+        .button(9)
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  armSubsystem.overrideLimits = !armSubsystem.overrideLimits;
+                }));
 
-    // Reset arm motor 1 encoder to 0 rotations
+    // Manual Arm Controls
+    operatorController
+        .button(1)
+        .whileTrue(new SetArmPosition(armSubsystem, ArmConstants.kArmPoseIntake));
+    operatorController
+        .button(2)
+        .whileTrue(new SetArmPosition(armSubsystem, ArmConstants.kArmPoseAmp));
+
+    // Reset arm guide motor encoder to 0 rotations
     operatorController
         .button(10)
         .onTrue(
@@ -213,6 +232,7 @@ public class RobotContainer {
                   armSubsystem.zeroArmEncoder();
                 }));
 
+    // Shooter and intake commands
     operatorController.button(8).whileTrue(new ShootCommand(shooterSubsystem, false));
     operatorController.button(7).whileTrue(new IntakeCommand(shooterSubsystem, false));
     operatorController.button(5).whileTrue(new DispenseCommand(shooterSubsystem));
@@ -221,8 +241,9 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  shooterSubsystem.savedShootSpeed -= 0.1;
-                  shooterSubsystem.savedShootSpeed = Math.min(shooterSubsystem.savedShootSpeed, 0);
+                  // shooterSubsystem.savedShootSpeed -= 0.1;
+                  shooterSubsystem.savedShootSpeed =
+                      Math.max(shooterSubsystem.savedShootSpeed -= 0.1, 0);
                 }));
 
     operatorController
@@ -230,8 +251,9 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  shooterSubsystem.savedShootSpeed += 0.1;
-                  shooterSubsystem.savedShootSpeed = Math.max(shooterSubsystem.savedShootSpeed, 1);
+                  // shooterSubsystem.savedShootSpeed += 0.1;
+                  shooterSubsystem.savedShootSpeed =
+                      Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
                 }));
   }
 

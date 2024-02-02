@@ -13,6 +13,8 @@ public class ArmSubsystem extends SubsystemBase {
   public final TalonFX m_ArmMotor2 = new TalonFX(14, "rio");
   private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
 
+  public boolean overrideLimits = false;
+
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
 
@@ -60,12 +62,25 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setArmSpeed(double speed) {
     speed = speed *= 0.6;
+    if (!overrideLimits) speed = applyLimits(speed);
+
     m_ArmMotor1.set(speed);
     m_ArmMotor2.setControl(m_follow);
+  }
+
+  public double applyLimits(double speed) {
+    if (getArmEncoder() - 0.5f <= 0 && speed < 0) {
+      return 0;
+    } else if (getArmEncoder() + 1f >= 77 && speed > 0) {
+      return 0;
+    }
+
+    return (speed);
   }
 
   public void periodic() {
     SmartDashboard.putNumber("Arm Encoder Value", m_ArmMotor1.getPosition().getValueAsDouble());
     SmartDashboard.putString("Brake Mode", m_ArmMotor1.getConfigurator().toString());
+    SmartDashboard.putBoolean("Override Limits", overrideLimits);
   }
 }

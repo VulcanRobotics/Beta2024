@@ -11,17 +11,21 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootCommand extends Command {
   ShooterSubsystem shooterSubsystem;
 
-  boolean stopMotors;
+  boolean fullPower;
 
-  public ShootCommand(ShooterSubsystem shooter, boolean stop) {
+  public ShootCommand(ShooterSubsystem shooter, boolean Max) {
     this.shooterSubsystem = shooter;
-    stopMotors = stop;
+    fullPower = Max;
   }
 
   private double shootSpeed = 90;
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if (fullPower == true) {
+      shooterSubsystem.savedShootSpeed = 1;
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

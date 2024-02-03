@@ -33,6 +33,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -106,6 +107,9 @@ public class PhotonVisionSubsystem extends SubsystemBase {
    */
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
     var visionEst = photonEstimator.update();
+    // System.out.print("GetEstimatedGlobalPose()");
+    SmartDashboard.putBoolean("visionEst present:", visionEst.isPresent());
+
     double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
     boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
     if (Robot.isSimulation()) {
@@ -163,6 +167,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
     visionEst.ifPresent(
         est -> {
+          // System.out.print("PhotonVisionSubsystem ifPresent()");
           var estPose = est.estimatedPose.toPose2d();
           // Change our trust in the measurement based on the tags we can see
           var estStdDevs = getEstimationStdDevs(estPose);
@@ -172,6 +177,13 @@ public class PhotonVisionSubsystem extends SubsystemBase {
           // with vision estimates.
           drive.addVisionMeasurement(
               est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+
+          // var debugField = getSimDebugField();
+          // debugField.getObject("EstimatedRobot").setPose(estPose);
+
+          // SmartDashboard.putNumber("Vision pose X:", estPose.getX());
+          // SmartDashboard.putNumber("Vision pose Y:", estPose.getY());
+          // debugField.getObject("EstimatedRobotModules").setPoses(drive.getModulePoses());
         });
   }
 

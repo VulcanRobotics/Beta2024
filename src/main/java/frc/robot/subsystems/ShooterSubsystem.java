@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -13,6 +14,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   CANSparkMax intakeMotor = new CANSparkMax(18, MotorType.kBrushless);
   CANSparkMax feederMotor = new CANSparkMax(19, MotorType.kBrushless);
+
+  private Follower m_follow = new Follower(17, false);
 
   public DigitalInput intakeSensor = new DigitalInput(0);
 
@@ -28,7 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void SetShooter(float speed) {
     leftMotor.set(-speed);
-    rightMotor.set(-speed);
+    rightMotor.setControl(m_follow);
   }
 
   public double getAverageShootSpeed() {

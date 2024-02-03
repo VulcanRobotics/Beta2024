@@ -50,7 +50,8 @@ public final class Constants {
     public static final String kCameraName = "FrontCam";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
     public static final Transform3d kRobotToCam =
-        new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
+        new Transform3d(
+            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, 0.349, 3.1415926535));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =

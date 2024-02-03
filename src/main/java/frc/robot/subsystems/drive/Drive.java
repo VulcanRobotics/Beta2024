@@ -36,6 +36,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -59,6 +60,8 @@ public class Drive extends SubsystemBase {
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   private final SysIdRoutine sysId;
+
+  private Field2d m_field = new Field2d();
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
   private Rotation2d rawGyroRotation = new Rotation2d();
@@ -87,6 +90,8 @@ public class Drive extends SubsystemBase {
     // Start threads (no-op for each if no signals have been created)
     PhoenixOdometryThread.getInstance().start();
     SparkMaxOdometryThread.getInstance().start();
+
+    SmartDashboard.putData("Field", m_field);
 
     // Configure AutoBuilder for PathPlanner
     AutoBuilder.configureHolonomic(
@@ -213,11 +218,15 @@ public class Drive extends SubsystemBase {
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }
 
+    m_field.setRobotPose(poseEstimator.getEstimatedPosition());
+
     SmartDashboard.putNumber("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
     SmartDashboard.putNumber("FL encoder val", modules[0].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("FR encoder val", modules[1].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("BL encoder val", modules[2].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("Odometry X", poseEstimator.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
   }
 
   /**
@@ -312,7 +321,7 @@ public class Drive extends SubsystemBase {
   }
 
   /**
-   * Adds a vision measurement to the pose estimator.
+   * log Adds a vision measurement to the pose estimator.
    *
    * @param visionPose The pose of the robot as measured by the vision camera.
    * @param timestamp The timestamp of the vision measurement in seconds.
@@ -323,6 +332,7 @@ public class Drive extends SubsystemBase {
 
   public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> estStdDevs) {
     poseEstimator.addVisionMeasurement(visionPose, timestamp, estStdDevs);
+    m_field.getObject("vision estimate").setPose(visionPose);
   }
 
   /** Returns the maximum linear speed in meters per sec. */

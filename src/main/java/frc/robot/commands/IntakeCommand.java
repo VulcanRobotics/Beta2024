@@ -28,8 +28,8 @@ public class IntakeCommand extends Command {
       shooterSubsystem.SetIntake(0);
       shooterSubsystem.SetFeeder(0);
     } else {
-      shooterSubsystem.SetIntake(0.5f);
-      shooterSubsystem.SetFeeder(0.35f);
+      shooterSubsystem.SetIntake(0.75f);
+      shooterSubsystem.SetFeeder(0.25f);
     }
   }
 

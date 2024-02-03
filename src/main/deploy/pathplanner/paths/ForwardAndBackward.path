@@ -3,57 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3262715480457417,
-        "y": 6.771727878777916
+        "x": 1.3725925246794313,
+        "y": 5.554193612600709
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.32627154804574,
-        "y": 6.271727878777916
+        "x": 1.7677955604558728,
+        "y": 5.531508780194007
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.829332573347686,
-        "y": 3.389575463018058
+        "x": 2.8844262014380257,
+        "y": 5.554193612600709
       },
       "prevControl": {
-        "x": 1.8293325733476862,
-        "y": 4.389575463018055
+        "x": 2.4503857824312614,
+        "y": 5.540000746252013
       },
       "nextControl": {
-        "x": 3.8293325733476817,
-        "y": 2.389575463018058
+        "x": 3.31846662044479,
+        "y": 5.568386478949406
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.260924709680108,
-        "y": 0.7920179332469143
+        "x": 1.3725925246794313,
+        "y": 5.554193612600709
       },
       "prevControl": {
-        "x": 7.61217123145225,
-        "y": 0.8275172760721727
-      },
-      "nextControl": {
-        "x": 8.909678187907973,
-        "y": 0.756518590421657
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.0947997259751134,
-        "y": 3.980237937332425
-      },
-      "prevControl": {
-        "x": 0.8447997259751134,
-        "y": 5.480237937332424
+        "x": 1.3066380999348561,
+        "y": 5.539129723623173
       },
       "nextControl": null,
       "isLocked": false,
@@ -75,7 +59,11 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/StraightAndBack.path
+  "folder": "SimplePaths",
+========
+  "folder": "BasicPaths",
+>>>>>>>> main:src/main/deploy/pathplanner/paths/ForwardAndBackward.path
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

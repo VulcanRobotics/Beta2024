@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 7.0
+      "x": 1.3554596196271045,
+      "y": 5.527296403609661
     },
     "rotation": 0
   },
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StraightAndSpin"
+            "pathName": "Straight and spin"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "TestAutons",
   "choreoAuto": false
 }

@@ -40,5 +40,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void periodic() {
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
+    SmartDashboard.putNumber("Shooter Speed", savedShootSpeed);
   }
 }

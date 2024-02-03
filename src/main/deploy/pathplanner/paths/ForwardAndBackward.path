@@ -59,11 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-<<<<<<<< HEAD:src/main/deploy/pathplanner/paths/StraightAndBack.path
-  "folder": "SimplePaths",
-========
   "folder": "BasicPaths",
->>>>>>>> main:src/main/deploy/pathplanner/paths/ForwardAndBackward.path
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

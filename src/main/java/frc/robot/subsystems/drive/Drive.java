@@ -306,10 +306,6 @@ public class Drive extends SubsystemBase {
     gyroIO.zeroGyro();
   }
 
-  public void zeroGyro() {
-    gyroIO.zeroGyro();
-  }
-
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);

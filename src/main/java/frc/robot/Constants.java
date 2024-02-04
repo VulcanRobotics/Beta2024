@@ -32,8 +32,8 @@ import edu.wpi.first.math.numbers.N3;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  // public static final Mode currentMode = Mode.REAL;
-  public static final Mode currentMode = Mode.SIM;
+  public static final Mode currentMode = Mode.REAL;
+  // public static final Mode currentMode = Mode.SIM;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -51,6 +51,7 @@ public final class Constants {
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
     public static final Transform3d kRobotToCam =
         new Transform3d(
+          // Camera faces back and titled up (yaw 180 and negative pitch from perspective of robot).
             new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
 
     // The layout of the AprilTags on the field

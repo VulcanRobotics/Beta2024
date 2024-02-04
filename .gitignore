@@ -7,3 +7,4 @@ build/*
 *.wpilog
 *.dat
 simgui-window.json
+BuildConstants.java

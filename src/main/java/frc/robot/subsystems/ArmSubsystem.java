@@ -42,7 +42,6 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor2.getConfigurator().apply(talonFXConfigs);
     TalonUtil.setBrakeMode(m_ArmMotor1);
     TalonUtil.setBrakeMode(m_ArmMotor2);
-
     // Maybe put these booleans in constants
     m_ArmMotor1.setInverted(false);
     m_ArmMotor2.setInverted(true);

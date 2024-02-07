@@ -233,7 +233,7 @@ public class RobotContainer {
         .whileTrue(new SetArmPosition(armSubsystem, ArmConstants.kArmPoseIntake));
     operatorController
         .button(2)
-        .whileTrue(new SetArmPosition(armSubsystem, ArmConstants.kArmPoseAmp));
+        .whileTrue(new SetArmPosition(armSubsystem, ArmConstants.kArmPoseTrap));
 
     // Reset arm guide motor encoder to 0 rotations
     operatorController

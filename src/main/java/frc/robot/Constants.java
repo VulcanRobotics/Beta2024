@@ -51,7 +51,8 @@ public final class Constants {
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
     public static final Transform3d kRobotToCam =
         new Transform3d(
-          // Camera faces back and titled up (yaw 180 and negative pitch from perspective of robot).
+            // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
+            // robot).
             new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
 
     // The layout of the AprilTags on the field
@@ -84,10 +85,10 @@ public final class Constants {
     public static final boolean kArm1Inverted = false;
     public static final boolean kArm2Inverted = true;
 
-    // Fill these with actual values.
-    public static final double kArmPoseAmp = 76.0;
+    // Fill these with actual values (now in degrees!)
+    public static final double kArmPoseAmp = 90.0;
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
-    public static final double kArmPoseTrap = 76.0;
+    public static final double kArmPoseTrap = 90.0;
   }
 }

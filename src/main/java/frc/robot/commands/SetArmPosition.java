@@ -16,9 +16,17 @@ public class SetArmPosition extends Command {
   private Follower m_follow =
       new Follower(ArmConstants.kGuideMotorPort, ArmConstants.kArm2Inverted);
 
-  public SetArmPosition(ArmSubsystem armSubsystem, double targetPositionInRotation) {
+  // public SetArmPosition(ArmSubsystem armSubsystem, double targetPositionInRotation) {
+  //   addRequirements(armSubsystem);
+  //   this.armSubsystem = armSubsystem;
+  //   this.m_request = new MotionMagicVoltage(targetPositionInRotation);
+  // }
+
+  public SetArmPosition(ArmSubsystem armSubsystem, double targetPositionInDegrees) {
     addRequirements(armSubsystem);
     this.armSubsystem = armSubsystem;
+    double targetPositionInRotation =
+        targetPositionInDegrees / 360 * 320; // 10:1 (this will become 9:1), 6:1, 80:15
     this.m_request = new MotionMagicVoltage(targetPositionInRotation);
   }
 

@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,9 +13,18 @@ import frc.robot.util.*;
 public class ArmSubsystem extends SubsystemBase {
   public final TalonFX m_ArmMotor1 = new TalonFX(15, "rio");
   public final TalonFX m_ArmMotor2 = new TalonFX(14, "rio");
+
+  public final CANcoder m_ArmEncoder = new CANcoder(13, "rio");
+
+  private StatusSignal<Double> m_ArmEncoderDouble;
+
   private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
 
   public boolean overrideLimits = false;
+
+  public double topLimit = 90;
+  public double botLimit = 0;
+  public double encoderOffset = -0.2959; // -0.299
 
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
@@ -48,7 +59,12 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getArmEncoder() {
-    return m_ArmMotor1.getPosition().getValueAsDouble();
+    double ArmEncoderValue = m_ArmEncoder.getAbsolutePosition().getValueAsDouble();
+    if (ArmEncoderValue < 0.0) {
+      return -90 * (ArmEncoderValue - encoderOffset) / 0.4843;
+    } else {
+      return 90 * (0.5 - ArmEncoderValue - encoderOffset) / 0.4843; // 0.6137
+    }
   }
 
   /**
@@ -61,16 +77,16 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setArmSpeed(double speed) {
     speed = speed *= 0.6;
-    if (!overrideLimits) speed = applyLimits(speed);
+    speed = applyLimits(speed);
 
     m_ArmMotor1.set(speed);
     m_ArmMotor2.setControl(m_follow);
   }
 
   public double applyLimits(double speed) {
-    if (getArmEncoder() - 0.5f <= 0 && speed < 0) {
+    if (getArmEncoder() < botLimit && speed < 0) { // getArmEncoder() - 0.5f <= 0 && speed < 0
       return 0;
-    } else if (getArmEncoder() + 1f >= 77 && speed > 0) {
+    } else if (getArmEncoder() > topLimit && speed > 0) { // getArmEncoder() + 1f >= 77 && speed > 0
       return 0;
     }
 
@@ -78,7 +94,10 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
-    SmartDashboard.putNumber("Arm Encoder Value", m_ArmMotor1.getPosition().getValueAsDouble());
+
+    SmartDashboard.putNumber(
+        "Arm Encoder Value", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
+    SmartDashboard.putNumber("Adjusted Encoder Value", getArmEncoder());
     SmartDashboard.putString("Brake Mode", m_ArmMotor1.getConfigurator().toString());
     SmartDashboard.putBoolean("Override Limits", overrideLimits);
   }

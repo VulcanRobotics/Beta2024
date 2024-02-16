@@ -48,8 +48,37 @@ public final class Constants {
 
   public static class Vision {
     public static final String kCameraName = "FrontCam";
+
+    public static final String kFrontLeft = "FrontCam";
+    public static final String kFrontRight = "FrontCam";
+    public static final String kRearLeft = "FrontCam";
+    public static final String kRearRight = "FrontCam";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
     public static final Transform3d kRobotToCam =
+        new Transform3d(
+            // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
+            // robot).
+            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+
+    public static final Transform3d kFrontLeftToCam =
+        new Transform3d(
+            // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
+            // robot).
+            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+
+    public static final Transform3d kFrontRightToCam =
+        new Transform3d(
+            // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
+            // robot).
+            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+
+    public static final Transform3d kRearLeftToCam =
+        new Transform3d(
+            // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
+            // robot).
+            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+
+    public static final Transform3d kRearRightToCam =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
@@ -78,7 +107,7 @@ public final class Constants {
     public static final double kArmKV = 0.12;
     public static final double kArmKA = 0.01;
 
-    public static final double kArmTargetVelocity = 300; // Rotations per second
+    public static final double kArmTargetVelocity = 100; // 300 Rotations per second
     public static final double kArmTargetAcceleration = 500; // rps/s
     public static final double kArmTargetJerk = 1600; // rps/s/s
 
@@ -86,9 +115,15 @@ public final class Constants {
     public static final boolean kArm2Inverted = true;
 
     // Fill these with actual values (now in degrees!)
-    public static final double kArmPoseAmp = 90.0;
+    public static final double kArmPoseAmp = 85.0;
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
-    public static final double kArmPoseTrap = 90.0;
+    public static final double kArmPoseTrap = 85.0;
+
+    public static final double kCanCoderToArmMotorRatio =
+        (10.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);
+
+    public static final double kMotorEncoderToDegrees = 9.0 / 8.0;
+    public static final double kCanCoderZeroPosition = 0.695;
   }
 }

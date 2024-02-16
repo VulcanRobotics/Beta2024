@@ -5,17 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ShootCommand extends Command {
-  ShooterSubsystem shooterSubsystem;
+public class LockWinchCommand extends Command {
+  ClimbSubsystem climbSubsystem;
 
-  public ShootCommand(ShooterSubsystem shooter) {
-    this.shooterSubsystem = shooter;
+  boolean toggle = false;
+
+  public LockWinchCommand(ClimbSubsystem climb) {
+    this.climbSubsystem = climb;
   }
 
-  private float feedSpeed = 1;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -23,20 +24,20 @@ public class ShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooterSubsystem.upToSpeed) {
-      shooterSubsystem.SetFeeder(feedSpeed);
-    }
+    toggle = !toggle;
+
+    climbSubsystem.winchEnabled = !toggle;
+    climbSubsystem.setServoLock(toggle);
   }
 
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.SetFeeder(0);
     super.end(interrupted);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

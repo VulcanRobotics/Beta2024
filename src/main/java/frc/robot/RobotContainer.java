@@ -25,13 +25,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.commands.ClimbCommands;
-import frc.robot.commands.DispenseCommand;
-import frc.robot.commands.DriveCommands;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.SetArmPosition;
-import frc.robot.commands.ShootCommand;
-import frc.robot.commands.WinchCommands;
+import frc.robot.commands.*;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.PhotonVisionSubsystem;
@@ -150,7 +144,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "ArmToIntake", new SetArmPosition(armSubsystem, 0).withTimeout(2));
 
-    NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem, true).withTimeout(3));
+    NamedCommands.registerCommand("Shoot", new RevCommand(shooterSubsystem, true).withTimeout(3));
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -217,7 +211,13 @@ public class RobotContainer {
         WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()));
 
     climbSubsystem.setDefaultCommand(
-        ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getRightY()));
+        ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getRawAxis(3)));
+    // new InstantCommand(() -> climbSubsystem.setWinchSpeed(operatorController.getRightX())));
+    // ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getYaw());
+
+    /*operatorController.povRight().onTrue(new InstantCommand(() -> climbSubsystem.winchDown()));
+    operatorController.povLeft().onTrue(new InstantCommand(() -> climbSubsystem.winchUp()));
+    operatorController.button(6).onTrue(new InstantCommand(() -> climbSubsystem.winchOff()));*/
 
     operatorController
         .button(9)
@@ -241,11 +241,14 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  armSubsystem.zeroArmEncoder();
+                  armSubsystem.calibrateTalonEncoder();
                 }));
 
+    operatorController.button(3).onTrue(new LockWinchCommand(climbSubsystem));
+
     // Shooter and intake commands
-    operatorController.button(8).whileTrue(new ShootCommand(shooterSubsystem, false));
+    operatorController.button(8).whileTrue(new RevCommand(shooterSubsystem, false));
+    operatorController.button(6).whileTrue(new ShootCommand(shooterSubsystem));
     operatorController.button(7).whileTrue(new IntakeCommand(shooterSubsystem, false));
     operatorController.button(5).whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController

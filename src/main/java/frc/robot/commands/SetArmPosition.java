@@ -2,7 +2,9 @@ package frc.robot.commands;
 
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -25,8 +27,11 @@ public class SetArmPosition extends Command {
   public SetArmPosition(ArmSubsystem armSubsystem, double targetPositionInDegrees) {
     addRequirements(armSubsystem);
     this.armSubsystem = armSubsystem;
+
+    targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
+
     double targetPositionInRotation =
-        targetPositionInDegrees / 360 * 320; // 10:1 (this will become 9:1), 6:1, 80:15
+        targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
     this.m_request = new MotionMagicVoltage(targetPositionInRotation);
   }
 

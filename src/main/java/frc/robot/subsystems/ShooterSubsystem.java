@@ -21,6 +21,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public float savedShootSpeed = (float) 1.0; // 1.0
 
+  public boolean upToSpeed;
+
   public void SetFeeder(float speed) {
     feederMotor.set(-speed);
   }
@@ -44,5 +46,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
     SmartDashboard.putNumber("Shooter Speed", savedShootSpeed);
+    SmartDashboard.putBoolean("Shooter up to speed", upToSpeed);
   }
 }

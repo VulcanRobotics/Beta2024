@@ -51,7 +51,19 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 public class PhotonVisionSubsystem extends SubsystemBase {
   private final PhotonCamera camera;
+
+  private final PhotonCamera FrontLeftCamera;
+  private final PhotonCamera FrontRightCamera;
+  private final PhotonCamera RearLeftCamera;
+  private final PhotonCamera RearRightCamera;
+
   private final PhotonPoseEstimator photonEstimator;
+
+  private final PhotonPoseEstimator FrontLeftEstimator;
+  private final PhotonPoseEstimator FrontRightEstimator;
+  private final PhotonPoseEstimator RearLeftEstimator;
+  private final PhotonPoseEstimator RearRightEstimator;
+
   private double lastEstTimestamp = 0;
 
   private Drive drive;
@@ -69,6 +81,43 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         new PhotonPoseEstimator(
             kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, kRobotToCam);
     photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+    FrontLeftCamera = new PhotonCamera(kFrontLeft);
+
+    FrontLeftEstimator =
+        new PhotonPoseEstimator(
+            kTagLayout,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            FrontLeftCamera,
+            kFrontLeftToCam);
+    FrontLeftEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+    FrontRightCamera = new PhotonCamera(kFrontLeft);
+
+    FrontRightEstimator =
+        new PhotonPoseEstimator(
+            kTagLayout,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            FrontRightCamera,
+            kFrontRightToCam);
+    FrontRightEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+    RearLeftCamera = new PhotonCamera(kFrontLeft);
+
+    RearLeftEstimator =
+        new PhotonPoseEstimator(
+            kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, RearLeftCamera, kRearLeftToCam);
+    RearLeftEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+    RearRightCamera = new PhotonCamera(kFrontLeft);
+
+    RearRightEstimator =
+        new PhotonPoseEstimator(
+            kTagLayout,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            RearRightCamera,
+            kRearRightToCam);
+    RearRightEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
     // ----- Simulation
     if (Robot.isSimulation()) {

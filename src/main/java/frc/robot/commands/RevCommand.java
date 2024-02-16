@@ -8,29 +8,38 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
-public class ShootCommand extends Command {
+public class RevCommand extends Command {
   ShooterSubsystem shooterSubsystem;
 
-  public ShootCommand(ShooterSubsystem shooter) {
+  boolean fullPower;
+
+  public RevCommand(ShooterSubsystem shooter, boolean Max) {
     this.shooterSubsystem = shooter;
+    fullPower = Max;
   }
 
-  private float feedSpeed = 1;
+  private double shootSpeed = 75;
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if (fullPower == true) {
+      shooterSubsystem.savedShootSpeed = 1;
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooterSubsystem.upToSpeed) {
-      shooterSubsystem.SetFeeder(feedSpeed);
+    shooterSubsystem.SetShooter(shooterSubsystem.savedShootSpeed);
+    if (shooterSubsystem.getAverageShootSpeed() >= shootSpeed) {
+      shooterSubsystem.upToSpeed = true;
     }
   }
 
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.SetFeeder(0);
+    shooterSubsystem.SetShooter(0);
+    shooterSubsystem.upToSpeed = false;
     super.end(interrupted);
   }
 

@@ -20,6 +20,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public DigitalInput intakeSensor = new DigitalInput(0);
 
   public float savedShootSpeed = (float) 1.0; // 1.0
+  public boolean toggleShooter = false;
 
   public boolean upToSpeed;
 
@@ -44,6 +45,12 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
+
+    if (toggleShooter == true) {
+      leftMotor.set(-1);
+      rightMotor.set(-1);
+    }
+    SmartDashboard.putBoolean("Shooter Toggle", toggleShooter);
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
     SmartDashboard.putNumber("Shooter Speed", savedShootSpeed);
     SmartDashboard.putBoolean("Shooter up to speed", upToSpeed);

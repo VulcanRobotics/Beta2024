@@ -23,7 +23,7 @@ public class ClimbCommands {
 
           // speed *= speed;
           SmartDashboard.putNumber("Climb speed", speed);
-          climbSubsystem.setWinchSpeed(MathUtil.clamp(speed, -0.25, 0.25));
+          climbSubsystem.setWinchSpeed(MathUtil.clamp(speed, -1.0, 1.0));
         },
         climbSubsystem);
   }

@@ -74,7 +74,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor1.setPosition(0.0);
   }
 
-  //This method ensures that the the Talon's 'zero' position is equivalent to its intake state
+  // This method ensures that the the Talon's 'zero' position is equivalent to its intake state
   public void calibrateTalonEncoder() {
     double delta =
         ArmConstants.kCanCoderZeroPosition - m_ArmEncoder.getPosition().getValueAsDouble();
@@ -94,7 +94,7 @@ public class ArmSubsystem extends SubsystemBase {
     } else if (getArmEncoder() > topLimit && speed > 0) { // getArmEncoder() + 1f >= 77 && speed > 0
       return 0;
     }
-    
+
     return (speed);
   }
 

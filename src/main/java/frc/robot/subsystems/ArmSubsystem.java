@@ -18,10 +18,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
 
-  public boolean overrideLimits = false;
-
-  public double topLimit = 87.5;
-  public double botLimit = 0.0;
+  public final double topLimit = 87.5;
+  public final double botLimit = 0.0;
 
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
@@ -54,6 +52,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor1.setInverted(false);
     m_ArmMotor2.setInverted(true);
 
+    // Ensure that arm is zeroed
     calibrateTalonEncoder();
   }
 
@@ -101,6 +100,5 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Adjusted Encoder Value", getArmEncoder());
     SmartDashboard.putString("Brake Mode", m_ArmMotor1.getConfigurator().toString());
-    SmartDashboard.putBoolean("Override Limits", overrideLimits);
   }
 }

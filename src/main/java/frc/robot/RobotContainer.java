@@ -221,14 +221,6 @@ public class RobotContainer {
     operatorController.povLeft().onTrue(new InstantCommand(() -> climbSubsystem.winchUp()));
     operatorController.button(6).onTrue(new InstantCommand(() -> climbSubsystem.winchOff()));*/
 
-    operatorController
-        .button(9)
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  armSubsystem.overrideLimits = !armSubsystem.overrideLimits;
-                }));
-
     // Manual Arm Controls
     operatorController
         .button(1)

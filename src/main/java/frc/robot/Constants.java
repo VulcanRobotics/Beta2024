@@ -34,7 +34,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   public static final Mode currentMode = Mode.REAL;
-  //public static final Mode currentMode = Mode.SIM;
+  // public static final Mode currentMode = Mode.SIM;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -128,6 +128,8 @@ public final class Constants {
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
     public static final double kArmPoseTrap = 85.0;
+
+    public static final double kArmPIDTolerance = 0.5;
 
     public static final double kCanCoderToArmMotorRatio =
         (10.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);

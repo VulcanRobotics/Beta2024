@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -12,17 +13,19 @@ public class ShooterSubsystem extends SubsystemBase {
   TalonFX leftMotor = new TalonFX(17, "rio");
   TalonFX rightMotor = new TalonFX(16, "rio");
 
+  private VelocityVoltage m_request = new VelocityVoltage(0);
+  private Follower m_follow = new Follower(17, false);
+
   CANSparkMax intakeMotor = new CANSparkMax(18, MotorType.kBrushless);
   CANSparkMax feederMotor = new CANSparkMax(19, MotorType.kBrushless);
 
-  private Follower m_follow = new Follower(17, false);
-
   public DigitalInput intakeSensor = new DigitalInput(0);
-
-  public float savedShootSpeed = (float) 1.0; // 1.0
   public boolean toggleShooter = false;
 
   public boolean upToSpeed;
+  public double savedShootSpeed = 1.0;
+
+  public ShooterSubsystem() {}
 
   public void SetFeeder(float speed) {
     feederMotor.set(-speed);
@@ -32,8 +35,14 @@ public class ShooterSubsystem extends SubsystemBase {
     intakeMotor.set(speed);
   }
 
-  public void SetShooter(float speed) {
+  public void SetShooter(double speed) {
     leftMotor.set(-speed);
+    rightMotor.setControl(m_follow);
+  }
+
+  public void setShooterVelocity(double velocity) {
+    m_request = m_request.withVelocity(velocity);
+    leftMotor.setControl(m_request);
     rightMotor.setControl(m_follow);
   }
 
@@ -52,7 +61,6 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     SmartDashboard.putBoolean("Shooter Toggle", toggleShooter);
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
-    SmartDashboard.putNumber("Shooter Speed", savedShootSpeed);
     SmartDashboard.putBoolean("Shooter up to speed", upToSpeed);
   }
 }

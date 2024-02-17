@@ -131,7 +131,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       // Create simulated camera properties. These can be set to mimic your actual camera.
       var cameraProp = new SimCameraProperties();
       // Limelight has horizontal FOV of 63.3 degrees
-      cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(120));
+      cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(140));
       cameraProp.setCalibError(0.35, 0.10);
       cameraProp.setFPS(15);
       cameraProp.setAvgLatencyMs(50);

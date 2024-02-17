@@ -10,6 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 
 public class SetArmPosition extends Command {
 
+  private double goalPosition;
   private ArmSubsystem armSubsystem;
   // Motion Magic is basically upgraded PID and motion profiling from Phoenix 6; PID values in
   // constants.
@@ -17,12 +18,6 @@ public class SetArmPosition extends Command {
   // This control request will allow the second motor on the arm to match the one that is guiding.
   private Follower m_follow =
       new Follower(ArmConstants.kGuideMotorPort, ArmConstants.kArm2Inverted);
-
-  // public SetArmPosition(ArmSubsystem armSubsystem, double targetPositionInRotation) {
-  //   addRequirements(armSubsystem);
-  //   this.armSubsystem = armSubsystem;
-  //   this.m_request = new MotionMagicVoltage(targetPositionInRotation);
-  // }
 
   public SetArmPosition(ArmSubsystem armSubsystem, double targetPositionInDegrees) {
     addRequirements(armSubsystem);
@@ -33,6 +28,7 @@ public class SetArmPosition extends Command {
     double targetPositionInRotation =
         targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
     this.m_request = new MotionMagicVoltage(targetPositionInRotation);
+    this.goalPosition = targetPositionInRotation;
   }
 
   @Override
@@ -43,7 +39,12 @@ public class SetArmPosition extends Command {
 
   @Override
   public boolean isFinished() {
-    return false; // Find a better condition for this to be finished.
+    double delta = goalPosition - armSubsystem.m_ArmMotor1.getPosition().getValueAsDouble();
+    if (Math.abs(delta) < ArmConstants.kArmPIDTolerance) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Override

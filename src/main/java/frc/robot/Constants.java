@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -32,8 +33,8 @@ import edu.wpi.first.math.numbers.N3;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final Mode currentMode = Mode.REAL;
-  // public static final Mode currentMode = Mode.SIM;
+  // public static final Mode currentMode = Mode.REAL;
+  public static final Mode currentMode = Mode.SIM;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -48,41 +49,49 @@ public final class Constants {
 
   public static class Vision {
     public static final String kCameraName = "FrontCam";
+    public static final String kCameraNameFL = "FrontLeftCam";
+    public static final String kCameraNameFR = "FrontRightCam";
+    public static final String kCameraNameBL = "BackLeftCam";
+    public static final String kCameraNameBR = "BackRightCam";
 
-    public static final String kFrontLeft = "FrontCam";
-    public static final String kFrontRight = "FrontCam";
-    public static final String kRearLeft = "FrontCam";
-    public static final String kRearRight = "FrontCam";
+    private static final double TRACK_WIDTH_X = Units.inchesToMeters(25.0);
+    private static final double TRACK_WIDTH_Y = Units.inchesToMeters(25.0);
+    private static final double PI = 3.1415926535;
+
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
     public static final Transform3d kRobotToCam =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, PI));
 
-    public static final Transform3d kFrontLeftToCam =
+    public static final Transform3d kRobotToCamFL =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+            new Translation3d(TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0, 0.3),
+            new Rotation3d(0, 0.3, PI / 4.0));
 
-    public static final Transform3d kFrontRightToCam =
+    public static final Transform3d kRobotToCamFR =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+            new Translation3d(TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0, 0.3),
+            new Rotation3d(0, 0.3, -PI / 4.0));
 
-    public static final Transform3d kRearLeftToCam =
+    public static final Transform3d kRobotToCamBL =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+            new Translation3d(-TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0, 0.3),
+            new Rotation3d(0, 0.3, 3.0 * PI / 4.0));
 
-    public static final Transform3d kRearRightToCam =
+    public static final Transform3d kRobotToCamBR =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, 3.1415926535));
+            new Translation3d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0, 0.3),
+            new Rotation3d(0, 0.3, -3.0 * PI / 4.0));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =

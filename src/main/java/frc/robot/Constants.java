@@ -69,14 +69,21 @@ public final class Constants {
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0, 0.3),
+            // new Translation3d(TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0, 0.3),
+            new Translation3d(
+                Units.inchesToMeters(10.0) / 2.0,
+                Units.inchesToMeters(10.0) / 2.0,
+                Units.inchesToMeters(8.0)),
             new Rotation3d(0, 0.3, PI / 4.0));
 
     public static final Transform3d kRobotToCamFR =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0, 0.3),
+            new Translation3d(
+                Units.inchesToMeters(10.0) / 2.0,
+                -Units.inchesToMeters(10.0) / 2.0,
+                Units.inchesToMeters(8.0)),
             new Rotation3d(0, 0.3, -PI / 4.0));
 
     public static final Transform3d kRobotToCamBL =

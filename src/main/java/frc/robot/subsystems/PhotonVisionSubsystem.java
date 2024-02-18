@@ -33,7 +33,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -131,7 +130,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       // Create simulated camera properties. These can be set to mimic your actual camera.
       var cameraProp = new SimCameraProperties();
       // Limelight has horizontal FOV of 63.3 degrees
-      cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(140));
+      cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(100));
       cameraProp.setCalibError(0.35, 0.10);
       cameraProp.setFPS(15);
       cameraProp.setAvgLatencyMs(50);
@@ -142,23 +141,23 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
       cameraSimFL = new PhotonCameraSim(cameraFL, cameraProp);
       cameraSimFR = new PhotonCameraSim(cameraFR, cameraProp);
-      cameraSimBL = new PhotonCameraSim(cameraBL, cameraProp);
-      cameraSimBR = new PhotonCameraSim(cameraBR, cameraProp);
+      // cameraSimBL = new PhotonCameraSim(cameraBL, cameraProp);
+      // cameraSimBR = new PhotonCameraSim(cameraBR, cameraProp);
 
       // Add the simulated camera to view the targets on this simulated field.
       visionSim.addCamera(cameraSim, kRobotToCam);
 
       visionSim.addCamera(cameraSimFL, kRobotToCamFL);
       visionSim.addCamera(cameraSimFR, kRobotToCamFR);
-      visionSim.addCamera(cameraSimBL, kRobotToCamBL);
-      visionSim.addCamera(cameraSimBR, kRobotToCamBR);
+      // visionSim.addCamera(cameraSimBL, kRobotToCamBL);
+      // visionSim.addCamera(cameraSimBR, kRobotToCamBR);
 
       cameraSim.enableDrawWireframe(true);
 
       cameraSimFL.enableDrawWireframe(true);
       cameraSimFR.enableDrawWireframe(true);
-      cameraSimBL.enableDrawWireframe(true);
-      cameraSimBR.enableDrawWireframe(true);
+      // cameraSimBL.enableDrawWireframe(true);
+      // cameraSimBR.enableDrawWireframe(true);
     }
   }
 
@@ -197,20 +196,19 @@ public class PhotonVisionSubsystem extends SubsystemBase {
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
     var visionEst = photonEstimator.update();
     // System.out.print("GetEstimatedGlobalPose()");
-    SmartDashboard.putBoolean("visionEst present:", visionEst.isPresent());
+    // SmartDashboard.putBoolean("visionEst present:", visionEst.isPresent());
 
     double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
     boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
     if (Robot.isSimulation()) {
-      // if (Constants.currentMode == Constants.Mode.SIM) {
-      visionEst.ifPresentOrElse(
-          est ->
-              getSimDebugField()
-                  .getObject("VisionEstimation")
-                  .setPose(est.estimatedPose.toPose2d()),
-          () -> {
-            if (newResult) getSimDebugField().getObject("VisionEstimation").setPoses();
-          });
+      /* visionEst.ifPresentOrElse(
+      est ->
+          getSimDebugField()
+              .getObject("VisionEstimation")
+              .setPose(est.estimatedPose.toPose2d()),
+      () -> {
+        if (newResult) getSimDebugField().getObject("VisionEstimation").setPoses();
+      }); */
     }
     if (newResult) lastEstTimestamp = latestTimestamp;
     return visionEst;
@@ -366,7 +364,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Correct pose estimate with vision measurements
-    // var visionEst = getEstimatedGlobalPose();
+    var visionEst = getEstimatedGlobalPose();
     var visionEstFL = getEstimatedGlobalPose(CameraPosition.FL);
     var visionEstFR = getEstimatedGlobalPose(CameraPosition.FR);
     var visionEstBL = getEstimatedGlobalPose(CameraPosition.BL);
@@ -392,6 +390,15 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       // SmartDashboard.putNumber("Vision pose Y:", estPose.getY());
       // debugField.getObject("EstimatedRobotModules").setPoses(drive.getModulePoses());
     }); */
+
+    visionEst.ifPresent(
+        est -> {
+          var estPose = est.estimatedPose.toPose2d();
+          Logger.recordOutput("Vision/estPoseBack", estPose);
+          var estStdDevs = getEstimationStdDevs(estPose);
+          drive.addVisionMeasurement(
+              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+        });
 
     visionEstFL.ifPresent(
         est -> {

@@ -146,7 +146,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Shoot", new RevCommand(shooterSubsystem, true).withTimeout(3));
 
-    NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
+    // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -243,7 +243,7 @@ public class RobotContainer {
     // Shooter and intake commands
     operatorController.button(8).whileTrue(new RevCommand(shooterSubsystem, false));
     operatorController.button(6).whileTrue(new ShootCommand(shooterSubsystem));
-    operatorController.button(6).onTrue(new ShootToggle(shooterSubsystem));
+    // operatorController.button(6).onTrue(new ShootToggle(shooterSubsystem));
     operatorController.button(7).whileTrue(new IntakeCommand(shooterSubsystem, false));
     operatorController.button(5).whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController

@@ -33,6 +33,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -223,12 +224,14 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     switch (camPos) {
       case FL:
         visionEst = photonEstimatorFL.update();
+        SmartDashboard.putBoolean("visionEst FL:", visionEst.isPresent());
         latestTimestamp = cameraFL.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampFL) > 1e-5;
         fieldObjectName = "VisionEstFL";
         break;
       case FR:
         visionEst = photonEstimatorFR.update();
+        SmartDashboard.putBoolean("visionEst FR:", visionEst.isPresent());
         latestTimestamp = cameraFR.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampFR) > 1e-5;
         fieldObjectName = "VisionEstFR";

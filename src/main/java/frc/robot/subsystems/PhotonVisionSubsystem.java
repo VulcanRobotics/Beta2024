@@ -33,6 +33,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -92,12 +94,19 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     drive = robotDrive;
 
     // Make sure that this is actually aligned with the correct alliance
-    if (false) {
-      kTagLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
-    } else {
-      kTagLayout.setOrigin(OriginPosition.kRedAllianceWallRightSide);
-    }
+    Optional<Alliance> ally = DriverStation.getAlliance();
 
+    if (ally.isPresent()) {
+      SmartDashboard.putString("Alliance Color", ally.get().toString());
+      if (ally.get() == Alliance.Red) {
+        kTagLayout.setOrigin(OriginPosition.kRedAllianceWallRightSide);
+      }
+      if (ally.get() == Alliance.Blue) {
+        kTagLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
+      }
+    } else {
+      SmartDashboard.putString("Alliance Working", "NO");
+    }
     camera = new PhotonCamera(kCameraName);
     cameraFL = new PhotonCamera(kCameraNameFL);
     cameraFR = new PhotonCamera(kCameraNameFR);
@@ -374,6 +383,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
     // Correct pose estimate with vision measurements
     var visionEst = getEstimatedGlobalPose();
     var visionEstFL = getEstimatedGlobalPose(CameraPosition.FL);

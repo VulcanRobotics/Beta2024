@@ -36,9 +36,6 @@ public final class Constants {
 
   public static final String name = "sdasdawdaw";
 
-  // Put this thing back in
-  // public static final String color = (DriverStation.getAlliance().get().toString());
-
   public static final Mode currentMode = Mode.REAL;
   // public static final Mode currentMode = Mode.SIM;
 

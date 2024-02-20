@@ -8,10 +8,11 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  TalonFX leftMotor = new TalonFX(17, "rio");
-  TalonFX rightMotor = new TalonFX(16, "rio");
+  public TalonFX leftMotor = new TalonFX(17, "rio");
+  public TalonFX rightMotor = new TalonFX(16, "rio");
 
   private VelocityVoltage m_request = new VelocityVoltage(0);
   private Follower m_follow = new Follower(17, false);
@@ -28,7 +29,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {}
 
   public void SetFeeder(float speed) {
-    feederMotor.set(-speed);
+    speed = (Constants.name == "Swift") ? speed : -speed;
+    feederMotor.set(speed);
   }
 
   public void SetIntake(float speed) {

@@ -33,6 +33,12 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final String name = "sdasdawdaw";
+
+  // Put this thing back in
+  // public static final String color = (DriverStation.getAlliance().get().toString());
+
   public static final Mode currentMode = Mode.REAL;
   // public static final Mode currentMode = Mode.SIM;
 
@@ -101,8 +107,8 @@ public final class Constants {
             new Rotation3d(0, 0.3, -3.0 * PI / 4.0));
 
     // The layout of the AprilTags on the field
-    public static final AprilTagFieldLayout kTagLayout =
-        AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+    public static AprilTagFieldLayout kTagLayout =
+        (AprilTagFields.kDefaultField.loadAprilTagLayoutField());
 
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
@@ -139,9 +145,13 @@ public final class Constants {
     public static final double kArmPIDTolerance = 0.5;
 
     public static final double kCanCoderToArmMotorRatio =
-        (10.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);
+        (Constants.name == "Swift")
+            ? (9.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0)
+            : (10.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);
 
-    public static final double kMotorEncoderToDegrees = 9.0 / 8.0;
-    public static final double kCanCoderZeroPosition = 0.695;
+    public static final double kMotorEncoderToDegrees =
+        (Constants.name == "Swift") ? (5.0 / 4.0) : (9.0 / 8.0);
+
+    public static final double kCanCoderZeroPosition = (Constants.name == "Swift") ? 0.340 : 0.695;
   }
 }

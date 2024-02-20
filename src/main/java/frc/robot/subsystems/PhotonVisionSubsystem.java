@@ -26,6 +26,7 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.Vision.*;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -89,6 +90,13 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
   public PhotonVisionSubsystem(Drive robotDrive) {
     drive = robotDrive;
+
+    // Make sure that this is actually aligned with the correct alliance
+    if (false) {
+      kTagLayout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
+    } else {
+      kTagLayout.setOrigin(OriginPosition.kRedAllianceWallRightSide);
+    }
 
     camera = new PhotonCamera(kCameraName);
     cameraFL = new PhotonCamera(kCameraNameFL);

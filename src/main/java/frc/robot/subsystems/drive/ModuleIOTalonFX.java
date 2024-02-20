@@ -25,6 +25,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.Constants;
 import java.util.Queue;
 
 /**
@@ -74,21 +75,29 @@ public class ModuleIOTalonFX implements ModuleIO {
         cancoder = new CANcoder(35, "DriveSubsystemCANivore");
         absoluteEncoderOffset =
             Rotation2d.fromDegrees(
-                108.465 + 180); // 108.465 + 180 - heather // -78.17 + 180 - swift
+                (Constants.name == "Swift")
+                    ? 101.8
+                    : 108.465 + 180); // 108.465 + 180 - heather // -78.17 + 180 - swift
         break;
       case 1:
         driveTalon = new TalonFX(22, "DriveSubsystemCANivore");
         turnTalon = new TalonFX(26, "DriveSubsystemCANivore");
         cancoder = new CANcoder(36, "DriveSubsystemCANivore");
         absoluteEncoderOffset = //
-            Rotation2d.fromDegrees(63.382 + 180); // 63.382 + 180 - heather // 60.07 + 180 - swift
+            Rotation2d.fromDegrees(
+                (Constants.name == "Swift")
+                    ? 53.7 + 180
+                    : 63.382 + 180); // 63.382 + 180 - heather // 60.07 + 180 - swift
         break;
       case 2:
         driveTalon = new TalonFX(23, "DriveSubsystemCANivore");
         turnTalon = new TalonFX(27, "DriveSubsystemCANivore");
         cancoder = new CANcoder(37, "DriveSubsystemCANivore");
         absoluteEncoderOffset = //
-            Rotation2d.fromDegrees(147.763); // 147.763 - heather // -6.71 - swift
+            Rotation2d.fromDegrees(
+                (Constants.name == "Swift")
+                    ? -141.3
+                    : 147.763); // 147.763 - heather // -6.71 - swift
         break;
       case 3:
         driveTalon = new TalonFX(24, "DriveSubsystemCANivore");
@@ -96,7 +105,9 @@ public class ModuleIOTalonFX implements ModuleIO {
         cancoder = new CANcoder(38, "DriveSubsystemCANivore");
         absoluteEncoderOffset =
             Rotation2d.fromDegrees(
-                114.783 + 180); // 114.783 + 180 - heather // -147.61 + 180 - swift
+                (Constants.name == "Swift")
+                    ? -11.1 + 180
+                    : 114.783 + 180); // 114.783 + 180 - heather // -147.61 + 180 - swift
         break;
       default:
         throw new RuntimeException("Invalid module index");

@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ArmConstants;
@@ -146,6 +147,7 @@ public class RobotContainer {
         "ArmToIntake", new SetArmPosition(armSubsystem, 0).withTimeout(2));
 
     NamedCommands.registerCommand("Shoot", new RevCommand(shooterSubsystem, true).withTimeout(3));
+    NamedCommands.registerCommand("RevShoot", new ParallelCommandGroup(new RevCommand(shooterSubsystem, false), new ShootCommand(shooterSubsystem)));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 

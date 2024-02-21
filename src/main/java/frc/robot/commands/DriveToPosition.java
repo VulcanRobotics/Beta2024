@@ -13,8 +13,8 @@ import frc.robot.subsystems.drive.Drive;
 
 public class DriveToPosition extends Command {
 
-  private final double AnglePIDValues[] = {4.0, 0.0, 0.2};
-  private final double DrivePIDValues[] = {2.0, 0.0, 0.1};
+  private final double AnglePIDValues[] = {0.5, 0.0, 0.0};
+  private final double DrivePIDValues[] = {1.0, 0.0, 0.1};
 
   private PIDController xController =
       new PIDController(DrivePIDValues[0], DrivePIDValues[1], DrivePIDValues[2]);
@@ -25,7 +25,7 @@ public class DriveToPosition extends Command {
           AnglePIDValues[0],
           AnglePIDValues[1],
           AnglePIDValues[2],
-          new Constraints(Drive.MAX_LINEAR_SPEED, Drive.MAX_ANGULAR_SPEED)); // Fix this
+          new Constraints(Drive.MAX_ANGULAR_SPEED, Drive.MAX_ANGULAR_SPEED)); // Fix this
 
   private final Drive swerveDriveSubsystem;
   private Pose2d targetPoseSupplier;

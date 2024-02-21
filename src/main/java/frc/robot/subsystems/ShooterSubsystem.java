@@ -29,6 +29,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem() {
     var slot0Configs = new Slot0Configs();
+    // These values need to be tuned
     slot0Configs.kV = 0.12;
     slot0Configs.kP = 0.01;
     slot0Configs.kI = 0.00;

@@ -116,7 +116,7 @@ public final class Constants {
 
     public static final int kPhotogatePort = 0;
 
-    public static final double kShooterTargetVelocity = 80.0; //RPS
+    public static final double kShooterTargetVelocity = 80.0; // RPS
   }
 
   public final class ArmConstants {

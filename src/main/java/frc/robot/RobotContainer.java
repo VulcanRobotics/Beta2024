@@ -146,8 +146,13 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "ArmToIntake", new SetArmPosition(armSubsystem, 0).withTimeout(2));
 
-    NamedCommands.registerCommand("Shoot", new RevCommand(shooterSubsystem, true).withTimeout(3));
-    NamedCommands.registerCommand("RevShoot", new ParallelCommandGroup(new RevCommand(shooterSubsystem, false), new ShootCommand(shooterSubsystem)));
+    NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem, true).withTimeout(3));
+    NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem).withTimeout(3));
+    NamedCommands.registerCommand(
+        "RevShoot",
+        new ParallelCommandGroup(
+                new RevCommand(shooterSubsystem, false), new ShootCommand(shooterSubsystem))
+            .withTimeout(3));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 

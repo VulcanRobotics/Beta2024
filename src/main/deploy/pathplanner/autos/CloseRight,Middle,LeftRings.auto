@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38,
-      "y": 5.525538222372742
+      "x": 1.3049320691338013,
+      "y": 5.556226330149289
     },
     "rotation": 0
   },
@@ -20,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootToggle"
+            "name": "RevShoot"
           }
         },
         {
@@ -51,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "RevShoot"
           }
         },
         {
@@ -82,7 +82,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "RevShoot"
           }
         },
         {
@@ -113,13 +113,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootToggle"
+            "name": "RevShoot"
           }
         }
       ]

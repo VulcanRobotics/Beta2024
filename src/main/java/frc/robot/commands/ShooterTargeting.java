@@ -26,6 +26,7 @@ public class ShooterTargeting {
   }
 
   public static Rotation2d calculateShootingAngle(Drive drive) {
+
     return new Rotation2d(0);
   }
 }

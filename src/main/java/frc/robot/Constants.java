@@ -13,8 +13,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -34,7 +32,7 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static final String name = "sdasdawdaw";
+  public static final String name = "Swift";
 
   public static final Mode currentMode = Mode.REAL;
   // public static final Mode currentMode = Mode.SIM;
@@ -103,14 +101,22 @@ public final class Constants {
             new Translation3d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0, 0.3),
             new Rotation3d(0, 0.3, -3.0 * PI / 4.0));
 
-    // The layout of the AprilTags on the field
-    public static AprilTagFieldLayout kTagLayout =
-        (AprilTagFields.kDefaultField.loadAprilTagLayoutField());
-
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+  }
+
+  public final class ShooterConstants {
+    public static final int kGuideMotorPort = 17;
+    public static final int kFollowMotorPort = 16;
+
+    public static final int kIntakeMotor = 18;
+    public static final int kFeederMotor = 19;
+
+    public static final int kPhotogatePort = 0;
+
+    public static final double kShooterTargetVelocity = 80.0; //RPS
   }
 
   public final class ArmConstants {

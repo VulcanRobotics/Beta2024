@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -9,24 +10,32 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  public TalonFX leftMotor = new TalonFX(17, "rio");
-  public TalonFX rightMotor = new TalonFX(16, "rio");
+  public TalonFX leftMotor = new TalonFX(ShooterConstants.kGuideMotorPort, "rio");
+  public TalonFX rightMotor = new TalonFX(ShooterConstants.kFollowMotorPort, "rio");
 
   private VelocityVoltage m_request = new VelocityVoltage(0);
-  private Follower m_follow = new Follower(17, false);
+  private Follower m_follow = new Follower(ShooterConstants.kGuideMotorPort, false);
 
-  CANSparkMax intakeMotor = new CANSparkMax(18, MotorType.kBrushless);
-  CANSparkMax feederMotor = new CANSparkMax(19, MotorType.kBrushless);
+  CANSparkMax intakeMotor = new CANSparkMax(ShooterConstants.kIntakeMotor, MotorType.kBrushless);
+  CANSparkMax feederMotor = new CANSparkMax(ShooterConstants.kFeederMotor, MotorType.kBrushless);
 
-  public DigitalInput intakeSensor = new DigitalInput(0);
+  public DigitalInput intakeSensor = new DigitalInput(ShooterConstants.kPhotogatePort);
   public boolean toggleShooter = false;
-
+  public double savedShootSpeed = ShooterConstants.kShooterTargetVelocity; // 1.0
   public boolean upToSpeed;
-  public double savedShootSpeed = 1.0;
 
-  public ShooterSubsystem() {}
+  public ShooterSubsystem() {
+    var slot0Configs = new Slot0Configs();
+    slot0Configs.kV = 0.12;
+    slot0Configs.kP = 0.01;
+    slot0Configs.kI = 0.00;
+    slot0Configs.kD = 0.00;
+    leftMotor.getConfigurator().apply(slot0Configs, 0.050);
+    rightMotor.getConfigurator().apply(slot0Configs, 0.050);
+  }
 
   public void SetFeeder(float speed) {
     speed = (Constants.name == "Swift") ? speed : -speed;
@@ -43,7 +52,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterVelocity(double velocity) {
-    m_request = m_request.withVelocity(velocity);
+    m_request.Slot = 0;
+    m_request = m_request.withVelocity(-velocity);
     leftMotor.setControl(m_request);
     rightMotor.setControl(m_follow);
   }

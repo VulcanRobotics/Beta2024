@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-  public final DigitalInput motor12LowerLimitSwitch = new DigitalInput(6);
-  public final DigitalInput motor12UpperLimitSwitch = new DigitalInput(7);
-  public final DigitalInput motor11LowerLimitSwitch = new DigitalInput(8);
-  public final DigitalInput motor11UpperLimitSwitch = new DigitalInput(9);
+  public final DigitalInput motor12LowerLimitSwitch = new DigitalInput(3);
+  public final DigitalInput motor12UpperLimitSwitch = new DigitalInput(5);
+  public final DigitalInput motor11LowerLimitSwitch = new DigitalInput(4);
+  public final DigitalInput motor11UpperLimitSwitch = new DigitalInput(6);
 
   public final TalonFX m_WinchMotorRight = new TalonFX(12, "rio");
   public final TalonFX m_WinchMotorLeft = new TalonFX(11, "rio");
@@ -30,10 +30,22 @@ public class ClimbSubsystem extends SubsystemBase {
     m_WinchMotorRight.setNeutralMode(NeutralModeValue.Brake);
   }
 
-  public void setWinchSpeed(double speed) {
+  public void setRightWinchSpeed(double speed) {
+    if (!winchEnabled) {
+      m_WinchMotorRight.set(0);
+      m_WinchMotorLeft.set(0);
+      return;
+    }
 
-    double leftSpeed = speed;
-    double rightSpeed = speed;
+    if ((speed < 0.0 && !motor12LowerLimitSwitch.get())
+        || (speed > 0.0 && !motor12UpperLimitSwitch.get())) {
+      speed = 0;
+    }
+
+    m_WinchMotorRight.set(speed);
+  }
+
+  public void setLeftWinchSpeed(double speed) {
 
     if (!winchEnabled) {
       m_WinchMotorRight.set(0);
@@ -43,16 +55,10 @@ public class ClimbSubsystem extends SubsystemBase {
 
     if ((speed < 0.0 && !motor11LowerLimitSwitch.get())
         || (speed > 0.0 && !motor11UpperLimitSwitch.get())) {
-      leftSpeed = 0;
+      speed = 0;
     }
 
-    if ((speed < 0.0 && !motor12LowerLimitSwitch.get())
-        || (speed > 0.0 && !motor12UpperLimitSwitch.get())) {
-      rightSpeed = 0;
-    }
-
-    m_WinchMotorRight.set(rightSpeed);
-    m_WinchMotorLeft.set(-leftSpeed);
+    m_WinchMotorLeft.set(-speed);
   }
 
   public void setWinchVelocity(double velocity) {
@@ -92,9 +98,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void periodic() {
     SmartDashboard.putBoolean("Winch Enabled", winchEnabled);
-    SmartDashboard.putBoolean("Motor 11 Upper Limit (9)", motor11UpperLimitSwitch.get());
-    SmartDashboard.putBoolean("Motor 11 Lower Limit (8)", motor11LowerLimitSwitch.get());
-    SmartDashboard.putBoolean("Motor 12 Lower Limit (6)", motor12LowerLimitSwitch.get());
-    SmartDashboard.putBoolean("Motor 12 Upper Limit (7)", motor12UpperLimitSwitch.get());
+    SmartDashboard.putBoolean("4", motor11UpperLimitSwitch.get());
+    SmartDashboard.putBoolean("6", motor11LowerLimitSwitch.get());
+    SmartDashboard.putBoolean("3", motor12LowerLimitSwitch.get());
+    SmartDashboard.putBoolean("5", motor12UpperLimitSwitch.get());
   }
 }

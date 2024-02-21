@@ -23,7 +23,7 @@ public class ShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooterSubsystem.upToSpeed) {
+    if (true) { //Make this conditional on whether the shooter is up to speed
       shooterSubsystem.SetFeeder(feedSpeed);
     }
   }

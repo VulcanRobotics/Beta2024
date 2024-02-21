@@ -213,13 +213,16 @@ public class RobotContainer {
         WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()));
 
     climbSubsystem.setDefaultCommand(
-        ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getRawAxis(3)));
+        ClimbCommands.winchDrive(
+            climbSubsystem,
+            () -> operatorController.getRawAxis(3),
+            operatorController.povUp(),
+            operatorController.povDown()));
     // new InstantCommand(() -> climbSubsystem.setWinchSpeed(operatorController.getRightX())));
     // ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getYaw());
 
     /*operatorController.povRight().onTrue(new InstantCommand(() -> climbSubsystem.winchDown()));
-    operatorController.povLeft().onTrue(new InstantCommand(() -> climbSubsystem.winchUp()));
-    operatorController.button(6).onTrue(new InstantCommand(() -> climbSubsystem.winchOff()));*/
+    operatorController.povLeft().onTrue(new InstantCommand(() -> climbSubsystem.winchUp()));*/
 
     // Manual Arm Controls
     operatorController

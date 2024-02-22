@@ -210,10 +210,13 @@ public class RobotContainer {
                     },
                     drive)
                 .ignoringDisable(true));
+    driverController.a().whileTrue(new DriveToPosition(drive, drive::calcPose2d));
     driverController
-        .a()
-        .whileTrue(
-            new DriveToPosition(drive, new Pose2d(new Translation2d(0, 0), new Rotation2d(0.0))));
+        .b()
+        .onTrue(
+            Commands.runOnce(
+                () -> drive.setPose(new Pose2d(new Translation2d(0, 0), new Rotation2d(0))),
+                drive));
     // Operator
 
     armSubsystem.setDefaultCommand(
@@ -251,7 +254,12 @@ public class RobotContainer {
     operatorController.button(3).onTrue(new LockWinchCommand(climbSubsystem));
 
     // Shooter and intake commands
-    operatorController.button(8).whileTrue(new RevCommand(shooterSubsystem, false));
+    operatorController
+        .button(8)
+        .whileTrue(
+            new ParallelCommandGroup(
+                new RevCommand(shooterSubsystem, false),
+                new ShootCommand(shooterSubsystem))); // new RevCommand(shooterSubsystem, false));
     operatorController.button(6).whileTrue(new ShootCommand(shooterSubsystem));
     // operatorController.button(6).onTrue(new ShootToggle(shooterSubsystem));
     operatorController.button(7).whileTrue(new IntakeCommand(shooterSubsystem, false));

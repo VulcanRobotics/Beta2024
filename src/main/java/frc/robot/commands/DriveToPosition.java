@@ -8,6 +8,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.Drive;
+import java.util.function.Supplier;
 
 // DO NOT USE THIS COMMAND RIGHT NOW!!!DO NOT USE!!
 
@@ -28,9 +29,9 @@ public class DriveToPosition extends Command {
           new Constraints(Drive.MAX_ANGULAR_SPEED, Drive.MAX_ANGULAR_SPEED)); // Fix this
 
   private final Drive swerveDriveSubsystem;
-  private Pose2d targetPoseSupplier;
+  private Supplier<Pose2d> targetPoseSupplier;
 
-  public DriveToPosition(Drive swerveDriveSubsystem, Pose2d targetPoseSupplier) {
+  public DriveToPosition(Drive swerveDriveSubsystem, Supplier<Pose2d> targetPoseSupplier) {
     this.swerveDriveSubsystem = swerveDriveSubsystem;
     this.targetPoseSupplier = targetPoseSupplier;
     mAngleController.setTolerance(Math.toRadians(0.25));
@@ -54,7 +55,7 @@ public class DriveToPosition extends Command {
   @Override
   public void execute() {
     Pose2d robotPose = swerveDriveSubsystem.getPose();
-    Pose2d targetPose = targetPoseSupplier;
+    Pose2d targetPose = targetPoseSupplier.get();
 
     xController.setSetpoint(targetPose.getX());
     yController.setSetpoint(targetPose.getY());

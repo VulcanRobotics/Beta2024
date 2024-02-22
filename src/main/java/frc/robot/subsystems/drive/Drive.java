@@ -227,6 +227,7 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("Odometry X", poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("calculated angle", calcPose2d().getRotation().getDegrees());
   }
 
   /**
@@ -306,9 +307,21 @@ public class Drive extends SubsystemBase {
     return poseEstimator.getEstimatedPosition();
   }
 
+  public Translation2d getTranslation() {
+    return poseEstimator.getEstimatedPosition().getTranslation();
+  }
+
   /** Returns the current odometry rotation. */
   public Rotation2d getRotation() {
     return getPose().getRotation();
+  }
+
+  public Pose2d calcPose2d() {
+    Translation2d goal = new Translation2d(0, 0);
+    goal = goal.minus(getPose().getTranslation());
+    SmartDashboard.putNumber("x pose", goal.getX());
+    double angle = Math.atan(goal.getY() / goal.getX());
+    return new Pose2d(getPose().getTranslation(), new Rotation2d(angle));
   }
 
   public void zeroGyro() {

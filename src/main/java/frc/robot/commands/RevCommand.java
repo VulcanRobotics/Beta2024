@@ -30,7 +30,8 @@ public class RevCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSubsystem.setShooterVelocity(shooterSubsystem.savedShootSpeed);
+    shooterSubsystem.setShooterVelocity(
+        shooterSubsystem.savedShootSpeed); // shooterSubsystem.savedShootSpeed);
     if (shooterSubsystem.getAverageShootSpeed() >= shootSpeed) {
       shooterSubsystem.upToSpeed = true;
     }
@@ -38,7 +39,7 @@ public class RevCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.SetShooter(0.05);
+    shooterSubsystem.SetShooter(0);
     shooterSubsystem.upToSpeed = false;
     super.end(interrupted);
   }

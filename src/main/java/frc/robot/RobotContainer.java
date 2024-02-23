@@ -210,7 +210,7 @@ public class RobotContainer {
                     },
                     drive)
                 .ignoringDisable(true));
-    driverController.a().whileTrue(new DriveToPosition(drive, drive::calcPose2d));
+    driverController.a().whileTrue(new DriveToPosition(drive, drive::calculateShootingPose));
     driverController
         .b()
         .onTrue(

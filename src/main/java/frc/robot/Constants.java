@@ -116,7 +116,7 @@ public final class Constants {
 
     public static final int kPhotogatePort = 0;
 
-    public static final double kShooterTargetVelocity = 80.0; // RPS
+    public static final double kShooterTargetVelocity = 100.0; // RPS
   }
 
   public final class ArmConstants {
@@ -155,6 +155,6 @@ public final class Constants {
     public static final double kMotorEncoderToDegrees =
         (Constants.name == "Swift") ? (5.0 / 4.0) : (9.0 / 8.0);
 
-    public static final double kCanCoderZeroPosition = (Constants.name == "Swift") ? 0.340 : 0.695;
+    public static final double kCanCoderZeroPosition = (Constants.name == "Swift") ? 0.340 : 0.690;
   }
 }

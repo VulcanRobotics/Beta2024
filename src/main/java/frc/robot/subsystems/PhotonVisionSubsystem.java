@@ -99,7 +99,6 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     drive = robotDrive;
 
     Optional<Alliance> ally = DriverStation.getAlliance();
-
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
         kTagLayout.setOrigin(OriginPosition.kRedAllianceWallRightSide);

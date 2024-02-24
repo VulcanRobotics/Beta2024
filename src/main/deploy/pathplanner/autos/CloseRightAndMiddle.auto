@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ToCloseLeftRing"
+                  "pathName": "CloseLeftRingAlt"
                 }
               },
               {
@@ -70,38 +70,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Back To Speaker"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RevShoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CloseRightNote"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Back To Speaker"
+            "pathName": "LeftRingToSpeaker"
           }
         },
         {

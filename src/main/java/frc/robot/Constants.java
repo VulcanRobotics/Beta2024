@@ -15,8 +15,11 @@ package frc.robot;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -64,7 +67,7 @@ public final class Constants {
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, -0.349, PI));
+            new Translation3d(0.089, -0.254, 0.3048), new Rotation3d(0, 0.349, 0));
 
     public static final Transform3d kRobotToCamFL =
         new Transform3d(
@@ -155,6 +158,12 @@ public final class Constants {
     public static final double kMotorEncoderToDegrees =
         (Constants.name == "Swift") ? (5.0 / 4.0) : (9.0 / 8.0);
 
-    public static final double kCanCoderZeroPosition = (Constants.name == "Swift") ? 0.340 : 0.690;
+    public static final double kCanCoderZeroPosition = (Constants.name == "Swift") ? 0.340 : 0.701;
+  }
+
+  public static class FieldConstants {
+    public static final Translation2d kSpeakerTargetPose = new Translation2d(0.3, 5.6);
+    public static final Pose2d kSpeakerPose =
+        new Pose2d(new Translation2d(1.1, 5.8), new Rotation2d(0));
   }
 }

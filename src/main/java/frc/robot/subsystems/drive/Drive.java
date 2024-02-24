@@ -41,6 +41,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -316,10 +317,11 @@ public class Drive extends SubsystemBase {
   }
 
   public Pose2d calculateShootingPose() {
-    Translation2d goal = new Translation2d(0, 0);
-    goal = goal.minus(getPose().getTranslation());
+    Translation2d goal = Constants.FieldConstants.kSpeakerTargetPose; // Speaker position
+    Translation2d currentTranslation = getPose().getTranslation();
+    goal = goal.minus(currentTranslation);
     double angle = Math.atan(goal.getY() / goal.getX());
-    return new Pose2d(getPose().getTranslation(), new Rotation2d(angle));
+    return new Pose2d(currentTranslation, new Rotation2d(angle));
   }
 
   public void zeroGyro() {
@@ -338,11 +340,11 @@ public class Drive extends SubsystemBase {
    * @param timestamp The timestamp of the vision measurement in seconds.
    */
   public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
-    poseEstimator.addVisionMeasurement(visionPose, timestamp);
+    // poseEstimator.addVisionMeasurement(visionPose, timestamp);
   }
 
   public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> estStdDevs) {
-    poseEstimator.addVisionMeasurement(visionPose, timestamp, estStdDevs);
+    // poseEstimator.addVisionMeasurement(visionPose, timestamp, estStdDevs);
     m_field.getObject("vision estimate").setPose(visionPose);
     SmartDashboard.putNumber("Vision pose X:", visionPose.getX());
     SmartDashboard.putNumber("Vision pose Y:", visionPose.getY());

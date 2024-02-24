@@ -17,7 +17,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,13 +24,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.*;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.subsystems.PhotonVisionSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 // import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -152,14 +147,14 @@ public class RobotContainer {
         "RevShoot",
         new ParallelCommandGroup(
                 new RevCommand(shooterSubsystem, false), new ShootCommand(shooterSubsystem))
-            .withTimeout(3));
+            .withTimeout(2.5));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
     // Set up SysId routines
-    autoChooser.addOption(
+    /* autoChooser.addOption(
         "Drive SysId (Quasistatic Forward)",
         drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
@@ -178,7 +173,7 @@ public class RobotContainer {
     autoChooser.addOption(
         "Flywheel SysId (Dynamic Forward)", flywheel.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
-        "Flywheel SysId (Dynamic Reverse)", flywheel.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        "Flywheel SysId (Dynamic Reverse)", flywheel.sysIdDynamic(SysIdRoutine.Direction.kReverse)); */
 
     // Configure the button bindings
     configureButtonBindings();
@@ -211,12 +206,9 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
     driverController.a().whileTrue(new DriveToPosition(drive, drive::calculateShootingPose));
-    driverController
-        .b()
-        .onTrue(
-            Commands.runOnce(
-                () -> drive.setPose(new Pose2d(new Translation2d(0, 0), new Rotation2d(0))),
-                drive));
+    /* driverController
+    .b()
+    .whileTrue(new DriveToPosition(drive, () -> Constants.FieldConstants.kSpeakerPose)); */
     // Operator
 
     armSubsystem.setDefaultCommand(

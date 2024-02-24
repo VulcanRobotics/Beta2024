@@ -10,12 +10,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.Supplier;
 
-// DO NOT USE THIS COMMAND RIGHT NOW!!!DO NOT USE!!
-
 public class DriveToPosition extends Command {
 
   private final double AnglePIDValues[] = {0.5, 0.0, 0.0};
-  private final double DrivePIDValues[] = {1.0, 0.0, 0.1};
+  private final double DrivePIDValues[] = {1.2, 0.0, 0.1};
 
   private PIDController xController =
       new PIDController(DrivePIDValues[0], DrivePIDValues[1], DrivePIDValues[2]);
@@ -46,7 +44,7 @@ public class DriveToPosition extends Command {
     xController.reset();
     yController.reset();
 
-    xController.setTolerance(Units.inchesToMeters(2.0));
+    xController.setTolerance(Units.inchesToMeters(0.5));
     yController.setTolerance(Units.inchesToMeters(0.5));
 
     atX = atY = atTheta = false;
@@ -93,8 +91,8 @@ public class DriveToPosition extends Command {
 
   @Override
   public boolean isFinished() {
-
-    return xController.atSetpoint() && yController.atSetpoint() && mAngleController.atSetpoint();
+    return false;
+    // return xController.atSetpoint() && yController.atSetpoint() && mAngleController.atSetpoint();
   }
 
   @Override

@@ -316,13 +316,6 @@ public class Drive extends SubsystemBase {
     return getPose().getRotation();
   }
 
-  public Pose2d calculateShootingPose() {
-    Translation2d goal = Constants.FieldConstants.kSpeakerTargetPose; // Speaker position
-    Translation2d currentTranslation = getPose().getTranslation();
-    goal = goal.minus(currentTranslation);
-    double angle = Math.atan(goal.getY() / goal.getX());
-    return new Pose2d(currentTranslation, new Rotation2d(angle));
-  }
 
   public void zeroGyro() {
     gyroIO.zeroGyro();

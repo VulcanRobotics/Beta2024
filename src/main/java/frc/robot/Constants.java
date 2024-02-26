@@ -162,7 +162,7 @@ public final class Constants {
   }
 
   public static class FieldConstants {
-    public static final Translation2d kSpeakerTargetPose = new Translation2d(0.3, 5.6);
+    public static final Translation2d kSpeakerTargetPose = new Translation2d(-1.0, 0.0);//new Translation2d(0.3, 5.6);
     public static final Pose2d kSpeakerPose =
         new Pose2d(new Translation2d(1.1, 5.8), new Rotation2d(0));
   }

@@ -17,6 +17,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -205,10 +206,11 @@ public class RobotContainer {
                     },
                     drive)
                 .ignoringDisable(true));
-    driverController.a().whileTrue(new DriveToPosition(drive, drive::calculateShootingPose));
-    /* driverController
+    driverController.a().whileTrue(ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
+    driverController
     .b()
-    .whileTrue(new DriveToPosition(drive, () -> Constants.FieldConstants.kSpeakerPose)); */
+    .onTrue(
+        Commands.runOnce(() -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(0.0))), drive));
     // Operator
 
     armSubsystem.setDefaultCommand(

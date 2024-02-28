@@ -25,7 +25,7 @@ public class ShootCommand extends Command {
   public void execute() {
     if (shooterSubsystem.getAverageShootSpeed()
         > (shooterSubsystem.savedShootSpeed
-            - 5.0)) { // Make this conditional on whether the shooter is up to speed
+            - 20.0)) { // Make this conditional on whether the shooter is up to speed
       shooterSubsystem.SetFeeder(feedSpeed);
     }
   }

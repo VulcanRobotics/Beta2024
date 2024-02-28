@@ -9,8 +9,7 @@
   ],
   "autoFolders": [
     "Advanced Short Autons",
-    "Simple Autons",
-    "SimpleShoot&Leave"
+    "Simple Autons"
   ],
   "defaultMaxVel": 2.0,
   "defaultMaxAccel": 1.5,

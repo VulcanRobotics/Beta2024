@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.*;
@@ -149,20 +151,28 @@ public class RobotContainer {
         "ArmToIntake", new SetArmPosition(armSubsystem, () -> 0).withTimeout(2));
 
     NamedCommands.registerCommand(
+        "ArmToAmp", new SetArmPosition(armSubsystem, () -> 90).withTimeout(2));
+
+    NamedCommands.registerCommand(
         "AutoTargetShoot",
-        ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3));
+        new SequentialCommandGroup(
+            new IntakeCommand(shooterSubsystem, false),
+            ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3)));
 
     NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem, true).withTimeout(3));
     NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem).withTimeout(3));
     NamedCommands.registerCommand(
         "RevShoot",
-        new ParallelCommandGroup(
-                new RevCommand(shooterSubsystem, false), new ShootCommand(shooterSubsystem))
-            .withTimeout(2.5));
+        new SequentialCommandGroup(
+            new IntakeCommand(shooterSubsystem, false),
+            new ParallelDeadlineGroup(
+                new ShootCommand(shooterSubsystem), new RevCommand(shooterSubsystem, false))));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+    // SmartDashboard.putString("AutoCHOOSES", AutoBuilder.getAllAutoNames().toString());
 
     // Set up SysId routines
     /* autoChooser.addOption(

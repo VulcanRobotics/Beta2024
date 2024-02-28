@@ -2,44 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3049320691338013,
-      "y": 5.556226330149289
+      "x": 0.6684623091468408,
+      "y": 6.644933748200829
     },
-    "rotation": 0
+    "rotation": 61.126981519355404
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "RevShoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CloseMiddleRing"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Back To Speaker"
+            "pathName": "SL^A"
           }
         },
         {
@@ -55,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CloseLeftRingAlt"
+                  "pathName": "A^L"
                 }
               },
               {
@@ -63,14 +38,33 @@
                 "data": {
                   "name": "Intake"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmToIntake"
+                }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftRingToSpeaker"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Back To Amp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmToAmp"
+                }
+              }
+            ]
           }
         },
         {
@@ -82,6 +76,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Advanced Short Autons",
   "choreoAuto": false
 }

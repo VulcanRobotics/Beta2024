@@ -121,7 +121,8 @@ public final class Constants {
 
     public static final int kPhotogatePort = 0;
 
-    public static final double kShooterTargetVelocity = 100.0; // RPS
+    public static final double kShooterTargetVelocity =
+        100; // RPS, was 100, but feeder wouldn't spin sometimes
   }
 
   public final class ArmConstants {

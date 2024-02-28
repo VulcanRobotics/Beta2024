@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3049320691338013,
-      "y": 5.556226330149289
+      "x": 1.3725925246794313,
+      "y": 5.554193612600709
     },
     "rotation": 0
   },
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoTargetShoot"
+            "name": "RevShoot"
           }
         },
         {
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CloseMiddleRing"
+                  "pathName": "C_StraightAndBack"
                 }
               },
               {
@@ -45,7 +45,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoTargetShoot"
+            "name": "RevShoot"
           }
         },
         {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ToCloseLeftRing"
+                  "pathName": "SC^L"
                 }
               },
               {
@@ -76,7 +76,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoTargetShoot"
+            "name": "RevShoot"
           }
         },
         {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CloseRightNote"
+                  "pathName": "SC^R"
                 }
               },
               {
@@ -107,7 +107,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoTargetShoot"
+            "name": "RevShoot"
           }
         }
       ]

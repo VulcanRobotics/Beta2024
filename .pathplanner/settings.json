@@ -4,13 +4,16 @@
   "holonomicMode": true,
   "pathFolders": [
     "BasicPaths",
-    "RingPaths"
+    "Advanced Short Paths",
+    "StraightAndBack"
   ],
   "autoFolders": [
-    "TestAutons"
+    "Advanced Short Autons",
+    "Simple Autons",
+    "SimpleShoot&Leave"
   ],
-  "defaultMaxVel": 5.0,
-  "defaultMaxAccel": 5.0,
+  "defaultMaxVel": 2.0,
+  "defaultMaxAccel": 1.5,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 4.5

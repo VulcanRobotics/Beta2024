@@ -20,6 +20,7 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -50,8 +51,9 @@ import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
   public static final double MAX_LINEAR_SPEED = Units.feetToMeters(14.5);
-  private static final double TRACK_WIDTH_X = Units.inchesToMeters(25.0);
-  private static final double TRACK_WIDTH_Y = Units.inchesToMeters(25.0);
+  // public static final double MAX_AUTO_SPEED = Units.feetToMeters(7.0);
+  private static final double TRACK_WIDTH_X = Units.inchesToMeters(24.625);
+  private static final double TRACK_WIDTH_Y = Units.inchesToMeters(24.625);
   private static final double DRIVE_BASE_RADIUS =
       Math.hypot(TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0);
   public static final double MAX_ANGULAR_SPEED = MAX_LINEAR_SPEED / DRIVE_BASE_RADIUS;
@@ -316,7 +318,6 @@ public class Drive extends SubsystemBase {
     return getPose().getRotation();
   }
 
-
   public void zeroGyro() {
     gyroIO.zeroGyro();
   }
@@ -334,6 +335,28 @@ public class Drive extends SubsystemBase {
    */
   public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
     // poseEstimator.addVisionMeasurement(visionPose, timestamp);
+  }
+
+  // SHOOTING STUFF, maybe move eventually
+  public double getArmShootingAngle() {
+    Pose2d current = getPose();
+    Translation2d difference =
+        Constants.FieldConstants.kSpeakerTargetPose.minus(current.getTranslation());
+    double distance = Math.sqrt(Math.pow(difference.getX(), 2) + Math.pow(difference.getY(), 2));
+    // SmartDashboard.putNumber("Tjhing", distance);
+    double armDegrees = -1.5 + 21.0 * Math.log(distance);
+    armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
+    // SmartDashboard.putNumber("Desired Arm Angle", armDegrees);
+    return armDegrees;
+  }
+
+  public Pose2d calculateShootingPose() {
+    Pose2d current = getPose();
+    Translation2d goal = Constants.FieldConstants.kSpeakerTargetPose; // Speaker position
+    Translation2d currentTranslation = current.getTranslation();
+    goal = goal.minus(currentTranslation);
+    double angle = Math.atan(goal.getY() / goal.getX());
+    return new Pose2d(currentTranslation, new Rotation2d(angle));
   }
 
   public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> estStdDevs) {

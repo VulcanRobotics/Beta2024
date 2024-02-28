@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import java.util.function.DoubleSupplier;
 
 public class SetArmPosition extends Command {
 
   private double goalPosition;
+  private DoubleSupplier supplier;
   private ArmSubsystem armSubsystem;
   // Motion Magic is basically upgraded PID and motion profiling from Phoenix 6; PID values in
   // constants.
@@ -19,9 +21,11 @@ public class SetArmPosition extends Command {
   private Follower m_follow =
       new Follower(ArmConstants.kGuideMotorPort, ArmConstants.kArm2Inverted);
 
-  public SetArmPosition(ArmSubsystem armSubsystem, double targetPositionInDegrees) {
+  public SetArmPosition(ArmSubsystem armSubsystem, DoubleSupplier doubleSupplier) {
     addRequirements(armSubsystem);
     this.armSubsystem = armSubsystem;
+    this.supplier = doubleSupplier;
+    double targetPositionInDegrees = doubleSupplier.getAsDouble();
 
     targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
 
@@ -33,6 +37,13 @@ public class SetArmPosition extends Command {
 
   @Override
   public void execute() {
+    double targetPositionInDegrees = supplier.getAsDouble();
+    targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
+    double targetPositionInRotation =
+        targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
+    this.m_request = m_request.withPosition(targetPositionInRotation);
+    this.goalPosition = targetPositionInRotation;
+
     armSubsystem.m_ArmMotor1.setControl(m_request);
     armSubsystem.m_ArmMotor2.setControl(m_follow);
   }

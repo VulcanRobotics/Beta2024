@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -34,7 +33,6 @@ public class ClimbCommands {
           }
 
           // speed *= speed;
-          SmartDashboard.putNumber("Climb right speed", rightSpeed);
           climbSubsystem.setRightWinchSpeed(MathUtil.clamp(-rightSpeed, -1.0, 1.0));
           climbSubsystem.setLeftWinchSpeed(leftSpeed);
         },

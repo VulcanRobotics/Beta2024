@@ -41,7 +41,6 @@ import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -64,8 +63,8 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-  private final LoggedDashboardNumber flywheelSpeedInput =
-      new LoggedDashboardNumber("Flywheel Speed", 1500.0);
+  // private final LoggedDashboardNumber flywheelSpeedInput =
+  //  new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -130,17 +129,28 @@ public class RobotContainer {
     }
 
     // Set up auto routines
-    NamedCommands.registerCommand(
-        "Run Flywheel",
-        Commands.startEnd(
-                () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
-            .withTimeout(5.0));
+    /*NamedCommands.registerCommand(
+    "Run Flywheel",
+    Commands.startEnd(
+            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
+        .withTimeout(5.0)); */
+
+    NamedCommands.registerCommand("Intake", new IntakeCommand(shooterSubsystem, false));
 
     NamedCommands.registerCommand(
-        "Intake", new IntakeCommand(shooterSubsystem, false).withTimeout(3));
+        "RampShooter",
+        Commands.runOnce(
+            () ->
+                shooterSubsystem.setShooterVelocity(
+                    Constants.ShooterConstants.kShooterTargetVelocity),
+            shooterSubsystem));
 
     NamedCommands.registerCommand(
-        "ArmToIntake", new SetArmPosition(armSubsystem, 0).withTimeout(2));
+        "ArmToIntake", new SetArmPosition(armSubsystem, () -> 0).withTimeout(2));
+
+    NamedCommands.registerCommand(
+        "AutoTargetShoot",
+        ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3));
 
     NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem, true).withTimeout(3));
     NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem).withTimeout(3));
@@ -206,11 +216,15 @@ public class RobotContainer {
                     },
                     drive)
                 .ignoringDisable(true));
-    driverController.a().whileTrue(ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
     driverController
-    .b()
-    .onTrue(
-        Commands.runOnce(() -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(0.0))), drive));
+        .a()
+        .whileTrue(ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
+    driverController
+        .b()
+        .onTrue(
+            Commands.runOnce(
+                () -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(0.0))),
+                drive));
     // Operator
 
     armSubsystem.setDefaultCommand(
@@ -219,7 +233,7 @@ public class RobotContainer {
     climbSubsystem.setDefaultCommand(
         ClimbCommands.winchDrive(
             climbSubsystem,
-            () -> operatorController.getRawAxis(3),
+            () -> operatorController.getRightY(),
             operatorController.povUp(),
             operatorController.povDown()));
     // new InstantCommand(() -> climbSubsystem.setWinchSpeed(operatorController.getRightX())));
@@ -230,34 +244,34 @@ public class RobotContainer {
 
     // Manual Arm Controls
     operatorController
-        .button(1)
-        .whileTrue(new SetArmPosition(armSubsystem, ArmConstants.kArmPoseIntake));
+        .x()
+        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseIntake));
     operatorController
-        .button(2)
-        .whileTrue(new SetArmPosition(armSubsystem, ArmConstants.kArmPoseTrap));
+        .a()
+        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseTrap));
 
     // Reset arm guide motor encoder to 0 rotations
-    operatorController
-        .button(10)
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  armSubsystem.calibrateTalonEncoder();
-                }));
+    /*operatorController
+    .button(10)
+    .onTrue(
+        new InstantCommand(
+            () -> {
+              armSubsystem.calibrateTalonEncoder();
+            })); */
 
-    operatorController.button(3).onTrue(new LockWinchCommand(climbSubsystem));
+    operatorController.b().onTrue(new LockWinchCommand(climbSubsystem));
 
     // Shooter and intake commands
     operatorController
-        .button(8)
+        .rightTrigger()
         .whileTrue(
             new ParallelCommandGroup(
                 new RevCommand(shooterSubsystem, false),
                 new ShootCommand(shooterSubsystem))); // new RevCommand(shooterSubsystem, false));
-    operatorController.button(6).whileTrue(new ShootCommand(shooterSubsystem));
+    // operatorController.button(6).whileTrue(new ShootCommand(shooterSubsystem));
     // operatorController.button(6).onTrue(new ShootToggle(shooterSubsystem));
-    operatorController.button(7).whileTrue(new IntakeCommand(shooterSubsystem, false));
-    operatorController.button(5).whileTrue(new DispenseCommand(shooterSubsystem));
+    operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem, false));
+    operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController
         .povDown()
         .onTrue(

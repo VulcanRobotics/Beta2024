@@ -39,7 +39,7 @@ public class RevCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.SetShooter(0);
+    shooterSubsystem.SetShooter(0.0);
     shooterSubsystem.upToSpeed = false;
     super.end(interrupted);
   }

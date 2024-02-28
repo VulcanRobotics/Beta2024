@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3049320691338013,
-      "y": 5.556226330149289
+      "x": 0.6675715434764204,
+      "y": 4.439873023264566
     },
-    "rotation": 0
+    "rotation": -57.90669610176425
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "ArmToIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -24,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CloseMiddleRing"
+                  "pathName": "SR^R^SC"
                 }
               },
               {
@@ -37,15 +43,9 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Back To Speaker"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "ToCloseLeftRing"
+                  "pathName": "C_StraightAndBack"
                 }
               },
               {
@@ -68,51 +68,14 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Back To Speaker"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "RevShoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CloseRightNote"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Back To Speaker"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RevShoot"
+            "name": "AutoTargetShoot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Advanced Short Autons",
   "choreoAuto": false
 }

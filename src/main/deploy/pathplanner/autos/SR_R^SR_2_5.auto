@@ -2,15 +2,21 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3725925246794313,
-      "y": 5.554193612600709
+      "x": 0.6993421857214087,
+      "y": 4.423720472440945
     },
-    "rotation": 0
+    "rotation": -55.33348361720637
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmToIntake"
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -24,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "StraightAndBack"
+                  "pathName": "Copy of R_StraightAndBack"
                 }
               },
               {
@@ -39,12 +45,12 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "AutoTargetShoot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Simple Autons",
   "choreoAuto": false
 }

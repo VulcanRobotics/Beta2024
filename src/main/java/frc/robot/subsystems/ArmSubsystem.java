@@ -99,7 +99,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void periodic() {
     SmartDashboard.putNumber("Arm Encoder", m_ArmEncoder.getPosition().getValueAsDouble());
-    SmartDashboard.putNumber("Adjusted Encoder Value", getArmEncoder());
-    SmartDashboard.putString("Brake Mode", m_ArmMotor1.getConfigurator().toString());
+    SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());
   }
 }

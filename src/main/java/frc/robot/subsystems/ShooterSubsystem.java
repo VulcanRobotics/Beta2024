@@ -74,7 +74,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     SmartDashboard.putBoolean("Shooter Toggle", toggleShooter);
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
-    SmartDashboard.putNumber("m1 velocity", leftMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putBoolean("Shooter up to speed", upToSpeed);
+    // SmartDashboard.putNumber("m1 velocity", leftMotor.getVelocity().getValueAsDouble());
+    SmartDashboard.putBoolean("Shooter up to Speed", upToSpeed);
   }
 }

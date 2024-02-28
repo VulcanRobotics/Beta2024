@@ -5,7 +5,7 @@
       "x": 1.3049320691338013,
       "y": 5.556226330149289
     },
-    "rotation": 0.149044337425896
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ArmToIntake"
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -45,13 +39,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CloseMiddleRingToSpeaker"
+            "pathName": "Back To Speaker"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -61,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CloseMiddleRing +far"
+                  "pathName": "ToCloseLeftRing"
                 }
               },
               {
@@ -76,18 +70,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CloseMiddleRingToSpeaker"
+            "pathName": "Back To Speaker"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CloseRightNote"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Back To Speaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Advanced Short Autons",
   "choreoAuto": false
 }

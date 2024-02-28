@@ -75,34 +75,36 @@ public final class Constants {
             // robot).
             // new Translation3d(TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0, 0.3),
             new Translation3d(
-                Units.inchesToMeters(10.0) / 2.0,
-                Units.inchesToMeters(10.0) / 2.0,
-                Units.inchesToMeters(8.0)),
-            new Rotation3d(0, 0.3, PI / 4.0));
+                Units.inchesToMeters(10.5), Units.inchesToMeters(10.5), Units.inchesToMeters(8.0)),
+            new Rotation3d(0, Math.toRadians(16), PI / 4.0));
 
     public static final Transform3d kRobotToCamFR =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
             new Translation3d(
-                Units.inchesToMeters(10.0) / 2.0,
-                -Units.inchesToMeters(10.0) / 2.0,
-                Units.inchesToMeters(8.0)),
-            new Rotation3d(0, 0.3, -PI / 4.0));
+                Units.inchesToMeters(10.5), -Units.inchesToMeters(10.5), Units.inchesToMeters(8.0)),
+            new Rotation3d(0, Math.toRadians(16), -PI / 4.0));
 
     public static final Transform3d kRobotToCamBL =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(-TRACK_WIDTH_X / 2.0, TRACK_WIDTH_Y / 2.0, 0.3),
-            new Rotation3d(0, 0.3, 3.0 * PI / 4.0));
+            new Translation3d(
+                -Units.inchesToMeters(12.5),
+                Units.inchesToMeters(12.5),
+                Units.inchesToMeters(11.5)),
+            new Rotation3d(0, Math.toRadians(16), 3.0 * PI / 4.0));
 
     public static final Transform3d kRobotToCamBR =
         new Transform3d(
             // Camera faces back and titled up (yaw 180 and negative pitch from perspective of
             // robot).
-            new Translation3d(-TRACK_WIDTH_X / 2.0, -TRACK_WIDTH_Y / 2.0, 0.3),
-            new Rotation3d(0, 0.3, -3.0 * PI / 4.0));
+            new Translation3d(
+                -Units.inchesToMeters(12.5),
+                -Units.inchesToMeters(12.5),
+                Units.inchesToMeters(11.5)),
+            new Rotation3d(0, Math.toRadians(16), -3.0 * PI / 4.0));
 
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
@@ -162,7 +164,8 @@ public final class Constants {
   }
 
   public static class FieldConstants {
-    public static final Translation2d kSpeakerTargetPose = new Translation2d(-1.0, 0.0);//new Translation2d(0.3, 5.6);
+    public static final Translation2d kSpeakerTargetPose =
+        new Translation2d(0.3, 5.6); // new Translation2d(-1.0, 0.0);
     public static final Pose2d kSpeakerPose =
         new Pose2d(new Translation2d(1.1, 5.8), new Rotation2d(0));
   }

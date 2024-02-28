@@ -5,7 +5,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbSubsystem extends SubsystemBase {
@@ -22,6 +21,8 @@ public class ClimbSubsystem extends SubsystemBase {
   public final Servo m_WinchLeftServo = new Servo(1);
 
   private VelocityVoltage m_request = new VelocityVoltage(0);
+  private double rightLimitMotor = m_WinchMotorRight.getPosition().getValueAsDouble() + 767.0239;
+  private double leftLimitMotor = m_WinchMotorLeft.getPosition().getValueAsDouble() - 748.43;
 
   public boolean winchEnabled = true;
 
@@ -37,8 +38,12 @@ public class ClimbSubsystem extends SubsystemBase {
       return;
     }
 
-    if ((speed < 0.0 && !motor12LowerLimitSwitch.get())
-        || (speed > 0.0 && !motor12UpperLimitSwitch.get())) {
+    if (speed < 0.0 && !motor12LowerLimitSwitch.get()) {
+      speed = 0;
+      rightLimitMotor = m_WinchMotorRight.getPosition().getValueAsDouble() + 767.0239;
+    }
+
+    if (m_WinchMotorRight.getPosition().getValueAsDouble() > rightLimitMotor && speed > 0.0) {
       speed = 0;
     }
 
@@ -53,8 +58,12 @@ public class ClimbSubsystem extends SubsystemBase {
       return;
     }
 
-    if ((speed < 0.0 && !motor11LowerLimitSwitch.get())
-        || (speed > 0.0 && !motor11UpperLimitSwitch.get())) {
+    if ((speed < 0.0 && !motor11LowerLimitSwitch.get())) {
+      speed = 0;
+      leftLimitMotor = m_WinchMotorLeft.getPosition().getValueAsDouble() - 748.43;
+    }
+
+    if (m_WinchMotorLeft.getPosition().getValueAsDouble() < leftLimitMotor && speed > 0.0) {
       speed = 0;
     }
 
@@ -97,10 +106,14 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
-    SmartDashboard.putBoolean("Winch Enabled", winchEnabled);
-    SmartDashboard.putBoolean("4", motor11UpperLimitSwitch.get());
-    SmartDashboard.putBoolean("6", motor11LowerLimitSwitch.get());
-    SmartDashboard.putBoolean("3", motor12LowerLimitSwitch.get());
-    SmartDashboard.putBoolean("5", motor12UpperLimitSwitch.get());
+    // SmartDashboard.putBoolean("Winch Enabled", winchEnabled);
+    // SmartDashboard.putBoolean("4", motor11UpperLimitSwitch.get());
+    // SmartDashboard.putBoolean("6", motor11LowerLimitSwitch.get());
+    // SmartDashboard.putBoolean("3", motor12LowerLimitSwitch.get());
+    // SmartDashboard.putBoolean("5", motor12UpperLimitSwitch.get());
+
+    // SmartDashboard.putNumber("LeftClimbValue",
+    // m_WinchMotorLeft.getPosition().getValueAsDouble());
+    // SmartDashboard.putNumber("LeftLimitValue", leftLimitMotor);
   }
 }

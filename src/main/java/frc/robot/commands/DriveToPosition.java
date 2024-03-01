@@ -61,10 +61,10 @@ public class DriveToPosition extends Command {
     xController.setSetpoint(targetPose.getX());
     yController.setSetpoint(targetPose.getY());
     mAngleController.setGoal(
-        (DriverStation.getAlliance().isPresent()
-                && DriverStation.getAlliance().get() == Alliance.Red)
-            ? targetPose.getRotation().getRadians() + Math.PI
-            : targetPose.getRotation().getRadians());
+        /*(DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red)
+        ? targetPose.getRotation().getRadians() + Math.PI
+        : */ targetPose.getRotation().getRadians());
 
     // Drive to the target
     var xSpeed = xController.calculate(robotPose.getX());

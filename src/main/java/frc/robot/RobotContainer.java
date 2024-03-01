@@ -157,6 +157,7 @@ public class RobotContainer {
         "AutoTargetShoot",
         new SequentialCommandGroup(
             new IntakeCommand(shooterSubsystem, false),
+            new InstantCommand(() -> drive.zeroGyro()),
             ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3)));
 
     NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem, true).withTimeout(3));
@@ -235,6 +236,9 @@ public class RobotContainer {
             Commands.runOnce(
                 () -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(0.0))),
                 drive));
+
+    driverController.povUp().onTrue(new InstantCommand(() -> ArmConstants.kVariable += 0.1));
+    driverController.povDown().onTrue(new InstantCommand(() -> ArmConstants.kVariable -= 0.1));
     // Operator
 
     armSubsystem.setDefaultCommand(

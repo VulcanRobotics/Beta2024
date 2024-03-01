@@ -12,15 +12,10 @@ public class ShooterTargeting {
 
   public static Command shootAtTarget(Drive drive, ShooterSubsystem shooter, ArmSubsystem arm) {
     return new ParallelDeadlineGroup(
-        new ShootCommand(shooter),
+        /// new ShootCommand(shooter),
         new DriveToPosition(drive, drive::calculateShootingPose),
-        new SetArmPosition(arm, drive::getArmShootingAngle),
-        new RevCommand(shooter, false));
-
-    /*return new ParallelCommandGroup(
-    new DriveToPosition(drive, drive::calculateShootingPose),
-    new SetArmPosition(arm, drive::getArmShootingAngle),
-    new RevCommand(shooter, false),
-    new ShootCommand(shooter));*/
+        new SetArmPosition(arm, drive::getArmShootingAngle)
+        // new RevCommand(shooter, false)
+        );
   }
 }

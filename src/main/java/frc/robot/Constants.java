@@ -24,6 +24,8 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -35,6 +37,10 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+  public static final boolean isRed =
+      (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red)
+          ? true
+          : false;
   public static final String name = "Swift";
 
   public static final Mode currentMode = Mode.REAL;
@@ -130,6 +136,8 @@ public final class Constants {
     public static final int kGuideMotorPort = 15;
     public static final int kFollowMotorPort = 14;
 
+    public static double kVariable = 1.0;
+
     public static final double kArmKP = 0.5;
     public static final double kArmKI = 0.0;
     public static final double kArmKD = 0.05;
@@ -138,7 +146,7 @@ public final class Constants {
     public static final double kArmKV = 0.12;
     public static final double kArmKA = 0.01;
 
-    public static final double kArmTargetVelocity = 100; // 300 Rotations per second
+    public static final double kArmTargetVelocity = 60; // 300 Rotations per second
     public static final double kArmTargetAcceleration = 500; // rps/s
     public static final double kArmTargetJerk = 1600; // rps/s/s
 
@@ -154,19 +162,18 @@ public final class Constants {
     public static final double kArmPIDTolerance = 0.5;
 
     public static final double kCanCoderToArmMotorRatio =
-        (Constants.name == "Swift")
-            ? (9.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0)
-            : (10.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);
+        (9.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);
 
-    public static final double kMotorEncoderToDegrees =
-        (Constants.name == "Swift") ? (5.0 / 4.0) : (9.0 / 8.0);
+    public static final double kMotorEncoderToDegrees = (5.0 / 4.0); // * kVariable; // * kVariable
 
-    public static final double kCanCoderZeroPosition = (Constants.name == "Swift") ? 0.340 : 0.701;
+    public static final double kCanCoderZeroPosition =
+        0.607; // was -0.380 at cyber // this constant is cooked ngl
   }
 
   public static class FieldConstants {
+
     public static final Translation2d kSpeakerTargetPose =
-        new Translation2d(0.3, 5.6); // new Translation2d(-1.0, 0.0);
+        (isRed) ? new Translation2d(16.1, 5.6) : new Translation2d(0.3, 5.6);
     public static final Pose2d kSpeakerPose =
         new Pose2d(new Translation2d(1.1, 5.8), new Rotation2d(0));
   }

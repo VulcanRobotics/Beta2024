@@ -3,9 +3,12 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.Supplier;
@@ -57,7 +60,11 @@ public class DriveToPosition extends Command {
 
     xController.setSetpoint(targetPose.getX());
     yController.setSetpoint(targetPose.getY());
-    mAngleController.setGoal(targetPose.getRotation().getRadians());
+    mAngleController.setGoal(
+        (DriverStation.getAlliance().isPresent()
+                && DriverStation.getAlliance().get() == Alliance.Red)
+            ? targetPose.getRotation().getRadians() + Math.PI
+            : targetPose.getRotation().getRadians());
 
     // Drive to the target
     var xSpeed = xController.calculate(robotPose.getX());
@@ -65,7 +72,12 @@ public class DriveToPosition extends Command {
 
     var thetaSpeed =
         mAngleController.calculate(
-            robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
+            robotPose.getRotation().getRadians(),
+            targetPose.getRotation().getRadians()
+                + (DriverStation.getAlliance().isPresent()
+                        && DriverStation.getAlliance().get() == Alliance.Red
+                    ? Math.PI
+                    : 0.0));
 
     if (xController.atSetpoint() || atX) {
       xSpeed = 0;
@@ -81,12 +93,18 @@ public class DriveToPosition extends Command {
       thetaSpeed = 0;
     }
 
+    boolean isFlipped =
+        DriverStation.getAlliance().isPresent()
+            && DriverStation.getAlliance().get() == Alliance.Red;
+
     swerveDriveSubsystem.runVelocity(
         ChassisSpeeds.fromFieldRelativeSpeeds(
             xSpeed * swerveDriveSubsystem.getMaxLinearSpeedMetersPerSec(),
             ySpeed * swerveDriveSubsystem.getMaxLinearSpeedMetersPerSec(),
             thetaSpeed * swerveDriveSubsystem.getMaxAngularSpeedRadPerSec(),
-            swerveDriveSubsystem.getRotation()));
+            (isFlipped)
+                ? swerveDriveSubsystem.getRotation().plus(new Rotation2d(Math.PI))
+                : swerveDriveSubsystem.getRotation()));
   }
 
   @Override

@@ -42,7 +42,7 @@ public class ArmSubsystem extends SubsystemBase {
     motionMagicConfigs.MotionMagicAcceleration =
         ArmConstants.kArmTargetAcceleration; // Target acceleration of 160 rps/s (0.5 seconds)
     motionMagicConfigs.MotionMagicJerk =
-        ArmConstants.kArmTargetJerk; // Target jerk of 1600 rps/s/s (0.1 seconds)
+        ArmConstants.kArmTargetJerk; // Target jerk of 1600 rps/s/s (0.1 seconds
 
     m_ArmMotor1.getConfigurator().apply(talonFXConfigs);
     m_ArmMotor2.getConfigurator().apply(talonFXConfigs);
@@ -76,7 +76,7 @@ public class ArmSubsystem extends SubsystemBase {
   // This method ensures that the the Talon's 'zero' position is equivalent to its intake state
   public void calibrateTalonEncoder() {
     double delta =
-        ArmConstants.kCanCoderZeroPosition - m_ArmEncoder.getPosition().getValueAsDouble();
+        ArmConstants.kCanCoderZeroPosition - m_ArmEncoder.getAbsolutePosition().getValueAsDouble();
     m_ArmMotor1.setPosition(delta * ArmConstants.kCanCoderToArmMotorRatio);
   }
 
@@ -93,12 +93,12 @@ public class ArmSubsystem extends SubsystemBase {
     } else if (getArmEncoder() > topLimit && speed > 0) { // getArmEncoder() + 1f >= 77 && speed > 0
       return 0;
     }
-
     return (speed);
   }
 
   public void periodic() {
-    SmartDashboard.putNumber("Arm Encoder", m_ArmEncoder.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("Arm Encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
+    SmartDashboard.putNumber("Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());
   }
 }

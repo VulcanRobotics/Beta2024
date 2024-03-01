@@ -25,6 +25,8 @@ public class SetArmPosition extends Command {
     addRequirements(armSubsystem);
     this.armSubsystem = armSubsystem;
     this.supplier = doubleSupplier;
+
+    // The following might be redundant code
     double targetPositionInDegrees = doubleSupplier.getAsDouble();
 
     targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);

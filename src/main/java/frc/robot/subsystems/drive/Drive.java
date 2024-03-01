@@ -44,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.util.LocalADStarAK;
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -65,6 +66,7 @@ public class Drive extends SubsystemBase {
   private final SysIdRoutine sysId;
 
   private Field2d m_field = new Field2d();
+  private Alliance allianceColor;
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
   private Rotation2d rawGyroRotation = new Rotation2d();
@@ -118,6 +120,16 @@ public class Drive extends SubsystemBase {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
+
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+        this.allianceColor = Alliance.Red;
+      }
+      if (ally.get() == Alliance.Blue) {
+        this.allianceColor = Alliance.Blue;
+      }
+    }
 
     // Configure SysId
     sysId =
@@ -230,6 +242,16 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("Odometry X", poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
+
+    Boolean redVar;
+
+    if (DriverStation.getAlliance().get() == Alliance.Red) {
+      redVar = true;
+    } else {
+      redVar = false;
+    }
+
+    SmartDashboard.putBoolean("Alliance Red?", redVar);
   }
 
   /**
@@ -343,19 +365,30 @@ public class Drive extends SubsystemBase {
     Translation2d difference =
         Constants.FieldConstants.kSpeakerTargetPose.minus(current.getTranslation());
     double distance = Math.sqrt(Math.pow(difference.getX(), 2) + Math.pow(difference.getY(), 2));
-    // SmartDashboard.putNumber("Tjhing", distance);
     double armDegrees = -1.5 + 21.0 * Math.log(distance);
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
-    // SmartDashboard.putNumber("Desired Arm Angle", armDegrees);
     return armDegrees;
   }
 
+  // Here is the reason the shooter targeting was not working at Cyber: pathplanner apparently
+  // always uses absolute position, not relative
+  // If it were do use field coordinates relative to each side, the previous code would work.
+  // However because it does not, the angle output
+  // of this funtion MUST be negated when it is on the red side; this is because our x pos will
+  // always be lower then that of the speaker,
+  // returning a negative value for the "adjacent" side of the tangent function. On blue, that value
+  // will always be positive. The y-value doesn't
+  // really matter because it can be either positive or negative on both sides. But to account for
+  // the extra negative on red side, we must negate
+  // the angle.
   public Pose2d calculateShootingPose() {
     Pose2d current = getPose();
     Translation2d goal = Constants.FieldConstants.kSpeakerTargetPose; // Speaker position
     Translation2d currentTranslation = current.getTranslation();
-    goal = goal.minus(currentTranslation);
+    goal = currentTranslation.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());
+    // angle = (allianceColor == Alliance.Blue) ? angle : -angle;
+    SmartDashboard.putNumber("Goal Angle", angle);
     return new Pose2d(currentTranslation, new Rotation2d(angle));
   }
 

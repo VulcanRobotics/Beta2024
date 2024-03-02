@@ -14,8 +14,14 @@ public class ShooterTargeting {
     return new ParallelDeadlineGroup(
         /// new ShootCommand(shooter),
         new DriveToPosition(drive, drive::calculateShootingPose),
+        new SetArmPosition(arm, drive::getArmShootingAngle),
+        new RevCommand(shooter, false));
+    /*    `
+    return new SequentialCommandGroup(
+      new ParallelCommandGroup(
+        new DriveToPosition(drive, drive::calculateShootingPose),
         new SetArmPosition(arm, drive::getArmShootingAngle)
-        // new RevCommand(shooter, false)
-        );
+      ).asProxy()
+    );*/
   }
 }

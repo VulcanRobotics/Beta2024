@@ -132,7 +132,7 @@ public final class Constants {
 
     public static double kVariable = 1.0;
 
-    public static final double kArmKP = 0.5;
+    public static final double kArmKP = 0.6;
     public static final double kArmKI = 0.0;
     public static final double kArmKD = 0.05;
 
@@ -152,8 +152,9 @@ public final class Constants {
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
     public static final double kArmPoseTrap = 85.0;
+    public static final double kArmPoseSource = 63.8;
 
-    public static final double kArmPIDTolerance = 0.5;
+    public static final double kArmPIDTolerance = 0.1;
 
     public static final double kCanCoderToArmMotorRatio =
         (9.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);
@@ -161,7 +162,7 @@ public final class Constants {
     public static final double kMotorEncoderToDegrees = (5.0 / 4.0); // * kVariable; // * kVariable
 
     public static final double kCanCoderZeroPosition =
-        0.607; // was -0.380 at cyber // this constant is cooked ngl
+        0.615; // was -0.380 at cyber // this constant is cooked ngl
   }
 
   public static class FieldConstants {

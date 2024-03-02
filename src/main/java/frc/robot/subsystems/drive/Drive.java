@@ -250,7 +250,7 @@ public class Drive extends SubsystemBase {
     } else {
       redVar = false;
     }
-
+    Logger.recordOutput("Alliance", redVar);
     SmartDashboard.putBoolean("Alliance Red?", redVar);
   }
 

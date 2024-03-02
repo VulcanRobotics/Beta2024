@@ -164,9 +164,10 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "RevShoot",
         new SequentialCommandGroup(
-            new IntakeCommand(shooterSubsystem, false),
-            new ParallelDeadlineGroup(
-                new ShootCommand(shooterSubsystem), new RevCommand(shooterSubsystem, false))));
+                new IntakeCommand(shooterSubsystem, false),
+                new ParallelDeadlineGroup(
+                    new ShootCommand(shooterSubsystem), new RevCommand(shooterSubsystem, false)))
+            .withTimeout(3.0));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
@@ -262,6 +263,9 @@ public class RobotContainer {
     operatorController
         .a()
         .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseTrap));
+    operatorController
+        .y()
+        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseSource));
 
     // Reset arm guide motor encoder to 0 rotations
     /*operatorController

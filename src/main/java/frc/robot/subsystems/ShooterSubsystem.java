@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,6 +16,7 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
   public TalonFX leftMotor = new TalonFX(ShooterConstants.kGuideMotorPort, "rio");
   public TalonFX rightMotor = new TalonFX(ShooterConstants.kFollowMotorPort, "rio");
+  public Spark lights = new Spark(9);
 
   private VelocityVoltage m_request = new VelocityVoltage(0);
   private Follower m_follow = new Follower(ShooterConstants.kGuideMotorPort, false);
@@ -23,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax feederMotor = new CANSparkMax(ShooterConstants.kFeederMotor, MotorType.kBrushless);
 
   public DigitalInput intakeSensor = new DigitalInput(ShooterConstants.kPhotogatePort);
-  public boolean toggleShooter = false;
+
   public double savedShootSpeed = ShooterConstants.kShooterTargetVelocity; // 1.0
   public boolean upToSpeed;
 
@@ -66,13 +68,21 @@ public class ShooterSubsystem extends SubsystemBase {
     return -avgSpeed;
   }
 
+  public void setLED(double color) {
+    lights.set(color);
+  }
+
+  @Override
   public void periodic() {
 
-    if (toggleShooter == true) {
-      leftMotor.set(-1);
-      rightMotor.set(-1);
+    if (intakeSensor.get()) {
+      setLED(-0.07);
+    } else if (intakeMotor.get() != 0) {
+      setLED(-0.25);
+    } else {
+      setLED(0.87);
     }
-    SmartDashboard.putBoolean("Shooter Toggle", toggleShooter);
+
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
     // SmartDashboard.putNumber("m1 velocity", leftMotor.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Shooter up to Speed", upToSpeed);

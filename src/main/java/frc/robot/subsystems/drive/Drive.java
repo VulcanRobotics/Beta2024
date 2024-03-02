@@ -356,7 +356,7 @@ public class Drive extends SubsystemBase {
    * @param timestamp The timestamp of the vision measurement in seconds.
    */
   public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
-    // poseEstimator.addVisionMeasurement(visionPose, timestamp);
+    poseEstimator.addVisionMeasurement(visionPose, timestamp);
   }
 
   // SHOOTING STUFF, maybe move eventually
@@ -396,7 +396,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> estStdDevs) {
-    // poseEstimator.addVisionMeasurement(visionPose, timestamp, estStdDevs);
+    poseEstimator.addVisionMeasurement(visionPose, timestamp, estStdDevs);
     m_field.getObject("vision estimate").setPose(visionPose);
     SmartDashboard.putNumber("Vision pose X:", visionPose.getX());
     SmartDashboard.putNumber("Vision pose Y:", visionPose.getY());

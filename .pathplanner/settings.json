@@ -9,6 +9,7 @@
   ],
   "autoFolders": [
     "Advanced Short Autons",
+    "Advanced Long Autons",
     "Simple Autons"
   ],
   "defaultMaxVel": 1.0,

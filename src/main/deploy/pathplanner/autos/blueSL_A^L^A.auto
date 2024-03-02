@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ArmToAmp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "SL^A"
@@ -21,6 +27,12 @@
           "type": "named",
           "data": {
             "name": "RevShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmToIntake"
           }
         },
         {
@@ -37,12 +49,6 @@
                 "type": "named",
                 "data": {
                   "name": "Intake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ArmToIntake"
                 }
               }
             ]

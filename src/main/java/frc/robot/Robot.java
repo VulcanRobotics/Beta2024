@@ -56,7 +56,7 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("GitDirty", "Unknown");
         break;
     }
- 
+
     // Set up data receivers & replay source
     switch (Constants.currentMode) {
       case REAL:

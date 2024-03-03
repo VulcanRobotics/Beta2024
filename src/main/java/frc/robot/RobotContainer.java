@@ -147,6 +147,10 @@ public class RobotContainer {
             shooterSubsystem));
 
     NamedCommands.registerCommand(
+        "KillShooter",
+        Commands.runOnce(() -> shooterSubsystem.setShooterVelocity(0.0), shooterSubsystem));
+
+    NamedCommands.registerCommand(
         "ArmToIntake", new SetArmPosition(armSubsystem, () -> 0).withTimeout(2));
 
     NamedCommands.registerCommand(

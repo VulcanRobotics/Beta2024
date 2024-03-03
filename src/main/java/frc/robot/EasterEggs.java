@@ -7,6 +7,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.FieldConstants.FieldLocations;
 import frc.robot.subsystems.drive.Drive;
@@ -54,5 +55,14 @@ public class EasterEggs {
     PathPlannerPath path =
         new PathPlannerPath(river, new PathConstraints(10, 10, 2 * Math.PI, 4 * Math.PI), goal);
     return AutoBuilder.followPath(path);
+  }
+
+  public static Command WaterWalkPath(Pose2d targetPose) {
+    targetPose = new Pose2d(10, 5, Rotation2d.fromDegrees(180));
+
+    PathConstraints constraints =
+        new PathConstraints(3.0, 4.0, Units.degreesToRadians(540), Units.degreesToRadians(720));
+
+    return AutoBuilder.pathfindToPose(targetPose, constraints, 0.0, 0.0);
   }
 }

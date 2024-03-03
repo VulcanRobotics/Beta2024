@@ -20,6 +20,7 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -37,12 +38,14 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.util.LocalADStarAK;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
@@ -244,12 +247,22 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
 
     Boolean redVar;
-
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
-      redVar = true;
+    if (Robot.isReal()) {
+      if (DriverStation.getAlliance().get() == Alliance.Red) {
+        redVar = true;
+      } else {
+        redVar = false;
+      }
     } else {
-      redVar = false;
+      if (DriverStationSim.getAllianceStationId().compareTo(AllianceStationID.Blue1) < 0) {
+        this.allianceColor = Alliance.Red;
+        redVar = true;
+      } else {
+        this.allianceColor = Alliance.Blue;
+        redVar = false;
+      }
     }
+
     Logger.recordOutput("Alliance", redVar);
     SmartDashboard.putBoolean("Alliance Red?", redVar);
   }
@@ -388,7 +401,7 @@ public class Drive extends SubsystemBase {
     Translation2d goal =
         (allianceColor == Alliance.Red)
             ? Constants.FieldConstants.kSpeakerTargetPoseRed
-            : Constants.FieldConstants.kSpeakerTargetPoseBlue; // Speaker position
+            : Constants.FieldConstants.kSpeakerTargetPoseBlue;
     Translation2d currentTranslation = current.getTranslation();
     goal = currentTranslation.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());

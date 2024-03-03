@@ -1,17 +1,17 @@
 {
   "Docking": {
     "Data": [
-      "DockNode  ID=0x00000002 Pos=222,393 Size=750,146 Selected=0x138219D4"
+      "DockNode  ID=0x00000002 Pos=275,497 Size=750,150 Selected=0xC8493FD8"
     ]
   },
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "551",
-      "maximized": "0",
+      "height": "856",
+      "maximized": "1",
       "style": "0",
       "userScale": "2",
-      "width": "1280",
+      "width": "1512",
       "xpos": "804",
       "ypos": "513"
     }
@@ -19,8 +19,13 @@
   "Window": {
     "###/SmartDashboard/Auto Choices": {
       "Collapsed": "0",
-      "Pos": "481,367",
+      "Pos": "273,660",
       "Size": "254,54"
+    },
+    "###/SmartDashboard/Field": {
+      "Collapsed": "0",
+      "Pos": "265,119",
+      "Size": "554,261"
     },
     "###/SmartDashboard/VisionSystemSim-main/Sim Field": {
       "Collapsed": "0",
@@ -30,18 +35,18 @@
     "###FMS": {
       "Collapsed": "0",
       "DockId": "0x00000002,0",
-      "Pos": "222,393",
-      "Size": "750,146"
+      "Pos": "275,497",
+      "Size": "750,150"
     },
     "###Joysticks": {
       "Collapsed": "0",
       "DockId": "0x00000002,1",
-      "Pos": "222,393",
-      "Size": "750,146"
+      "Pos": "275,497",
+      "Size": "750,150"
     },
     "###Keyboard 0 Settings": {
-      "Collapsed": "1",
-      "Pos": "91,19",
+      "Collapsed": "0",
+      "Pos": "517,267",
       "Size": "271,444"
     },
     "###Keyboard 1 Settings": {
@@ -66,7 +71,7 @@
     },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "9,320",
+      "Pos": "7,477",
       "Size": "192,218"
     },
     "###Timing": {

@@ -167,10 +167,20 @@ public final class Constants {
 
   public static class FieldConstants {
 
+    public static enum FieldLocations {
+      SPEAKER,
+      AMP,
+      SOURCE,
+    }
+
     public static Translation2d kSpeakerTargetPoseRed = new Translation2d(16.1, 5.6);
     public static Translation2d kSpeakerTargetPoseBlue = new Translation2d(0.3, 5.6);
 
     public static final Pose2d kSpeakerPose =
-        new Pose2d(new Translation2d(1.1, 5.8), new Rotation2d(0));
+        new Pose2d(new Translation2d(1.37, 5.56), new Rotation2d(0));
+    public static final Pose2d kAmpPose =
+        new Pose2d(new Translation2d(1.8, 7.6), new Rotation2d(Math.PI / 2));
+    public static final Pose2d kSourcePose =
+        new Pose2d(new Translation2d(15.4, 1.07), new Rotation2d(-Math.PI / 4));
   }
 }

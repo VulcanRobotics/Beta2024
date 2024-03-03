@@ -14,6 +14,7 @@ public class ShooterTargeting {
     return new ParallelDeadlineGroup(
         /// new ShootCommand(shooter),
         new DriveToPosition(drive, drive::calculateShootingPose),
+        // EasterEggs.WaterWalking(drive, drive::calculateShootingPose, drive::getPose),
         new SetArmPosition(arm, drive::getArmShootingAngle),
         new RevCommand(shooter, false));
     /*    `

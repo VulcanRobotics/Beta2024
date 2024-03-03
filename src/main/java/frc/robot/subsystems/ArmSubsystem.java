@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.util.*;
+import org.littletonrobotics.junction.Logger;
 
 public class ArmSubsystem extends SubsystemBase {
   public final TalonFX m_ArmMotor1 = new TalonFX(15, "rio");
@@ -97,6 +98,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
+    Logger.recordOutput("Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm Encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());

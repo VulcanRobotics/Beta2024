@@ -14,23 +14,17 @@
         {
           "type": "named",
           "data": {
-            "name": "RampShooter"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "ArmToIntake"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "RevShoot"
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -51,7 +45,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "RevShoot"
           }
         },
         {
@@ -59,15 +53,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "SC^R"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
                 }
               }
             ]
@@ -82,7 +76,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "RevShoot"
           }
         },
         {

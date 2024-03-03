@@ -6,6 +6,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ClimbSubsystem extends SubsystemBase {
 
@@ -21,8 +22,8 @@ public class ClimbSubsystem extends SubsystemBase {
   public final Servo m_WinchLeftServo = new Servo(1);
 
   private VelocityVoltage m_request = new VelocityVoltage(0);
-  private double rightLimitMotor = m_WinchMotorRight.getPosition().getValueAsDouble() + 767.0239;
-  private double leftLimitMotor = m_WinchMotorLeft.getPosition().getValueAsDouble() - 748.43;
+  public double rightLimitMotor = m_WinchMotorRight.getPosition().getValueAsDouble() + 767.0239;
+  public double leftLimitMotor = m_WinchMotorLeft.getPosition().getValueAsDouble() - 748.43;
 
   public boolean winchEnabled = true;
 
@@ -40,7 +41,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
     if (speed < 0.0 && !motor12LowerLimitSwitch.get()) {
       speed = 0;
-      rightLimitMotor = m_WinchMotorRight.getPosition().getValueAsDouble() + 767.0239;
+      rightLimitMotor =
+          m_WinchMotorRight.getPosition().getValueAsDouble()
+              + Constants.ClimbConstants.kClimbUpperLimitRight;
     }
 
     if (m_WinchMotorRight.getPosition().getValueAsDouble() > rightLimitMotor && speed > 0.0) {
@@ -60,7 +63,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
     if ((speed < 0.0 && !motor11LowerLimitSwitch.get())) {
       speed = 0;
-      leftLimitMotor = m_WinchMotorLeft.getPosition().getValueAsDouble() - 748.43;
+      leftLimitMotor =
+          m_WinchMotorLeft.getPosition().getValueAsDouble()
+              - Constants.ClimbConstants.kClimbUpperLimitLeft;
     }
 
     if (m_WinchMotorLeft.getPosition().getValueAsDouble() < leftLimitMotor && speed > 0.0) {

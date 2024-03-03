@@ -125,6 +125,13 @@ public final class Constants {
         95; // RPS, was 100, but feeder wouldn't spin sometimes
   }
 
+  public final class ClimbConstants {
+    public static final double kClimbUpperLimitLeft = 748.43;
+    public static final double kClimbUpperLimitRight = 767.0239;
+    public static final double kLeftTopDistanceFromChain = 0.0;
+    public static final double kRightTopDistanceFromChain = 0.0;
+  }
+
   public final class ArmConstants {
 
     public static final int kGuideMotorPort = 15;

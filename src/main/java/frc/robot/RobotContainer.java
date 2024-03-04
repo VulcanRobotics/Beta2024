@@ -234,7 +234,12 @@ public class RobotContainer {
                 .ignoringDisable(true));
     driverController
         .a()
-        .whileTrue(ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
+        .whileTrue(
+            DriveCommands.driveWhileAiming(
+                drive,
+                () -> -driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
+                drive::calculateShootingPose));
     driverController
         .b()
         .onTrue(

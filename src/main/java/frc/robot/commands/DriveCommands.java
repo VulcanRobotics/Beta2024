@@ -14,6 +14,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -25,9 +26,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
+  private static final double AnglePIDValues[] = {1.2, 0.0, 0.1};
+  private static final PIDController angleController =
+      new PIDController(AnglePIDValues[0], AnglePIDValues[1], AnglePIDValues[2]);
 
   private DriveCommands() {}
 
@@ -57,6 +62,60 @@ public class DriveCommands {
           // Square values
           linearMagnitude = linearMagnitude * linearMagnitude;
           omega = Math.copySign(omega * omega, omega);
+
+          // Calcaulate new linear velocity
+          Translation2d linearVelocity =
+              new Pose2d(new Translation2d(), linearDirection)
+                  .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
+                  .getTranslation();
+
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          drive.runVelocity(
+              ChassisSpeeds.fromFieldRelativeSpeeds(
+                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                  omega * drive.getMaxAngularSpeedRadPerSec(),
+                  isFlipped
+                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                      : drive.getRotation()));
+        },
+        drive);
+  }
+
+  public static Command driveWhileAiming(
+      Drive drive,
+      DoubleSupplier xSupplier,
+      DoubleSupplier ySupplier,
+      Supplier<Pose2d> thetaSupplier) {
+
+    angleController.reset();
+    angleController.setTolerance(Math.toRadians(0.25));
+    angleController.enableContinuousInput(-Math.PI, Math.PI);
+
+    return Commands.run(
+        () -> {
+          Pose2d robotPose = drive.getPose();
+          // Apply deadband
+          double linearMagnitude =
+              MathUtil.applyDeadband(
+                  Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()), DEADBAND);
+          Rotation2d linearDirection =
+              new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+          Rotation2d targetTheta = thetaSupplier.get().getRotation();
+
+          var omega =
+              angleController.calculate(
+                  robotPose.getRotation().getRadians(),
+                  targetTheta.getRadians()
+                      + (DriverStation.getAlliance().isPresent()
+                              && DriverStation.getAlliance().get() == Alliance.Red
+                          ? Math.PI
+                          : 0.0));
+
+          // Square values
+          linearMagnitude = linearMagnitude * linearMagnitude;
 
           // Calcaulate new linear velocity
           Translation2d linearVelocity =

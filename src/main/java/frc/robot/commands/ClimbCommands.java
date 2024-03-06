@@ -12,19 +12,24 @@ public class ClimbCommands {
 
   public static Command winchDrive(
       ClimbSubsystem climbSubsystem, DoubleSupplier yAxis, DoubleSupplier xAxis) {
-    double DEADBAND = 0.1f;
+    double DEADBAND = 0.5;
 
     return Commands.run(
         () -> {
           double speed = yAxis.getAsDouble();
           double difference = xAxis.getAsDouble();
 
-          if (difference > 0.0) {
+          if (Math.abs(speed) < 0.1) {
+            speed = 0.0;
+          }
+
+          if (difference > DEADBAND) {
             climbSubsystem.setRightWinchSpeed(speed);
-            climbSubsystem.setLeftWinchSpeed(speed - difference);
-          } else if (difference < 0.0) {
-            climbSubsystem.setRightWinchSpeed(speed - difference);
+          } else if (difference < -DEADBAND) {
             climbSubsystem.setLeftWinchSpeed(speed);
+          } else {
+            climbSubsystem.setRightWinchSpeed(0);
+            climbSubsystem.setLeftWinchSpeed(0);
           }
 
           // speed *= speed;

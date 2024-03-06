@@ -2,13 +2,16 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.util.*;
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -64,6 +67,16 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double getRawArmEncoder() {
     return m_ArmMotor1.getPosition().getValueAsDouble();
+  }
+
+  public void setArmPosition(DoubleSupplier supplier) {
+    double targetPositionInDegrees = supplier.getAsDouble();
+    targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
+    double targetPositionInRotation =
+        targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
+    MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
+    m_ArmMotor1.setControl(m_request);
+    m_ArmMotor2.setControl(m_follow);
   }
 
   /**

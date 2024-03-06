@@ -242,7 +242,15 @@ public class RobotContainer {
     //             drive::calculateShootingPose));
     driverController
         .a()
-        .whileTrue(ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
+        .whileTrue(
+            new ParallelCommandGroup(
+                DriveCommands.driveWhileAiming(
+                    drive,
+                    () -> -driverController.getLeftY(),
+                    () -> -driverController.getLeftX(),
+                    drive::calculateShootingPose),
+                Commands.run(
+                    () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
     driverController
         .b()
         .onTrue(
@@ -257,11 +265,11 @@ public class RobotContainer {
     armSubsystem.setDefaultCommand(
         WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()));
 
-    climbSubsystem.setDefaultCommand(
-        ClimbCommands.winchDrive(
-            climbSubsystem,
-            () -> operatorController.getRightY(),
-            () -> operatorController.getRightX()));
+    // climbSubsystem.setDefaultCommand(
+    //     ClimbCommands.winchDrive(
+    //         climbSubsystem,
+    //         () -> operatorController.getRightY(),
+    //         () -> operatorController.getRightX()));
     // new InstantCommand(() -> climbSubsystem.setWinchSpeed(operatorController.getRightX())));
     // ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getYaw());
 

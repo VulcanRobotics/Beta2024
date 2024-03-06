@@ -30,7 +30,7 @@ import java.util.function.Supplier;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
-  private static final double AnglePIDValues[] = {1.2, 0.0, 0.1};
+  private static final double AnglePIDValues[] = {0.45, 0.0, 0.0};
   private static final PIDController angleController =
       new PIDController(AnglePIDValues[0], AnglePIDValues[1], AnglePIDValues[2]);
 

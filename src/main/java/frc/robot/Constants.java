@@ -130,6 +130,12 @@ public final class Constants {
     public static final double kClimbUpperLimitRight = 767.0239;
     public static final double kLeftTopDistanceFromChain = 0.0;
     public static final double kRightTopDistanceFromChain = 0.0;
+
+    public static final double WinchLowerLeftLimit = 0.0;
+    public static final double WinchUpperLeftLimit = 0.0;
+
+    public static final double WinchLowerRightLimit = 0.0;
+    public static final double WinchUpperRightLimit = 0.0;
   }
 
   public final class ArmConstants {

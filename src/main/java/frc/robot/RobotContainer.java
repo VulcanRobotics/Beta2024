@@ -232,14 +232,17 @@ public class RobotContainer {
                     },
                     drive)
                 .ignoringDisable(true));
+    // driverController
+    //     .a()
+    //     .whileTrue(
+    //         DriveCommands.driveWhileAiming(
+    //             drive,
+    //             () -> -driverController.getLeftY(),
+    //             () -> -driverController.getLeftX(),
+    //             drive::calculateShootingPose));
     driverController
         .a()
-        .whileTrue(
-            DriveCommands.driveWhileAiming(
-                drive,
-                () -> -driverController.getLeftY(),
-                () -> -driverController.getLeftX(),
-                drive::calculateShootingPose));
+        .whileTrue(ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
     driverController
         .b()
         .onTrue(
@@ -258,8 +261,7 @@ public class RobotContainer {
         ClimbCommands.winchDrive(
             climbSubsystem,
             () -> operatorController.getRightY(),
-            operatorController.povUp(),
-            operatorController.povDown()));
+            () -> operatorController.getRightX()));
     // new InstantCommand(() -> climbSubsystem.setWinchSpeed(operatorController.getRightX())));
     // ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getYaw());
 

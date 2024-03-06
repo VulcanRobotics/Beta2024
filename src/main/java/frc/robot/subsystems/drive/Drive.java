@@ -380,7 +380,7 @@ public class Drive extends SubsystemBase {
             ? Constants.FieldConstants.kSpeakerTargetPoseRed.minus(current.getTranslation())
             : Constants.FieldConstants.kSpeakerTargetPoseBlue.minus(current.getTranslation());
     double distance = Math.sqrt(Math.pow(difference.getX(), 2) + Math.pow(difference.getY(), 2));
-    double armDegrees = -1.5 + 21.0 * Math.log(distance);
+    double armDegrees = 14 + 12.1 * Math.log(distance);
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
     return armDegrees;
   }

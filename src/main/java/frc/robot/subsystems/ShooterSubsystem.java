@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
+import org.littletonrobotics.junction.Logger;
 
 public class ShooterSubsystem extends SubsystemBase {
   public TalonFX leftMotor = new TalonFX(ShooterConstants.kGuideMotorPort, "rio");
@@ -86,5 +87,8 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
     // SmartDashboard.putNumber("m1 velocity", leftMotor.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Shooter up to Speed", upToSpeed);
+
+    Logger.recordOutput("Avg Shooter Velocity", getAverageShootSpeed());
+    Logger.recordOutput("Shooter up to speed", upToSpeed);
   }
 }

@@ -385,27 +385,48 @@ public class Drive extends SubsystemBase {
     return armDegrees;
   }
 
-  // Here is the reason the shooter targeting was not working at Cyber: pathplanner apparently
-  // always uses absolute position, not relative
-  // If it were do use field coordinates relative to each side, the previous code would work.
-  // However because it does not, the angle output
-  // of this funtion MUST be negated when it is on the red side; this is because our x pos will
-  // always be lower then that of the speaker,
-  // returning a negative value for the "adjacent" side of the tangent function. On blue, that value
-  // will always be positive. The y-value doesn't
-  // really matter because it can be either positive or negative on both sides. But to account for
-  // the extra negative on red side, we must negate
-  // the angle.
   public Pose2d calculateShootingPose() {
     Pose2d current = getPose();
-    Translation2d goal =
-        (allianceColor == Alliance.Red)
-            ? Constants.FieldConstants.kSpeakerTargetPoseRed
-            : Constants.FieldConstants.kSpeakerTargetPoseBlue;
+    Translation2d goal = calculateProjectedTargetPose();
+    /*Translation2d goal =
+    (allianceColor == Alliance.Red)
+        ? Constants.FieldConstants.kSpeakerTargetPoseRed
+        : Constants.FieldConstants.kSpeakerTargetPoseBlue;*/
     Translation2d currentTranslation = current.getTranslation();
     goal = currentTranslation.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());
     return new Pose2d(currentTranslation, new Rotation2d(angle));
+  }
+
+  public Translation2d calculateProjectedTargetPose() {
+    var invert = (allianceColor == Alliance.Red) ? -1.0 : 1.0;
+    Translation2d originalTargetTranslation =
+        (allianceColor == Alliance.Red)
+            ? Constants.FieldConstants.kSpeakerTargetPoseRed
+            : Constants.FieldConstants.kSpeakerTargetPoseBlue;
+    Translation2d currentRobotTranslation = getTranslation();
+    double Vs = 15.0; // m/s
+    double Xr = currentRobotTranslation.getX();
+    double Yr = currentRobotTranslation.getY();
+    double Xt = originalTargetTranslation.getX();
+    double Yt = originalTargetTranslation.getY();
+    double Vx = -kinematics.toChassisSpeeds(getModuleStates()).vxMetersPerSecond;
+    double Vy = -kinematics.toChassisSpeeds(getModuleStates()).vyMetersPerSecond;
+    double k1 = (sqr(Xt) + sqr(Xr) - 2 * Xr * Xt + sqr(Yt) + sqr(Yr) - 2 * Yr * Yt);
+    double k2 = (2 * Vx * Xt - 2 * Vx * Xr + 2 * Vy * Yt - 2 * Vy * Yr);
+    double k3 = (sqr(Vs) - (sqr(Vx) + sqr(Vy)));
+    double Ts = ((k2 + sqrt(sqr(k2) + 4 * k3 * k1)) / (2 * k3));
+    Translation2d projTarget = new Translation2d(Vx * Ts * invert + Xt, Vy * Ts * invert + Yt);
+    SmartDashboard.putNumber("New Target X", projTarget.getY());
+    return projTarget;
+  }
+
+  private double sqr(double x) {
+    return Math.pow(x, 2);
+  }
+
+  private double sqrt(double x) {
+    return Math.pow(x, 0.5);
   }
 
   public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> estStdDevs) {

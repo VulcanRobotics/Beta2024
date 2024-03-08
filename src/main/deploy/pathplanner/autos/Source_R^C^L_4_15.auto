@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7204063630048771,
+      "y": 4.33628103386112
+    },
+    "rotation": -60.81631185361175
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "RampShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmToIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SR^R"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Advanced Short Autons",
+  "choreoAuto": false
+}

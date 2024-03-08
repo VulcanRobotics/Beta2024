@@ -25,11 +25,13 @@ public class ClimbCommands {
 
           if (difference > DEADBAND) {
             climbSubsystem.setRightWinchSpeed(speed);
+            climbSubsystem.setLeftWinchSpeed(0);
           } else if (difference < -DEADBAND) {
             climbSubsystem.setLeftWinchSpeed(speed);
-          } else {
             climbSubsystem.setRightWinchSpeed(0);
-            climbSubsystem.setLeftWinchSpeed(0);
+          } else {
+            climbSubsystem.setRightWinchSpeed(speed);
+            climbSubsystem.setLeftWinchSpeed(speed);
           }
 
           // speed *= speed;
@@ -40,10 +42,10 @@ public class ClimbCommands {
   public static Command raiseToLowChain(ClimbSubsystem climb) {
     return Commands.run(
         () -> {
-          if (climb.m_WinchPotRight.get()
+          if (1 - climb.m_WinchPotRight.get()
               < (Constants.ClimbConstants.WinchUpperRightLimit
                   - Constants.ClimbConstants.kRightTopDistanceFromChain)) {
-            climb.setRightWinchSpeed(1.0);
+            climb.setRightWinchSpeed(-1.0);
           } else {
             climb.setRightWinchSpeed(0.0);
           }
@@ -51,7 +53,7 @@ public class ClimbCommands {
           if (climb.m_WinchPotLeft.get()
               < (Constants.ClimbConstants.WinchUpperLeftLimit
                   + Constants.ClimbConstants.kLeftTopDistanceFromChain)) {
-            climb.setLeftWinchSpeed(1.0);
+            climb.setLeftWinchSpeed(-1.0);
           } else {
             climb.setLeftWinchSpeed(0.0);
           }

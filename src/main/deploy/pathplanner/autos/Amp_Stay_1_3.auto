@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7019664579604209,
+      "y": 6.7001469734766586
+    },
+    "rotation": 61.59814165925703
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmToIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RevShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Simple Autons",
+  "choreoAuto": false
+}

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6897813008588983,
-      "y": 6.714294701737551
+      "x": 0.7420153580449865,
+      "y": 4.359031714136768
     },
-    "rotation": 50.92948195843197
+    "rotation": -59.24101478263752
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,13 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "RampShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
@@ -30,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "L_StraightAndBack"
+                  "pathName": "R_StraightAndBack"
                 }
               },
               {
@@ -45,18 +51,37 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "Shoot"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "L_Leave"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SR^MR2^SR"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]
     }
   },
-  "folder": "Simple Autons",
+  "folder": "Advanced Long Autons",
   "choreoAuto": false
 }

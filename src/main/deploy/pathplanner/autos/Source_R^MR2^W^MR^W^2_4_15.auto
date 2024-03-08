@@ -2,21 +2,15 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.375255176436279,
-      "y": 5.548282439157472
+      "x": 0.7180240993586113,
+      "y": 4.390448838608876
     },
-    "rotation": 0
+    "rotation": -57.9486750067813
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "named",
-          "data": {
-            "name": "RampShooter"
-          }
-        },
         {
           "type": "named",
           "data": {
@@ -26,26 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "C_StraightAndBack"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
+            "name": "RampShooter"
           }
         },
         {
@@ -61,7 +36,32 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SC^R"
+                  "pathName": "SR^R"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "R^MR2"
                 }
               },
               {
@@ -76,24 +76,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Back To Speaker"
+            "pathName": "MR2^W"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C_Leave"
+            "pathName": "MR^W"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
           }
         }
       ]
     }
   },
-  "folder": "Advanced Short Autons",
+  "folder": "Advanced Long Autons",
   "choreoAuto": false
 }

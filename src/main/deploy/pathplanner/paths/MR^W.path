@@ -1,0 +1,65 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.796460915858964,
+        "y": 2.44518934764785
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.737672086591718,
+        "y": 2.3555712067219803
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.717519248398026,
+        "y": 2.117626156912432
+      },
+      "prevControl": {
+        "x": 6.506343947682337,
+        "y": 1.8065002784527788
+      },
+      "nextControl": {
+        "x": 3.5753322341615226,
+        "y": 2.3162839338939984
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.0369086379135433,
+        "y": 2.44518934764785
+      },
+      "prevControl": {
+        "x": 3.5978002383313217,
+        "y": 2.182237536135189
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -46.75590216063989,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Advanced Long Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

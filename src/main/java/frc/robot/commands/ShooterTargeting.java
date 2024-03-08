@@ -1,7 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.Drive;
@@ -11,12 +12,13 @@ import frc.robot.subsystems.drive.Drive;
 public class ShooterTargeting {
 
   public static Command shootAtTarget(Drive drive, ShooterSubsystem shooter, ArmSubsystem arm) {
-    return new ParallelDeadlineGroup(
-        /// new ShootCommand(shooter),
-        new DriveToPosition(drive, drive::calculateShootingPose),
-        // EasterEggs.WaterWalking(drive, drive::calculateShootingPose, drive::getPose),
-        new SetArmPosition(arm, drive::getArmShootingAngle),
-        new RevCommand(shooter, false));
+    return new SequentialCommandGroup(
+        new ParallelCommandGroup(
+            new DriveToPosition(drive, drive::calculateShootingPose),
+            new SetArmPosition(arm, drive::getArmShootingAngle),
+            new IntakeCommand(shooter, false)),
+        new ShootCommand(shooter));
+
     /*    `
     return new SequentialCommandGroup(
       new ParallelCommandGroup(

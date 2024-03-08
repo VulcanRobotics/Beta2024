@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7204063630048771,
-      "y": 4.33628103386112
+      "x": 0.7229746765485673,
+      "y": 4.454362059509974
     },
-    "rotation": -60.81631185361175
+    "rotation": -56.36414026177021
   },
   "command": {
     "type": "sequential",
@@ -14,18 +14,18 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "ArmToIntake"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "SR^R^C^L"
+            "name": "RevShoot"
           }
         }
       ]
     }
   },
-  "folder": "Advanced Short Autons",
+  "folder": "Simple Autons",
   "choreoAuto": false
 }

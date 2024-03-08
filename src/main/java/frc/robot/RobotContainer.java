@@ -158,11 +158,7 @@ public class RobotContainer {
         "ArmToAmp", new SetArmPosition(armSubsystem, () -> 90).withTimeout(2));
 
     NamedCommands.registerCommand(
-        "AutoTargetShoot",
-        new SequentialCommandGroup(
-            new IntakeCommand(shooterSubsystem, false),
-            new InstantCommand(() -> drive.zeroGyro()),
-            ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3)));
+        "AutoTargetShoot", ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
 
     NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem, true).withTimeout(3));
     NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem).withTimeout(3));
@@ -296,12 +292,12 @@ public class RobotContainer {
               armSubsystem.calibrateTalonEncoder();
             })); */
 
-    operatorController
-        .b()
-        .whileTrue(
-            new ParallelCommandGroup(
-                new SetArmPosition(armSubsystem, () -> Constants.ArmConstants.kArmPoseAmp),
-                ClimbCommands.raiseToLowChain(climbSubsystem)));
+    // operatorController
+    //     .b()
+    //     .whileTrue(
+    //         new ParallelCommandGroup(
+    //             new SetArmPosition(armSubsystem, () -> Constants.ArmConstants.kArmPoseAmp),
+    //             ClimbCommands.raiseToLowChain(climbSubsystem)));
 
     // Shooter and intake commands
     operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem, false));

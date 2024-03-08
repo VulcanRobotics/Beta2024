@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.FieldConstants.FieldLocations;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.Drive;
@@ -65,22 +66,12 @@ public class RobotContainer {
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
-  // private final LoggedDashboardNumber flywheelSpeedInput =
-  //  new LoggedDashboardNumber("Flywheel Speed", 1500.0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
-        // drive =
-        //     new Drive(
-        //         new GyroIOPigeon2(false),
-        //         new ModuleIOSparkMax(0),
-        //         new ModuleIOSparkMax(1),
-        //         new ModuleIOSparkMax(2),
-        //         new ModuleIOSparkMax(3));
-        // flywheel = new Flywheel(new FlywheelIOSparkMax());
         drive =
             new Drive(
                 // new GyroIOPigeon2(true),
@@ -89,7 +80,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(1),
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
-        // flywheel = new Flywheel(new FlywheelIOTalonFX());
+ 
         flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
@@ -131,11 +122,6 @@ public class RobotContainer {
     }
 
     // Set up auto routines
-    /*NamedCommands.registerCommand(
-    "Run Flywheel",
-    Commands.startEnd(
-            () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel)
-        .withTimeout(5.0)); */
 
     NamedCommands.registerCommand("Intake", new IntakeCommand(shooterSubsystem, false));
 
@@ -161,7 +147,9 @@ public class RobotContainer {
         "AutoTargetShoot", ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
 
     NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem, true).withTimeout(3));
+
     NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem).withTimeout(3));
+
     NamedCommands.registerCommand(
         "RevShoot",
         new SequentialCommandGroup(
@@ -228,14 +216,7 @@ public class RobotContainer {
                     },
                     drive)
                 .ignoringDisable(true));
-    // driverController
-    //     .a()
-    //     .whileTrue(
-    //         DriveCommands.driveWhileAiming(
-    //             drive,
-    //             () -> -driverController.getLeftY(),
-    //             () -> -driverController.getLeftX(),
-    //             drive::calculateShootingPose));
+
     driverController
         .a()
         .whileTrue(
@@ -253,6 +234,10 @@ public class RobotContainer {
             Commands.runOnce(
                 () -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(0.0))),
                 drive));
+
+    driverController
+        .rightBumper()
+        .whileTrue(EasterEggs.WaterWalkToLocation(drive, FieldLocations.AMP));
 
     driverController.povUp().onTrue(new InstantCommand(() -> ArmConstants.kVariable += 0.1));
     driverController.povDown().onTrue(new InstantCommand(() -> ArmConstants.kVariable -= 0.1));
@@ -283,15 +268,6 @@ public class RobotContainer {
         .y()
         .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseSource));
 
-    // Reset arm guide motor encoder to 0 rotations
-    /*operatorController
-    .button(10)
-    .onTrue(
-        new InstantCommand(
-            () -> {
-              armSubsystem.calibrateTalonEncoder();
-            })); */
-
     // operatorController
     //     .b()
     //     .whileTrue(
@@ -303,7 +279,6 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem, false));
 
     operatorController.rightBumper().whileTrue(new ShootCommand(shooterSubsystem));
-    // operatorController.button(6).onTrue(new ShootToggle(shooterSubsystem));
     operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem, false));
     operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController
@@ -311,7 +286,6 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  // shooterSubsystem.savedShootSpeed -= 0.1;
                   shooterSubsystem.savedShootSpeed =
                       Math.max(shooterSubsystem.savedShootSpeed -= 0.1, 0);
                 }));
@@ -321,7 +295,6 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  // shooterSubsystem.savedShootSpeed += 0.1;
                   shooterSubsystem.savedShootSpeed =
                       Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
                 }));

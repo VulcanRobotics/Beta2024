@@ -29,6 +29,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -67,6 +68,18 @@ public class Drive extends SubsystemBase {
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   private final SysIdRoutine sysId;
+
+  private InterpolatingDoubleTreeMap shooterTable = new InterpolatingDoubleTreeMap();
+  private double[][] shooterValues = {
+    {0.0, 0.0},
+    {1.07, 0.0},
+    {1.53, 12.6},
+    {2.0, 18.58},
+    {2.7, 23.41},
+    {2.96, 25.17},
+    {3.47, 27.5},
+    {4.5, 30.19}
+  };
 
   private Field2d m_field = new Field2d();
   private Alliance allianceColor;
@@ -132,6 +145,10 @@ public class Drive extends SubsystemBase {
       if (ally.get() == Alliance.Blue) {
         this.allianceColor = Alliance.Blue;
       }
+    }
+
+    for (double[] d : shooterValues) {
+      shooterTable.put(d[0], d[1]);
     }
 
     // Configure SysId
@@ -372,7 +389,7 @@ public class Drive extends SubsystemBase {
     poseEstimator.addVisionMeasurement(visionPose, timestamp);
   }
 
-  // SHOOTING STUFF, maybe move eventually
+  //The following three functions are all for shooting calculations for both 
   public double getArmShootingAngle() {
     Pose2d current = getPose();
     Translation2d difference =
@@ -380,10 +397,9 @@ public class Drive extends SubsystemBase {
             ? Constants.FieldConstants.kSpeakerTargetPoseRed.minus(current.getTranslation())
             : Constants.FieldConstants.kSpeakerTargetPoseBlue.minus(current.getTranslation());
     double distance = Math.sqrt(Math.pow(difference.getX(), 2) + Math.pow(difference.getY(), 2));
-    double armDegrees = 2.32 + 19.8 * Math.log(distance);
-    // double armDegrees =
-    // -59.2 + 86.8*distance + -36.1*Math.pow(distance, 2) + 7.04*Math.pow(distance, 3) + -0.518
-    // *Math.pow(distance, 4);
+    double armDegrees = shooterTable.get(distance);
+    // Commented out and replaced with interpolatingdoubletreemap on 3/8
+    // double armDegrees = 2.32 + 19.8 * Math.log(distance);
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
     return armDegrees;
   }
@@ -391,10 +407,6 @@ public class Drive extends SubsystemBase {
   public Pose2d calculateShootingPose() {
     Pose2d current = getPose();
     Translation2d goal = calculateProjectedTargetPose();
-    /*Translation2d goal =
-    (allianceColor == Alliance.Red)
-        ? Constants.FieldConstants.kSpeakerTargetPoseRed
-        : Constants.FieldConstants.kSpeakerTargetPoseBlue;*/
     Translation2d currentTranslation = current.getTranslation();
     goal = currentTranslation.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());

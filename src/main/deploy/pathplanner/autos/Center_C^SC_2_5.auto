@@ -14,13 +14,19 @@
         {
           "type": "named",
           "data": {
+            "name": "RampShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "ArmToIntake"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "Shoot"
           }
         },
         {
@@ -45,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "RevShoot"
+            "name": "Shoot"
           }
         },
         {

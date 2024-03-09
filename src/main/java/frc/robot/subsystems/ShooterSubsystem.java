@@ -35,8 +35,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // These values need to be tuned and put into constants
     slot0Configs.kV = 0.12;
     slot0Configs.kP = 0.1;
-    slot0Configs.kI = 0.00;
-    slot0Configs.kD = 0.01;
+    slot0Configs.kI = 0.0;
+    slot0Configs.kD = 0.0;
     leftMotor.getConfigurator().apply(slot0Configs, 0.050);
     rightMotor.getConfigurator().apply(slot0Configs, 0.050);
   }

@@ -34,24 +34,27 @@ public class ClimbSubsystem extends SubsystemBase {
   public ClimbSubsystem() {
     m_WinchMotorLeft.setNeutralMode(NeutralModeValue.Brake);
     m_WinchMotorRight.setNeutralMode(NeutralModeValue.Brake);
+
+    m_WinchMotorLeft.setInverted(true);
+    m_WinchMotorRight.setInverted(false);
   }
 
   public double applyWinchLimits(boolean left, double speed) {
     if (left) {
-      if (m_WinchPotLeft.get() > Constants.ClimbConstants.WinchUpperLeftLimit && speed < 0.0) {
+      if (m_WinchPotLeft.get() > Constants.ClimbConstants.WinchUpperLeftLimit && speed > 0.0) {
         return 0.0;
       } else if (m_WinchPotLeft.get() < Constants.ClimbConstants.WinchLowerLeftLimit
-          && speed > 0.0) {
+          && speed < 0.0) {
         return 0.0;
       } else {
         return speed;
       }
     } else {
       if (1 - m_WinchPotRight.get() > Constants.ClimbConstants.WinchUpperRightLimit
-          && speed < 0.0) {
+          && speed > 0.0) {
         return 0.0;
       } else if (1 - m_WinchPotRight.get() < Constants.ClimbConstants.WinchLowerRightLimit
-          && speed > 0.0) {
+          && speed < 0.0) {
         return 0.0;
       } else {
         return speed;
@@ -77,8 +80,8 @@ public class ClimbSubsystem extends SubsystemBase {
     //   speed = 0;
     // }
 
-    // m_WinchMotorRight.set(applyWinchLimits(false, speed));
-    m_WinchMotorRight.set(speed);
+    m_WinchMotorRight.set(applyWinchLimits(false, speed));
+    // m_WinchMotorRight.set(speed);
   }
 
   public void setLeftWinchSpeed(double speed) {
@@ -100,8 +103,8 @@ public class ClimbSubsystem extends SubsystemBase {
     //   speed = 0;
     // }
 
-    // m_WinchMotorLeft.set(applyWinchLimits(true, speed));
-    m_WinchMotorLeft.set(speed);
+    m_WinchMotorLeft.set(applyWinchLimits(true, speed));
+    // m_WinchMotorLeft.set(speed);
   }
 
   // public void setWinchVelocity(double velocity) {

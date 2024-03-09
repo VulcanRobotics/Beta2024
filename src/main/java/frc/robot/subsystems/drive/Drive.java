@@ -223,7 +223,7 @@ public class Drive extends SubsystemBase {
         sampleTimestamps[i] /= 4.0; // Average across only 4 values (4 modules)
       }
     }
-    Logger.recordOutput("Odometry/Timestamps", sampleTimestamps);
+    // Logger.recordOutput("Odometry/Timestamps", sampleTimestamps);
 
     for (int i = 0; i < sampleCount; i++) {
       // Read wheel positions and deltas from each module

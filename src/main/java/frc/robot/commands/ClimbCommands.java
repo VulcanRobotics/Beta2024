@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -16,7 +17,7 @@ public class ClimbCommands {
 
     return Commands.run(
         () -> {
-          double speed = yAxis.getAsDouble();
+          double speed = -yAxis.getAsDouble();
           double difference = xAxis.getAsDouble();
 
           if (Math.abs(speed) < 0.1) {
@@ -30,9 +31,11 @@ public class ClimbCommands {
             climbSubsystem.setLeftWinchSpeed(speed);
             climbSubsystem.setRightWinchSpeed(0);
           } else {
-            climbSubsystem.setRightWinchSpeed(speed);
-            climbSubsystem.setLeftWinchSpeed(speed);
+            climbSubsystem.setRightWinchSpeed(0);
+            climbSubsystem.setLeftWinchSpeed(0);
           }
+
+          SmartDashboard.putNumber("speed climb", speed);
 
           // speed *= speed;
         },

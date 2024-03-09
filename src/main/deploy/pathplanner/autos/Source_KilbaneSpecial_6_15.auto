@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3725925246794313,
-      "y": 5.554193612600709
+      "x": 0.753249360133298,
+      "y": 4.410885836752027
     },
-    "rotation": 0
+    "rotation": -58.71862673661579
   },
   "command": {
     "type": "sequential",
@@ -34,30 +34,24 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "C_StraightAndBack"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Source^MR2^W"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Back To Speaker"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -67,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SC^L"
+                  "pathName": "W^MR^W"
                 }
               },
               {
@@ -80,15 +74,9 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Back To Speaker"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -98,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SC^R"
+                  "pathName": "W^MC^W"
                 }
               },
               {
@@ -111,20 +99,64 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Back To Speaker"
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "W^ML^W"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "W^ML2^W"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
           }
         }
       ]
     }
   },
-  "folder": "Advanced Short Autons",
+  "folder": "Advanced Long Autons",
   "choreoAuto": false
 }

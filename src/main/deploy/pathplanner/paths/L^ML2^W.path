@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6790921128138554,
-        "y": 4.286067484172006
+        "x": 2.4509165226581926,
+        "y": 6.974713600704216
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.8890859611018069,
-        "y": 4.2416861393388
+        "x": 3.4509165226581926,
+        "y": 6.974713600704216
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6726256832143296,
-        "y": 4.097047008908833
+        "x": 7.816199755680455,
+        "y": 7.408841138900352
       },
       "prevControl": {
-        "x": 2.426021681785164,
-        "y": 4.149349925252047
+        "x": 6.816199755680455,
+        "y": 7.408841138900352
       },
       "nextControl": {
-        "x": 2.811136731549011,
-        "y": 4.067669822278953
+        "x": 8.816199755680454,
+        "y": 7.408841138900352
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.6790921128138554,
-        "y": 4.286067484172006
+        "x": 3.7602807204632094,
+        "y": 6.593709563892606
       },
       "prevControl": {
-        "x": 0.6131376880692803,
-        "y": 4.271003595194469
+        "x": 5.806447527187786,
+        "y": 7.193903579236432
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,26 +46,29 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.75,
-      "rotationDegrees": 0.0,
-      "rotateFast": true
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 0,
+      "rotateFast": false
     }
   ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 10.0,
-    "maxAcceleration": 10.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.25670575963151,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "StraightAndBack",
-  "previewStartingState": null,
-  "useDefaultConstraints": true
+  "folder": "Advanced Long Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
 }

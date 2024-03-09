@@ -39,12 +39,6 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 // import frc.robot.subsystems.drive.ModuleIOSparkMax;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.flywheel.Flywheel;
-import frc.robot.subsystems.flywheel.FlywheelIO;
-import frc.robot.subsystems.flywheel.FlywheelIOSim;
-
-
-
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -57,7 +51,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  private final Flywheel flywheel;
+  // private final Flywheel flywheel;
   private final ShooterSubsystem shooterSubsystem;
   private final ArmSubsystem armSubsystem;
   private final ClimbSubsystem climbSubsystem;
@@ -84,7 +78,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
 
-        flywheel = new Flywheel(new FlywheelIOSim());
+        // flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
@@ -100,7 +94,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        flywheel = new Flywheel(new FlywheelIOSim());
+        // flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
@@ -116,7 +110,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        flywheel = new Flywheel(new FlywheelIO() {});
+        // flywheel = new Flywheel(new FlywheelIO() {});
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
@@ -164,9 +158,6 @@ public class RobotContainer {
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-    
-
-
 
     // Set up SysId routines
     /* autoChooser.addOption(
@@ -250,11 +241,11 @@ public class RobotContainer {
     armSubsystem.setDefaultCommand(
         WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()));
 
-    // climbSubsystem.setDefaultCommand(
-    //     ClimbCommands.winchDrive(
-    //         climbSubsystem,
-    //         () -> operatorController.getRightY(),
-    //         () -> operatorController.getRightX()));
+    climbSubsystem.setDefaultCommand(
+        ClimbCommands.winchDrive(
+            climbSubsystem,
+            () -> operatorController.getRightY(),
+            () -> operatorController.getRightX()));
     // new InstantCommand(() -> climbSubsystem.setWinchSpeed(operatorController.getRightX())));
     // ClimbCommands.winchDrive(climbSubsystem, () -> operatorController.getYaw());
 

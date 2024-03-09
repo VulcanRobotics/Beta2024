@@ -3,41 +3,57 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6675715434764204,
-        "y": 4.439873023264566
+        "x": 4.0,
+        "y": 5.486684341492455
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.154820365196286,
-        "y": 4.275675218017104
+        "x": 5.0,
+        "y": 5.486684341492455
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.3357203995842175,
-        "y": 3.9874210801957957
+        "x": 5.901722699810822,
+        "y": 6.3223798525200205
       },
       "prevControl": {
-        "x": 2.029405842571806,
-        "y": 4.154553662934417
+        "x": 4.846805475781875,
+        "y": 6.964558570570973
       },
       "nextControl": {
-        "x": 2.948512999187099,
-        "y": 3.65306671305877
+        "x": 7.6493741266047435,
+        "y": 5.258500595176847
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3396245496194699,
-        "y": 5.531714197687655
+        "x": 8.188952830508805,
+        "y": 5.791335245489745
       },
       "prevControl": {
-        "x": 1.6300735425544928,
-        "y": 5.183246667419262
+        "x": 8.35136167685387,
+        "y": 5.897624733255929
+      },
+      "nextControl": {
+        "x": 2.547452777862334,
+        "y": 2.0992201647959288
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.0,
+        "y": 5.486684341492455
+      },
+      "prevControl": {
+        "x": 5.727330595009913,
+        "y": 5.034753766093976
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +62,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 1.5,
       "rotationDegrees": 10.0,
       "rotateFast": false
     }
@@ -65,7 +81,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Advanced Short Paths",
-  "previewStartingState": null,
+  "folder": "Advanced Long Paths",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

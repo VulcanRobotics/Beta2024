@@ -78,7 +78,10 @@ public class Drive extends SubsystemBase {
     {2.7, 23.41},
     {2.96, 25.17},
     {3.47, 27.5},
-    {4.5, 30.19}
+    {4.47, 31.78},
+    {5.15, 32.1},
+    {5.76, 33.65},
+    {6.98, 35.61}
   };
 
   private Field2d m_field = new Field2d();

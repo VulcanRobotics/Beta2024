@@ -14,6 +14,7 @@ public class IntakeCommand extends Command {
 
   public IntakeCommand(ShooterSubsystem shooter, boolean stop) {
     this.shooterSubsystem = shooter;
+    addRequirements(shooterSubsystem);
     stopShooter = stop;
   }
 

@@ -14,9 +14,10 @@ public class ShooterTargeting {
   public static Command shootAtTarget(Drive drive, ShooterSubsystem shooter, ArmSubsystem arm) {
     return new SequentialCommandGroup(
         new ParallelCommandGroup(
-            new DriveToPosition(drive, drive::calculateShootingPose),
-            new SetArmPosition(arm, drive::getArmShootingAngle),
-            new IntakeCommand(shooter, false)),
+                new DriveToPosition(drive, drive::calculateShootingPose),
+                new SetArmPosition(arm, drive::getArmShootingAngle),
+                new IntakeCommand(shooter, false))
+            .withTimeout(2),
         new ShootCommand(shooter));
 
     /*    `

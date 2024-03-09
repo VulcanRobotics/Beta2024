@@ -43,6 +43,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.drive.Drive;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedDashboardBoolean;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -53,7 +54,7 @@ import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 public class PhotonVisionSubsystem extends SubsystemBase {
-  private final PhotonCamera camera;
+  // private final PhotonCamera camera;
   private final PhotonCamera cameraFL;
   private final PhotonCamera cameraFR;
   private final PhotonCamera cameraBL;
@@ -66,7 +67,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     BR
   };
 
-  private final PhotonPoseEstimator photonEstimator;
+  // private final PhotonPoseEstimator photonEstimator;
   private final PhotonPoseEstimator photonEstimatorFL;
   private final PhotonPoseEstimator photonEstimatorFR;
   private final PhotonPoseEstimator photonEstimatorBL;
@@ -82,7 +83,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
   private Drive drive;
 
   // Simulation
-  private PhotonCameraSim cameraSim;
+  // private PhotonCameraSim cameraSim;
   private PhotonCameraSim cameraSimFL;
   private PhotonCameraSim cameraSimFR;
   private PhotonCameraSim cameraSimBL;
@@ -107,16 +108,16 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     */
 
     // Make sure that this is actually aligned with the correct alliance
-    camera = new PhotonCamera(kCameraName);
+    // camera = new PhotonCamera(kCameraName);
     cameraFL = new PhotonCamera(kCameraNameFL);
     cameraFR = new PhotonCamera(kCameraNameFR);
     cameraBL = new PhotonCamera(kCameraNameBL);
     cameraBR = new PhotonCamera(kCameraNameBR);
 
-    photonEstimator =
+    /* photonEstimator =
         new PhotonPoseEstimator(
             kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, kRobotToCam);
-    photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY); */
 
     photonEstimatorFL =
         new PhotonPoseEstimator(
@@ -155,7 +156,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       cameraProp.setLatencyStdDevMs(15);
       // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible
       // targets.
-      cameraSim = new PhotonCameraSim(camera, cameraProp);
+      // cameraSim = new PhotonCameraSim(camera, cameraProp);
 
       cameraSimFL = new PhotonCameraSim(cameraFL, cameraProp);
       cameraSimFR = new PhotonCameraSim(cameraFR, cameraProp);
@@ -163,14 +164,14 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       // cameraSimBR = new PhotonCameraSim(cameraBR, cameraProp);
 
       // Add the simulated camera to view the targets on this simulated field.
-      visionSim.addCamera(cameraSim, kRobotToCam);
+      // visionSim.addCamera(cameraSim, kRobotToCam);
 
       visionSim.addCamera(cameraSimFL, kRobotToCamFL);
       visionSim.addCamera(cameraSimFR, kRobotToCamFR);
       // visionSim.addCamera(cameraSimBL, kRobotToCamBL);
       // visionSim.addCamera(cameraSimBR, kRobotToCamBR);
 
-      cameraSim.enableDrawWireframe(true);
+      // cameraSim.enableDrawWireframe(true);
 
       cameraSimFL.enableDrawWireframe(true);
       cameraSimFR.enableDrawWireframe(true);
@@ -179,14 +180,14 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     }
   }
 
-  public PhotonPipelineResult getLatestResult() {
+  /* public PhotonPipelineResult getLatestResult() {
     return camera.getLatestResult();
-  }
+  } */
 
   public PhotonPipelineResult getLatestResult(CameraPosition camPos) {
     PhotonCamera thisCamera;
     switch (camPos) {
-      case FL:
+      default: // Front-Left
         thisCamera = cameraFL;
         break;
       case FR:
@@ -198,9 +199,9 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       case BR:
         thisCamera = cameraBR;
         break;
-      default:
+        /* default:
         thisCamera = camera;
-        break;
+        break; */
     }
     return thisCamera.getLatestResult();
   }
@@ -211,7 +212,8 @@ public class PhotonVisionSubsystem extends SubsystemBase {
    * @return An {@link EstimatedRobotPose} with an estimated pose, estimate timestamp, and targets
    *     used for estimation.
    */
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+
+  /* public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
     var visionEst = photonEstimator.update();
     // System.out.print("GetEstimatedGlobalPose()");
     // SmartDashboard.putBoolean("visionEst present:", visionEst.isPresent());
@@ -219,18 +221,18 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
     boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
     if (Robot.isSimulation()) {
-      /* visionEst.ifPresentOrElse(
+      visionEst.ifPresentOrElse(
       est ->
           getSimDebugField()
               .getObject("VisionEstimation")
               .setPose(est.estimatedPose.toPose2d()),
       () -> {
         if (newResult) getSimDebugField().getObject("VisionEstimation").setPoses();
-      }); */
+      });
     }
     if (newResult) lastEstTimestamp = latestTimestamp;
     return visionEst;
-  }
+  } */
 
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(CameraPosition camPos) {
     Optional<EstimatedRobotPose> visionEst;
@@ -239,9 +241,10 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     String fieldObjectName;
 
     switch (camPos) {
-      case FL:
+      default: // Front-left
         visionEst = photonEstimatorFL.update();
         SmartDashboard.putBoolean("visionEst FL:", visionEst.isPresent());
+        Logger.recordOutput("visionEst FL", visionEst.isPresent());
         latestTimestamp = cameraFL.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampFL) > 1e-5;
         fieldObjectName = "VisionEstFL";
@@ -249,28 +252,31 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       case FR:
         visionEst = photonEstimatorFR.update();
         SmartDashboard.putBoolean("visionEst FR:", visionEst.isPresent());
+        Logger.recordOutput("visionEst FR", visionEst.isPresent());
         latestTimestamp = cameraFR.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampFR) > 1e-5;
         fieldObjectName = "VisionEstFR";
         break;
       case BL:
         visionEst = photonEstimatorBL.update();
+        Logger.recordOutput("visionEst BL", visionEst.isPresent());
         latestTimestamp = cameraBL.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampBL) > 1e-5;
         fieldObjectName = "VisionEstBL";
         break;
       case BR:
         visionEst = photonEstimatorBR.update();
+        Logger.recordOutput("visionEst BR", visionEst.isPresent());
         latestTimestamp = cameraBR.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampBR) > 1e-5;
         fieldObjectName = "VisionEstBR";
         break;
-      default:
+        /* default:
         visionEst = photonEstimator.update();
         latestTimestamp = camera.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
         fieldObjectName = "VisionEstimation";
-        break;
+        break; */
     }
 
     if (Robot.isSimulation()) {
@@ -311,6 +317,8 @@ public class PhotonVisionSubsystem extends SubsystemBase {
    *
    * @param estimatedPose The estimated pose to guess standard deviations for.
    */
+
+  /*
   public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose) {
     var estStdDevs = kSingleTagStdDevs;
     var targets = getLatestResult().getTargets();
@@ -333,7 +341,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
 
     return estStdDevs;
-  }
+  } */
 
   public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, CameraPosition camPos) {
     var estStdDevs = kSingleTagStdDevs;
@@ -342,7 +350,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     PhotonPoseEstimator thisPoseEstimator;
 
     switch (camPos) {
-      case FL:
+      default: // Front-left
         thisPoseEstimator = photonEstimatorFL;
         break;
       case FR:
@@ -354,9 +362,9 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       case BR:
         thisPoseEstimator = photonEstimatorBR;
         break;
-      default:
+        /* default:
         thisPoseEstimator = photonEstimator;
-        break;
+        break; */
     }
 
     double avgDist = 0;
@@ -385,7 +393,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
   public void periodic() {
 
     // Correct pose estimate with vision measurements
-    var visionEst = getEstimatedGlobalPose();
+    // var visionEst = getEstimatedGlobalPose();
     var visionEstFL = getEstimatedGlobalPose(CameraPosition.FL);
     var visionEstFR = getEstimatedGlobalPose(CameraPosition.FR);
     var visionEstBL = getEstimatedGlobalPose(CameraPosition.BL);
@@ -412,14 +420,14 @@ public class PhotonVisionSubsystem extends SubsystemBase {
       // debugField.getObject("EstimatedRobotModules").setPoses(drive.getModulePoses());
     }); */
 
-    visionEst.ifPresent(
-        est -> {
-          var estPose = est.estimatedPose.toPose2d();
-          Logger.recordOutput("Vision/estPoseBack", estPose);
-          var estStdDevs = getEstimationStdDevs(estPose);
-          drive.addVisionMeasurement(
-              est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-        });
+    /* visionEst.ifPresent(
+    est -> {
+      var estPose = est.estimatedPose.toPose2d();
+      Logger.recordOutput("Vision/estPoseBack", estPose);
+      var estStdDevs = getEstimationStdDevs(estPose);
+      drive.addVisionMeasurement(
+          est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+    }); */
 
     visionEstFL.ifPresent(
         est -> {

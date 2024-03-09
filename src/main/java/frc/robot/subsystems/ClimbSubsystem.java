@@ -77,7 +77,8 @@ public class ClimbSubsystem extends SubsystemBase {
     //   speed = 0;
     // }
 
-    m_WinchMotorRight.set(applyWinchLimits(false, speed));
+    // m_WinchMotorRight.set(applyWinchLimits(false, speed));
+    m_WinchMotorRight.set(speed);
   }
 
   public void setLeftWinchSpeed(double speed) {
@@ -99,7 +100,8 @@ public class ClimbSubsystem extends SubsystemBase {
     //   speed = 0;
     // }
 
-    m_WinchMotorLeft.set(applyWinchLimits(true, speed));
+    // m_WinchMotorLeft.set(applyWinchLimits(true, speed));
+    m_WinchMotorLeft.set(speed);
   }
 
   // public void setWinchVelocity(double velocity) {

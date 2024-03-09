@@ -389,7 +389,7 @@ public class Drive extends SubsystemBase {
     poseEstimator.addVisionMeasurement(visionPose, timestamp);
   }
 
-  //The following three functions are all for shooting calculations for both 
+  // The following three functions are all for shooting calculations for both
   public double getArmShootingAngle() {
     Pose2d current = getPose();
     Translation2d difference =

@@ -42,6 +42,9 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.flywheel.Flywheel;
 import frc.robot.subsystems.flywheel.FlywheelIO;
 import frc.robot.subsystems.flywheel.FlywheelIOSim;
+
+
+
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -80,7 +83,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(1),
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
- 
+
         flywheel = new Flywheel(new FlywheelIOSim());
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
@@ -161,8 +164,9 @@ public class RobotContainer {
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    
 
-    // SmartDashboard.putString("AutoCHOOSES", AutoBuilder.getAllAutoNames().toString());
+
 
     // Set up SysId routines
     /* autoChooser.addOption(

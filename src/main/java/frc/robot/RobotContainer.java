@@ -52,7 +52,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   // private final Flywheel flywheel;
-  private final ShooterSubsystem shooterSubsystem;
+  public ShooterSubsystem shooterSubsystem;
   private final ArmSubsystem armSubsystem;
   private final ClimbSubsystem climbSubsystem;
   private final PhotonVisionSubsystem vision;
@@ -143,7 +143,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "AutoTargetShoot", ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
 
-    NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem, true).withTimeout(3));
+    NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem).withTimeout(3));
 
     NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem).withTimeout(3));
 
@@ -152,7 +152,7 @@ public class RobotContainer {
         new SequentialCommandGroup(
                 new IntakeCommand(shooterSubsystem, false),
                 new ParallelDeadlineGroup(
-                    new ShootCommand(shooterSubsystem), new RevCommand(shooterSubsystem, false)))
+                    new ShootCommand(shooterSubsystem), new RevCommand(shooterSubsystem)))
             .withTimeout(3.0));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
@@ -234,6 +234,10 @@ public class RobotContainer {
         .rightBumper()
         .whileTrue(EasterEggs.WaterWalkToLocation(drive, FieldLocations.AMP));
 
+    driverController
+        .back()
+        .onTrue(Commands.runOnce(() -> drive.isUsingVision = !drive.isUsingVision, drive));
+
     driverController.povUp().onTrue(new InstantCommand(() -> ArmConstants.kVariable += 0.1));
     driverController.povDown().onTrue(new InstantCommand(() -> ArmConstants.kVariable -= 0.1));
     // Operator
@@ -271,7 +275,7 @@ public class RobotContainer {
     //             ClimbCommands.raiseToLowChain(climbSubsystem)));
 
     // Shooter and intake commands
-    operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem, false));
+    operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem));
 
     operatorController.rightBumper().whileTrue(new ShootCommand(shooterSubsystem));
     operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem, false));

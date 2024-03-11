@@ -10,12 +10,12 @@ import frc.robot.subsystems.ShooterSubsystem;
 /** An example command that uses an example subsystem. */
 public class IntakeCommand extends Command {
   ShooterSubsystem shooterSubsystem;
-  boolean stopShooter;
+  boolean noDeadline;
 
-  public IntakeCommand(ShooterSubsystem shooter, boolean stop) {
+  public IntakeCommand(ShooterSubsystem shooter, boolean noDeadline) {
     this.shooterSubsystem = shooter;
     addRequirements(shooterSubsystem);
-    stopShooter = stop;
+    this.noDeadline = noDeadline;
   }
 
   // Called when the command is initially scheduled.
@@ -44,6 +44,10 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooterSubsystem.intakeSensor.get();
+    if (!noDeadline) {
+      return shooterSubsystem.intakeSensor.get();
+    } else {
+      return false;
+    }
   }
 }

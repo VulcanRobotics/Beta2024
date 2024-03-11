@@ -5,35 +5,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
+import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
 public class RevCommand extends Command {
   ShooterSubsystem shooterSubsystem;
+  DoubleSupplier supplier;
 
-  boolean fullPower;
-
-  public RevCommand(ShooterSubsystem shooter, boolean Max) {
+  public RevCommand(ShooterSubsystem shooter) {
     this.shooterSubsystem = shooter;
-    fullPower = Max;
   }
 
   private double shootSpeed = 75;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (fullPower == true) {
+    /*if (fullPower == true) {
       shooterSubsystem.savedShootSpeed = 1;
-    }
+    }*/
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     shooterSubsystem.setShooterVelocity(
-        shooterSubsystem.savedShootSpeed); // shooterSubsystem.savedShootSpeed);
-    if (shooterSubsystem.getAverageShootSpeed() >= shootSpeed) {
+        Constants.ShooterConstants.kShooterTargetVelocity); // shooterSubsystem.savedShootSpeed);
+    if (shooterSubsystem.getAverageShootSpeed()
+        >= (Constants.ShooterConstants.kShooterTargetVelocity)) {
       shooterSubsystem.upToSpeed = true;
+    } else {
+      shooterSubsystem.upToSpeed = false;
     }
   }
 

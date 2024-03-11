@@ -25,7 +25,7 @@ public class EasterEggs {
       case AMP:
         river =
             PathPlannerPath.bezierFromPoses(
-                new Pose2d(new Translation2d(1.8, 7.29), new Rotation2d(0.0)),
+                new Pose2d(new Translation2d(1.8, 7.29), new Rotation2d(90.0)),
                 Constants.FieldConstants.kAmpPose);
         goal = new GoalEndState(0, Rotation2d.fromDegrees(90.0));
         break;

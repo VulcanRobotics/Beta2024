@@ -68,6 +68,7 @@ public class Drive extends SubsystemBase {
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   private final SysIdRoutine sysId;
+  public boolean isUsingVision = true;
 
   private InterpolatingDoubleTreeMap shooterTable = new InterpolatingDoubleTreeMap();
   private double[][] shooterValues = {
@@ -265,6 +266,7 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("Odometry X", poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
+    SmartDashboard.putBoolean("Vision On?", isUsingVision);
 
     Boolean redVar;
     if (Robot.isReal()) {
@@ -389,7 +391,7 @@ public class Drive extends SubsystemBase {
    * @param timestamp The timestamp of the vision measurement in seconds.
    */
   public void addVisionMeasurement(Pose2d visionPose, double timestamp) {
-    poseEstimator.addVisionMeasurement(visionPose, timestamp);
+    if (isUsingVision) poseEstimator.addVisionMeasurement(visionPose, timestamp);
   }
 
   // The following three functions are all for shooting calculations for both
@@ -448,7 +450,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> estStdDevs) {
-    poseEstimator.addVisionMeasurement(visionPose, timestamp, estStdDevs);
+    if (isUsingVision) poseEstimator.addVisionMeasurement(visionPose, timestamp, estStdDevs);
     m_field.getObject("vision estimate").setPose(visionPose);
     SmartDashboard.putNumber("Vision pose X:", visionPose.getX());
     SmartDashboard.putNumber("Vision pose Y:", visionPose.getY());

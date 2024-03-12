@@ -406,6 +406,7 @@ public class Drive extends SubsystemBase {
     // Commented out and replaced with interpolatingdoubletreemap on 3/8
     // double armDegrees = 2.32 + 19.8 * Math.log(distance);
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
+    SmartDashboard.putNumber("Target Arm Angle", armDegrees);
     return armDegrees;
   }
 

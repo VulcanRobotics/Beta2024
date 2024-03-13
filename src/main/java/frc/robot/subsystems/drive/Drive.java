@@ -409,7 +409,8 @@ public class Drive extends SubsystemBase {
   public double getArmShootingAngle() {
     Pose2d current = getPose();
     Translation2d difference =
-        (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red)
+        (DriverStation.getAlliance().isPresent()
+                && DriverStation.getAlliance().get() == Alliance.Red)
             ? Constants.FieldConstants.kSpeakerTargetPoseRed.minus(current.getTranslation())
             : Constants.FieldConstants.kSpeakerTargetPoseBlue.minus(current.getTranslation());
     double distance = Math.sqrt(Math.pow(difference.getX(), 2) + Math.pow(difference.getY(), 2));
@@ -430,7 +431,8 @@ public class Drive extends SubsystemBase {
   public Pose2d calculateShootingPose() {
     Pose2d current = getPose();
     Translation2d goal =
-        (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red)
+        (DriverStation.getAlliance().isPresent()
+                && DriverStation.getAlliance().get() == Alliance.Red)
             ? Constants.FieldConstants.kSpeakerTargetPoseRed
             : Constants.FieldConstants.kSpeakerTargetPoseBlue;
     Translation2d currentTranslation = current.getTranslation();
@@ -442,7 +444,8 @@ public class Drive extends SubsystemBase {
   public Translation2d calculateProjectedTargetPose() {
     var invert = (allianceColor == Alliance.Red) ? -1.0 : 1.0;
     Translation2d originalTargetTranslation =
-        (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red)
+        (DriverStation.getAlliance().isPresent()
+                && DriverStation.getAlliance().get() == Alliance.Red)
             ? Constants.FieldConstants.kSpeakerTargetPoseRed
             : Constants.FieldConstants.kSpeakerTargetPoseBlue;
     Translation2d currentRobotTranslation = getTranslation();

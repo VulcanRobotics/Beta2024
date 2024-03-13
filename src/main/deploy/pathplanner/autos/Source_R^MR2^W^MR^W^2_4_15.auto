@@ -94,6 +94,12 @@
                 "data": {
                   "name": "Intake"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "W^MR"
+                }
               }
             ]
           }

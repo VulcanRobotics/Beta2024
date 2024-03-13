@@ -403,16 +403,20 @@ public class Drive extends SubsystemBase {
             : Constants.FieldConstants.kSpeakerTargetPoseBlue.minus(current.getTranslation());
     double distance = Math.sqrt(Math.pow(difference.getX(), 2) + Math.pow(difference.getY(), 2));
     double armDegrees = shooterTable.get(distance);
-    // Commented out and replaced with interpolatingdoubletreemap on 3/8
-    // double armDegrees = 2.32 + 19.8 * Math.log(distance);
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
+    SmartDashboard.putNumber("Distance X", difference.getX());
+    SmartDashboard.putNumber("Distance Y", difference.getY());
     SmartDashboard.putNumber("Target Arm Angle", armDegrees);
+    SmartDashboard.putNumber("DISTANCE", distance);
     return armDegrees;
   }
 
   public Pose2d calculateShootingPose() {
     Pose2d current = getPose();
-    Translation2d goal = calculateProjectedTargetPose();
+    Translation2d goal =
+        (allianceColor == Alliance.Red)
+            ? Constants.FieldConstants.kSpeakerTargetPoseRed
+            : Constants.FieldConstants.kSpeakerTargetPoseBlue;
     Translation2d currentTranslation = current.getTranslation();
     goal = currentTranslation.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());

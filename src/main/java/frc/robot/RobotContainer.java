@@ -121,6 +121,7 @@ public class RobotContainer {
     // Set up auto routines
 
     NamedCommands.registerCommand("Intake", new IntakeCommand(shooterSubsystem, false));
+    NamedCommands.registerCommand("IntakeNoDeadline", new IntakeCommand(shooterSubsystem, true));
 
     NamedCommands.registerCommand(
         "RampShooter",

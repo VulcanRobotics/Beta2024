@@ -105,8 +105,7 @@ public class DriveToPosition extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
-    // return xController.atSetpoint() && yController.atSetpoint() && mAngleController.atSetpoint();
+    return xController.atSetpoint() && yController.atSetpoint() && mAngleController.atSetpoint();
   }
 
   @Override

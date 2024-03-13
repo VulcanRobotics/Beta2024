@@ -17,7 +17,7 @@ public class ShooterTargeting {
                 new DriveToPosition(drive, drive::calculateShootingPose),
                 new SetArmPosition(arm, drive::getArmShootingAngle),
                 new IntakeCommand(shooter, false))
-            .withTimeout(2),
+            .withTimeout(2.0),
         new ShootCommand(shooter));
 
     /*    `

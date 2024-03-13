@@ -167,7 +167,7 @@ public final class Constants {
     public static final double kArmPoseTrap = 85.0;
     public static final double kArmPoseSource = 63.8;
 
-    public static final double kArmPIDTolerance = 0.1;
+    public static final double kArmPIDTolerance = 1.0;
 
     public static final double kCanCoderToArmMotorRatio =
         (9.0 / 1.0) * (6.0 / 1.0) * (80.0 / 15.0) * (2.0 / 3.0);

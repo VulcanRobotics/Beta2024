@@ -31,8 +31,8 @@ public class ClimbCommands {
             climbSubsystem.setLeftWinchSpeed(speed);
             climbSubsystem.setRightWinchSpeed(0);
           } else {
-            climbSubsystem.setRightWinchSpeed(0);
-            climbSubsystem.setLeftWinchSpeed(0);
+            climbSubsystem.setRightWinchSpeed(speed);
+            climbSubsystem.setLeftWinchSpeed(speed);
           }
 
           SmartDashboard.putNumber("speed climb", speed);
@@ -48,7 +48,7 @@ public class ClimbCommands {
           if (1 - climb.m_WinchPotRight.get()
               < (Constants.ClimbConstants.WinchUpperRightLimit
                   - Constants.ClimbConstants.kRightTopDistanceFromChain)) {
-            climb.setRightWinchSpeed(-1.0);
+            climb.setRightWinchSpeed(1.0);
           } else {
             climb.setRightWinchSpeed(0.0);
           }
@@ -56,7 +56,7 @@ public class ClimbCommands {
           if (climb.m_WinchPotLeft.get()
               < (Constants.ClimbConstants.WinchUpperLeftLimit
                   + Constants.ClimbConstants.kLeftTopDistanceFromChain)) {
-            climb.setLeftWinchSpeed(-1.0);
+            climb.setLeftWinchSpeed(1.0);
           } else {
             climb.setLeftWinchSpeed(0.0);
           }

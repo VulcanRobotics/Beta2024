@@ -268,6 +268,15 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
     SmartDashboard.putBoolean("Vision On?", isUsingVision);
 
+    Logger.recordOutput("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
+    Logger.recordOutput("FL encoder val", modules[0].getPosition().angle.getDegrees());
+    Logger.recordOutput("FR encoder val", modules[1].getPosition().angle.getDegrees());
+    Logger.recordOutput("BL encoder val", modules[2].getPosition().angle.getDegrees());
+    Logger.recordOutput("BR encoder val", modules[3].getPosition().angle.getDegrees());
+    Logger.recordOutput("Odometry X", poseEstimator.getEstimatedPosition().getX());
+    Logger.recordOutput("Odometry Y", poseEstimator.getEstimatedPosition().getY());
+    Logger.recordOutput("Vision On?", isUsingVision);
+
     Boolean redVar;
     if (Robot.isReal()) {
       if (DriverStation.getAlliance().get() == Alliance.Red) {
@@ -285,7 +294,7 @@ public class Drive extends SubsystemBase {
       }
     }
 
-    Logger.recordOutput("Alliance", redVar);
+    Logger.recordOutput("Alliance Red?", redVar);
     SmartDashboard.putBoolean("Alliance Red?", redVar);
   }
 
@@ -408,6 +417,11 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Distance Y", difference.getY());
     SmartDashboard.putNumber("Target Arm Angle", armDegrees);
     SmartDashboard.putNumber("DISTANCE", distance);
+
+    Logger.recordOutput("Distance X", difference.getX());
+    Logger.recordOutput("Distance Y", difference.getY());
+    Logger.recordOutput("Target Arm Angle", armDegrees);
+
     return armDegrees;
   }
 
@@ -443,6 +457,7 @@ public class Drive extends SubsystemBase {
     double Ts = ((k2 + sqrt(sqr(k2) + 4 * k3 * k1)) / (2 * k3));
     Translation2d projTarget = new Translation2d(Vx * Ts * invert + Xt, Vy * Ts * invert + Yt);
     SmartDashboard.putNumber("New Target X", projTarget.getY());
+    Logger.recordOutput("projTarget", projTarget);
     return projTarget;
   }
 

@@ -18,7 +18,7 @@ public class ShooterTargeting {
                 new SetArmPosition(arm, drive::getArmShootingAngle),
                 new IntakeCommand(shooter, false))
             .withTimeout(2.0),
-        new ShootCommand(shooter));
+        new ShootCommand(shooter, arm));
 
     /*    `
     return new SequentialCommandGroup(

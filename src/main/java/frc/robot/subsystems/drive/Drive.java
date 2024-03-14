@@ -68,7 +68,8 @@ public class Drive extends SubsystemBase {
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   private final SysIdRoutine sysId;
-  public boolean isUsingVision = true;
+  public boolean isUsingVision = false;
+  public double armAngleOffset = 0.0;
 
   private InterpolatingDoubleTreeMap shooterTable = new InterpolatingDoubleTreeMap();
   private double[][] shooterValues = {
@@ -267,6 +268,7 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putNumber("Odometry X", poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
     SmartDashboard.putBoolean("Vision On?", isUsingVision);
+    SmartDashboard.putNumber("Arm angle offset", armAngleOffset);
 
     Logger.recordOutput("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
     Logger.recordOutput("FL encoder val", modules[0].getPosition().angle.getDegrees());
@@ -276,6 +278,7 @@ public class Drive extends SubsystemBase {
     Logger.recordOutput("Odometry X", poseEstimator.getEstimatedPosition().getX());
     Logger.recordOutput("Odometry Y", poseEstimator.getEstimatedPosition().getY());
     Logger.recordOutput("Vision On?", isUsingVision);
+    Logger.recordOutput("Arm angle offset", armAngleOffset);
 
     Boolean redVar;
     if (Robot.isReal()) {
@@ -414,12 +417,13 @@ public class Drive extends SubsystemBase {
             ? Constants.FieldConstants.kSpeakerTargetPoseRed.minus(current.getTranslation())
             : Constants.FieldConstants.kSpeakerTargetPoseBlue.minus(current.getTranslation());
     double distance = Math.sqrt(Math.pow(difference.getX(), 2) + Math.pow(difference.getY(), 2));
-    double armDegrees = shooterTable.get(distance);
+    double armDegrees =
+        shooterTable.get(distance) + armAngleOffset; // armAngleOffset should start at 0.0
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
-    SmartDashboard.putNumber("Distance X", difference.getX());
+    /*SmartDashboard.putNumber("Distance X", difference.getX());
     SmartDashboard.putNumber("Distance Y", difference.getY());
     SmartDashboard.putNumber("Target Arm Angle", armDegrees);
-    SmartDashboard.putNumber("DISTANCE", distance);
+    SmartDashboard.putNumber("DISTANCE", distance); */
 
     Logger.recordOutput("Distance X", difference.getX());
     Logger.recordOutput("Distance Y", difference.getY());

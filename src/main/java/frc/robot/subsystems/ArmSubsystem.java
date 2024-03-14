@@ -22,6 +22,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
 
+  public boolean inAmpPosition = false;
+
   public final double topLimit = 87.5;
   public final double botLimit = 0.0;
 
@@ -111,6 +113,12 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
+
+    if (getArmEncoder() > 70.0) {
+      inAmpPosition = true;
+    } else {
+      inAmpPosition = false;
+    }
     Logger.recordOutput("Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm Encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());

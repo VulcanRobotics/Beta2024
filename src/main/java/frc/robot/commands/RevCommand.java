@@ -6,16 +6,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
 public class RevCommand extends Command {
   ShooterSubsystem shooterSubsystem;
+  ArmSubsystem armSubsystem;
   DoubleSupplier supplier;
 
-  public RevCommand(ShooterSubsystem shooter) {
+  public RevCommand(ShooterSubsystem shooter, ArmSubsystem arm) {
     this.shooterSubsystem = shooter;
+    this.armSubsystem = arm;
   }
 
   private double shootSpeed = 75;
@@ -30,10 +33,12 @@ public class RevCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSubsystem.setShooterVelocity(
-        Constants.ShooterConstants.kShooterTargetVelocity); // shooterSubsystem.savedShootSpeed);
-    if (shooterSubsystem.getAverageShootSpeed()
-        >= (Constants.ShooterConstants.kShooterTargetVelocity)) {
+    double velocity =
+        (armSubsystem.inAmpPosition)
+            ? Constants.ShooterConstants.kShooterTargetVelocity * 0.2
+            : Constants.ShooterConstants.kShooterTargetVelocity;
+    shooterSubsystem.setShooterVelocity(velocity); // shooterSubsystem.savedShootSpeed);
+    if (shooterSubsystem.getAverageShootSpeed() >= (velocity)) {
       shooterSubsystem.upToSpeed = true;
     } else {
       shooterSubsystem.upToSpeed = false;

@@ -60,7 +60,7 @@ public final class Constants {
 
     private static final double TRACK_WIDTH_X = Units.inchesToMeters(25.0);
     private static final double TRACK_WIDTH_Y = Units.inchesToMeters(25.0);
-    private static final double PI = 3.1415926535;
+    private static final double PI = Math.PI;
 
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
     public static final Transform3d kRobotToCam =
@@ -133,11 +133,11 @@ public final class Constants {
     public static final double kLeftTopDistanceFromChain = 0.1;
     public static final double kRightTopDistanceFromChain = 0.1;
 
-    public static final double WinchLowerLeftLimit = 0.1001;
-    public static final double WinchUpperLeftLimit = 0.622;
+    public static final double WinchLowerLeftLimit = 0.14;
+    public static final double WinchUpperLeftLimit = 0.703;
 
-    public static final double WinchLowerRightLimit = 0.9908;
-    public static final double WinchUpperRightLimit = 0.9954;
+    public static final double WinchLowerRightLimit = 0.076;
+    public static final double WinchUpperRightLimit = 0.203;
   }
 
   public final class ArmConstants {
@@ -194,7 +194,7 @@ public final class Constants {
     public static final Pose2d kSpeakerPose =
         new Pose2d(new Translation2d(1.37, 5.56), new Rotation2d(0));
     public static final Pose2d kAmpPose =
-        new Pose2d(new Translation2d(1.8, 7.6), new Rotation2d(Math.PI / 2));
+        new Pose2d(new Translation2d(1.8, 7.6), new Rotation2d(-Math.PI / 2));
     public static final Pose2d kSourcePose =
         new Pose2d(new Translation2d(15.4, 1.07), new Rotation2d(-Math.PI / 4));
   }

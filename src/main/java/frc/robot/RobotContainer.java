@@ -145,16 +145,19 @@ public class RobotContainer {
         "AutoTargetShoot",
         ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3.0));
 
-    NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem).withTimeout(3));
+    NamedCommands.registerCommand(
+        "Rev", new RevCommand(shooterSubsystem, armSubsystem).withTimeout(3));
 
-    NamedCommands.registerCommand("Shoot", new ShootCommand(shooterSubsystem).withTimeout(3));
+    NamedCommands.registerCommand(
+        "Shoot", new ShootCommand(shooterSubsystem, armSubsystem).withTimeout(3));
 
     NamedCommands.registerCommand(
         "RevShoot",
         new SequentialCommandGroup(
                 new IntakeCommand(shooterSubsystem, false),
                 new ParallelDeadlineGroup(
-                    new ShootCommand(shooterSubsystem), new RevCommand(shooterSubsystem)))
+                    new ShootCommand(shooterSubsystem, armSubsystem),
+                    new RevCommand(shooterSubsystem, armSubsystem)))
             .withTimeout(3.0));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
@@ -277,9 +280,9 @@ public class RobotContainer {
     //             ClimbCommands.raiseToLowChain(climbSubsystem)));
 
     // Shooter and intake commands
-    operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem));
+    operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem, armSubsystem));
 
-    operatorController.rightBumper().whileTrue(new ShootCommand(shooterSubsystem));
+    operatorController.rightBumper().whileTrue(new ShootCommand(shooterSubsystem, armSubsystem));
     operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem, false));
     operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController
@@ -287,8 +290,9 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  shooterSubsystem.savedShootSpeed =
-                      Math.max(shooterSubsystem.savedShootSpeed -= 0.1, 0);
+                  //                  shooterSubsystem.savedShootSpeed =
+                  //                      Math.max(shooterSubsystem.savedShootSpeed -= 0.1, 0);
+                  drive.armAngleOffset += 0.5;
                 }));
 
     operatorController
@@ -296,8 +300,9 @@ public class RobotContainer {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  shooterSubsystem.savedShootSpeed =
-                      Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
+                  //                  shooterSubsystem.savedShootSpeed =
+                  //                      Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
+                  drive.armAngleOffset -= 0.5;
                 }));
   }
 

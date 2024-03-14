@@ -30,19 +30,19 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
               {
                 "type": "path",
                 "data": {
                   "pathName": "SR^R"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
                 }
               },
               {
@@ -61,7 +61,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -73,7 +73,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "IntakeNoDeadline"
                 }
               },
               {
@@ -92,7 +92,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -110,7 +110,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "IntakeNoDeadline"
                 }
               }
             ]
@@ -135,7 +135,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "IntakeNoDeadline"
                 }
               },
               {

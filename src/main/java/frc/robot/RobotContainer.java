@@ -142,7 +142,8 @@ public class RobotContainer {
         "ArmToAmp", new SetArmPosition(armSubsystem, () -> 90).withTimeout(2));
 
     NamedCommands.registerCommand(
-        "AutoTargetShoot", ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem));
+        "AutoTargetShoot",
+        ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3.0));
 
     NamedCommands.registerCommand("Rev", new RevCommand(shooterSubsystem).withTimeout(3));
 

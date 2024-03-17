@@ -111,7 +111,7 @@ public final class Constants {
     public static final Matrix<N3, N1> kSingleTagStdDevs =
         VecBuilder.fill(4.0, 4.0, 8.0); // VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs =
-        VecBuilder.fill(0.5, 0.5, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
+        VecBuilder.fill(0.4, 0.4, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
   }
 
   public final class ShooterConstants {

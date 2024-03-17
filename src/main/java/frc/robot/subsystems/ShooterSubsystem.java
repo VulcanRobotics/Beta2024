@@ -90,5 +90,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     Logger.recordOutput("Avg Shooter Velocity", getAverageShootSpeed());
     Logger.recordOutput("Shooter up to speed", upToSpeed);
+    Logger.recordOutput("Photogate", intakeSensor.get());
+    Logger.recordOutput("Feeder Motor Speed", feederMotor.get());
   }
 }

@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.Constants;
 import frc.robot.subsystems.ClimbSubsystem;
 import java.util.function.DoubleSupplier;
 
@@ -45,21 +44,8 @@ public class ClimbCommands {
   public static Command raiseToLowChain(ClimbSubsystem climb) {
     return Commands.run(
         () -> {
-          if (1 - climb.m_WinchPotRight.get()
-              < (Constants.ClimbConstants.WinchUpperRightLimit
-                  - Constants.ClimbConstants.kRightTopDistanceFromChain)) {
-            climb.setRightWinchSpeed(1.0);
-          } else {
-            climb.setRightWinchSpeed(0.0);
-          }
-
-          if (climb.m_WinchPotLeft.get()
-              < (Constants.ClimbConstants.WinchUpperLeftLimit
-                  + Constants.ClimbConstants.kLeftTopDistanceFromChain)) {
-            climb.setLeftWinchSpeed(1.0);
-          } else {
-            climb.setLeftWinchSpeed(0.0);
-          }
+          climb.setLeftWinchSpeed(1.0);
+          climb.setRightWinchSpeed(1.0);
         },
         climb);
   }

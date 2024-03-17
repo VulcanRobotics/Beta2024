@@ -241,7 +241,9 @@ public class RobotContainer {
 
     driverController
         .back()
-        .onTrue(Commands.runOnce(() -> drive.isUsingVision = !drive.isUsingVision, drive));
+        .onTrue(
+            Commands.runOnce(() -> drive.isUsingVision = !drive.isUsingVision, drive)
+                .ignoringDisable(true));
 
     driverController.povUp().onTrue(new InstantCommand(() -> ArmConstants.kVariable += 0.1));
     driverController.povDown().onTrue(new InstantCommand(() -> ArmConstants.kVariable -= 0.1));
@@ -271,13 +273,20 @@ public class RobotContainer {
     operatorController
         .y()
         .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseSource));
+    operatorController
+        .b()
+        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPosePodium));
 
-    // operatorController
-    //     .b()
-    //     .whileTrue(
-    //         new ParallelCommandGroup(
-    //             new SetArmPosition(armSubsystem, () -> Constants.ArmConstants.kArmPoseAmp),
-    //             ClimbCommands.raiseToLowChain(climbSubsystem)));
+    operatorController
+        .rightStick()
+        .onTrue(Commands.runOnce(() -> shooterSubsystem.SetIntake(-0.02f), shooterSubsystem));
+
+    operatorController
+        .button(8)
+        .whileTrue(
+            new ParallelCommandGroup(
+                new SetArmPosition(armSubsystem, () -> Constants.ArmConstants.kArmPoseAmp),
+                ClimbCommands.raiseToLowChain(climbSubsystem)));
 
     // Shooter and intake commands
     operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem, armSubsystem));
@@ -292,7 +301,7 @@ public class RobotContainer {
                 () -> {
                   //                  shooterSubsystem.savedShootSpeed =
                   //                      Math.max(shooterSubsystem.savedShootSpeed -= 0.1, 0);
-                  drive.armAngleOffset += 0.5;
+                  drive.armAngleOffset += 1.0;
                 }));
 
     operatorController
@@ -302,7 +311,7 @@ public class RobotContainer {
                 () -> {
                   //                  shooterSubsystem.savedShootSpeed =
                   //                      Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
-                  drive.armAngleOffset -= 0.5;
+                  drive.armAngleOffset -= 1.0;
                 }));
   }
 

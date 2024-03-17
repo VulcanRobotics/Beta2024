@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3725925246794313,
-      "y": 5.554193612600709
+      "x": 0.7286037676340754,
+      "y": 4.381310738924795
     },
-    "rotation": 0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "C_StraightAndBack"
+                  "pathName": "SR^MR"
                 }
               },
               {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Back To Speaker"
+                  "pathName": "UnderStage"
                 }
               },
               {
@@ -70,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -80,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SC^L"
+                  "pathName": "Stage^MR3"
                 }
               },
               {
@@ -99,51 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Back To Speaker"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeNoDeadline"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SC^R"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeNoDeadline"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Back To Speaker"
+                  "pathName": "UnderStage"
                 }
               },
               {
@@ -158,12 +114,12 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
           }
         }
       ]
     }
   },
-  "folder": "Advanced Short Autons",
+  "folder": "Advanced Long Autons",
   "choreoAuto": false
 }

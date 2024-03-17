@@ -35,7 +35,7 @@ public class RevCommand extends Command {
   public void execute() {
     double velocity =
         (armSubsystem.inAmpPosition)
-            ? Constants.ShooterConstants.kShooterTargetVelocity * 0.2
+            ? Constants.ShooterConstants.kShooterTargetVelocity * 0.3
             : Constants.ShooterConstants.kShooterTargetVelocity;
     shooterSubsystem.setShooterVelocity(velocity); // shooterSubsystem.savedShootSpeed);
     if (shooterSubsystem.getAverageShootSpeed() >= (velocity)) {

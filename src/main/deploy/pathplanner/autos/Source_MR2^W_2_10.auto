@@ -36,7 +36,26 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SR^MR2^SR"
+                  "pathName": "SR^MR2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MR2^W"
                 }
               },
               {
@@ -51,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoTargetShoot"
           }
         }
       ]

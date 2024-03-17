@@ -50,9 +50,9 @@ public class ClimbSubsystem extends SubsystemBase {
         return speed;
       }
     } else {
-      if (m_WinchPotRight.get() > Constants.ClimbConstants.WinchUpperRightLimit && speed > 0.0) {
+      if (m_WinchPotRight.get() < Constants.ClimbConstants.WinchUpperRightLimit && speed > 0.0) {
         return 0.0;
-      } else if (m_WinchPotRight.get() < Constants.ClimbConstants.WinchLowerRightLimit
+      } else if (m_WinchPotRight.get() > Constants.ClimbConstants.WinchLowerRightLimit
           && speed < 0.0) {
         return 0.0;
       } else {

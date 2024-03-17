@@ -109,9 +109,9 @@ public final class Constants {
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs =
-        VecBuilder.fill(6, 6, 12); // VecBuilder.fill(4, 4, 8);
+        VecBuilder.fill(4.0, 4.0, 8.0); // VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs =
-        VecBuilder.fill(1, 1, 2); // VecBuilder.fill(0.5, 0.5, 1);
+        VecBuilder.fill(0.5, 0.5, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
   }
 
   public final class ShooterConstants {
@@ -130,14 +130,14 @@ public final class Constants {
   public final class ClimbConstants {
     public static final double kClimbUpperLimitLeft = 748.43;
     public static final double kClimbUpperLimitRight = 767.0239;
-    public static final double kLeftTopDistanceFromChain = 0.1;
-    public static final double kRightTopDistanceFromChain = 0.1;
+    public static final double kLeftTopDistanceFromChain = 0.0;
+    public static final double kRightTopDistanceFromChain = 0.0;
 
-    public static final double WinchLowerLeftLimit = 0.14;
-    public static final double WinchUpperLeftLimit = 0.703;
+    public static final double WinchLowerLeftLimit = 0.087;
+    public static final double WinchUpperLeftLimit = 0.625;
 
-    public static final double WinchLowerRightLimit = 0.076;
-    public static final double WinchUpperRightLimit = 0.203;
+    public static final double WinchLowerRightLimit = 0.8587;
+    public static final double WinchUpperRightLimit = 0.3345;
   }
 
   public final class ArmConstants {
@@ -163,11 +163,12 @@ public final class Constants {
     public static final boolean kArm2Inverted = true;
 
     // Fill these with actual values (now in degrees!)
-    public static final double kArmPoseAmp = 85.0;
+    public static final double kArmPoseAmp = 82.0;
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
-    public static final double kArmPoseTrap = 85.0;
+    public static final double kArmPoseTrap = 87.0;
     public static final double kArmPoseSource = 63.8;
+    public static final double kArmPosePodium = 26.0;
 
     public static final double kArmPIDTolerance = 1.0;
 

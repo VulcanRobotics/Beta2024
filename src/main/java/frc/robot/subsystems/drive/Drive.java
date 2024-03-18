@@ -420,10 +420,6 @@ public class Drive extends SubsystemBase {
     double armDegrees =
         shooterTable.get(distance) + armAngleOffset; // armAngleOffset should start at 0.0
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
-    /*SmartDashboard.putNumber("Distance X", difference.getX());
-    SmartDashboard.putNumber("Distance Y", difference.getY());
-    SmartDashboard.putNumber("Target Arm Angle", armDegrees);
-    SmartDashboard.putNumber("DISTANCE", distance); */
 
     Logger.recordOutput("Distance X", difference.getX());
     Logger.recordOutput("Distance Y", difference.getY());
@@ -434,11 +430,11 @@ public class Drive extends SubsystemBase {
 
   public Pose2d calculateShootingPose() {
     Pose2d current = getPose();
-    Translation2d goal =
-        (DriverStation.getAlliance().isPresent()
-                && DriverStation.getAlliance().get() == Alliance.Red)
-            ? Constants.FieldConstants.kSpeakerTargetPoseRed
-            : Constants.FieldConstants.kSpeakerTargetPoseBlue;
+    Translation2d goal = calculateProjectedTargetPose();
+    /*  (DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == Alliance.Red)
+    ? Constants.FieldConstants.kSpeakerTargetPoseRed
+    : Constants.FieldConstants.kSpeakerTargetPoseBlue; */
     Translation2d currentTranslation = current.getTranslation();
     goal = currentTranslation.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());
@@ -453,7 +449,7 @@ public class Drive extends SubsystemBase {
             ? Constants.FieldConstants.kSpeakerTargetPoseRed
             : Constants.FieldConstants.kSpeakerTargetPoseBlue;
     Translation2d currentRobotTranslation = getTranslation();
-    double Vs = 10.0; // m/s
+    double Vs = 17.5; // m/s
     double Xr = currentRobotTranslation.getX();
     double Yr = currentRobotTranslation.getY();
     double Xt = originalTargetTranslation.getX();
@@ -464,7 +460,8 @@ public class Drive extends SubsystemBase {
     double k2 = (2 * Vx * Xt - 2 * Vx * Xr + 2 * Vy * Yt - 2 * Vy * Yr);
     double k3 = (sqr(Vs) - (sqr(Vx) + sqr(Vy)));
     double Ts = ((k2 + sqrt(sqr(k2) + 4 * k3 * k1)) / (2 * k3));
-    Translation2d projTarget = new Translation2d(Vx * Ts * invert + Xt, Vy * Ts * invert + Yt);
+    Translation2d projTarget =
+        new Translation2d(2 * Vx * Ts * invert + Xt, 2 * Vy * Ts * invert + Yt);
     SmartDashboard.putNumber("New Target X", projTarget.getY());
     Logger.recordOutput("projTarget", projTarget);
     return projTarget;

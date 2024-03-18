@@ -57,7 +57,7 @@ public class EasterEggs {
     return AutoBuilder.followPath(path);
   }
 
-  public static Command WaterWalkPath() {
+  public static Command pathfindExample() {
     Pose2d targetPose = new Pose2d(1.3, 5, Rotation2d.fromDegrees(180));
 
     PathConstraints constraints =

@@ -8,17 +8,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
 
 /** An example command that uses an example subsystem. */
 public class RevCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   ArmSubsystem armSubsystem;
+  Drive drive;
   DoubleSupplier supplier;
 
-  public RevCommand(ShooterSubsystem shooter, ArmSubsystem arm) {
+  public RevCommand(ShooterSubsystem shooter, ArmSubsystem arm, Drive drive) {
     this.shooterSubsystem = shooter;
     this.armSubsystem = arm;
+    this.drive = drive;
   }
 
   private double shootSpeed = 75;
@@ -37,6 +40,11 @@ public class RevCommand extends Command {
         (armSubsystem.inAmpPosition)
             ? Constants.ShooterConstants.kShooterTargetVelocity * 1.0
             : Constants.ShooterConstants.kShooterTargetVelocity;
+
+    if (drive.getPose().getX() < 10.75 && drive.getPose().getX() > 5.85) {
+      velocity = 50;
+    }
+
     shooterSubsystem.setShooterVelocity(velocity); // shooterSubsystem.savedShootSpeed);
     if (shooterSubsystem.getAverageShootSpeed() >= (velocity)) {
       shooterSubsystem.upToSpeed = true;

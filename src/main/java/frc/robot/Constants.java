@@ -109,7 +109,7 @@ public final class Constants {
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs =
-        VecBuilder.fill(4.0, 4.0, 8.0); // VecBuilder.fill(4, 4, 8);
+        VecBuilder.fill(3.0, 3.0, 8.0); // VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs =
         VecBuilder.fill(0.4, 0.4, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
   }
@@ -118,13 +118,14 @@ public final class Constants {
     public static final int kGuideMotorPort = 17;
     public static final int kFollowMotorPort = 16;
 
-    public static final int kIntakeMotor = 18;
+    public static final int kIntakeUpperMotor = 18;
+    public static final int kIntakeLowerMotor = 20;
     public static final int kFeederMotor = 19;
 
     public static final int kPhotogatePort = 0;
 
     public static final double kShooterTargetVelocity =
-        95; // RPS, was 100, but feeder wouldn't spin sometimes
+        30.0; // RPS, was 100, but feeder wouldn't spin sometimes
   }
 
   public final class ClimbConstants {

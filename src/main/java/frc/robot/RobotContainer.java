@@ -15,6 +15,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -60,6 +61,7 @@ public class RobotContainer {
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
+  private final CommandXboxController buttonBoard = new CommandXboxController(2);
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -120,8 +122,8 @@ public class RobotContainer {
 
     // Set up auto routines
 
-    NamedCommands.registerCommand("Intake", new IntakeCommand(shooterSubsystem, false));
-    NamedCommands.registerCommand("IntakeNoDeadline", new IntakeCommand(shooterSubsystem, true));
+    NamedCommands.registerCommand("Intake", new IntakeCommand(shooterSubsystem));
+    NamedCommands.registerCommand("IntakeNoDeadline", new IntakeCommand(shooterSubsystem));
 
     NamedCommands.registerCommand(
         "RampShooter",
@@ -146,18 +148,18 @@ public class RobotContainer {
         ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3.0));
 
     NamedCommands.registerCommand(
-        "Rev", new RevCommand(shooterSubsystem, armSubsystem).withTimeout(3));
+        "Rev", new RevCommand(shooterSubsystem, armSubsystem, drive).withTimeout(3));
 
     NamedCommands.registerCommand(
-        "Shoot", new ShootCommand(shooterSubsystem, armSubsystem).withTimeout(3));
+        "Shoot", new ShootCommand(shooterSubsystem, armSubsystem, drive).withTimeout(3));
 
     NamedCommands.registerCommand(
         "RevShoot",
         new SequentialCommandGroup(
-                new IntakeCommand(shooterSubsystem, false),
+                new IntakeCommand(shooterSubsystem),
                 new ParallelDeadlineGroup(
-                    new ShootCommand(shooterSubsystem, armSubsystem),
-                    new RevCommand(shooterSubsystem, armSubsystem)))
+                    new ShootCommand(shooterSubsystem, armSubsystem, drive),
+                    new RevCommand(shooterSubsystem, armSubsystem, drive)))
             .withTimeout(3.0));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
@@ -236,8 +238,19 @@ public class RobotContainer {
                 drive));
 
     driverController
-        .rightBumper()
+        .leftBumper()
         .whileTrue(EasterEggs.WaterWalkToLocation(drive, FieldLocations.AMP));
+
+    driverController
+        .rightBumper()
+        .whileTrue(ShooterTargeting.shuttleShoot(drive, shooterSubsystem, armSubsystem));
+
+    driverController
+        .rightTrigger()
+        .whileTrue(
+            new ParallelCommandGroup(
+                new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseIntake),
+                new IntakeCommand(shooterSubsystem)));
 
     driverController
         .back()
@@ -247,6 +260,7 @@ public class RobotContainer {
 
     driverController.povUp().onTrue(new InstantCommand(() -> ArmConstants.kVariable += 0.1));
     driverController.povDown().onTrue(new InstantCommand(() -> ArmConstants.kVariable -= 0.1));
+
     // Operator
 
     armSubsystem.setDefaultCommand(
@@ -262,6 +276,64 @@ public class RobotContainer {
 
     /*operatorController.povRight().onTrue(new InstantCommand(() -> climbSubsystem.winchDown()));
     operatorController.povLeft().onTrue(new InstantCommand(() -> climbSubsystem.winchUp()));*/
+
+    // Button Board
+
+    buttonBoard
+        .a()
+        .whileTrue(
+            new InstantCommand(
+                () -> {
+                  shooterSubsystem.SetIntakeMotor("Upper", shooterSubsystem.savedIntakeUpperSpeed);
+                  shooterSubsystem.SetFeeder(-0.5f);
+                }));
+    buttonBoard
+        .b()
+        .whileTrue(
+            new InstantCommand(
+                () -> {
+                  shooterSubsystem.SetIntakeMotor("Lower", shooterSubsystem.savedIntakeLowerSpeed);
+                  shooterSubsystem.SetFeeder(-0.5f);
+                }));
+
+    buttonBoard
+        .a()
+        .onFalse(
+            new InstantCommand(
+                () -> {
+                  shooterSubsystem.SetIntakeMotor("Upper", 0);
+                  shooterSubsystem.SetFeeder(0);
+                }));
+    buttonBoard
+        .b()
+        .onFalse(
+            new InstantCommand(
+                () -> {
+                  shooterSubsystem.SetIntakeMotor("Lower", 0);
+                  shooterSubsystem.SetFeeder(0);
+                }));
+
+    buttonBoard
+        .povUp()
+        .onTrue(
+            new InstantCommand(
+                () -> MathUtil.clamp(shooterSubsystem.savedIntakeUpperSpeed += 0.1, -1, 0)));
+    buttonBoard
+        .povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> MathUtil.clamp(shooterSubsystem.savedIntakeUpperSpeed -= 0.1, -1, 0)));
+
+    buttonBoard
+        .povRight()
+        .onTrue(
+            new InstantCommand(
+                () -> MathUtil.clamp(shooterSubsystem.savedIntakeLowerSpeed += 0.1, -1, 0)));
+    buttonBoard
+        .povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> MathUtil.clamp(shooterSubsystem.savedIntakeLowerSpeed -= 0.1, -1, 0)));
 
     // Manual Arm Controls
     operatorController
@@ -289,10 +361,14 @@ public class RobotContainer {
                 ClimbCommands.raiseToLowChain(climbSubsystem)));
 
     // Shooter and intake commands
-    operatorController.rightTrigger().whileTrue(new RevCommand(shooterSubsystem, armSubsystem));
+    operatorController
+        .rightTrigger()
+        .whileTrue(new RevCommand(shooterSubsystem, armSubsystem, drive));
 
-    operatorController.rightBumper().whileTrue(new ShootCommand(shooterSubsystem, armSubsystem));
-    operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem, false));
+    operatorController
+        .rightBumper()
+        .whileTrue(new ShootCommand(shooterSubsystem, armSubsystem, drive));
+    operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem));
     operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController
         .povDown()

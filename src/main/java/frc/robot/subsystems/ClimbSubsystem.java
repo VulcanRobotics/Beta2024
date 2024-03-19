@@ -19,6 +19,9 @@ public class ClimbSubsystem extends SubsystemBase {
   public final AnalogPotentiometer m_WinchPotRight = new AnalogPotentiometer(1);
   public final AnalogPotentiometer m_WinchPotLeft = new AnalogPotentiometer(0);
 
+  public final AnalogPotentiometer m_WinchStringPotRight = new AnalogPotentiometer(3);
+  public final AnalogPotentiometer m_WinchStringPotLeft = new AnalogPotentiometer(2);
+
   public final TalonFX m_WinchMotorRight = new TalonFX(12, "rio");
   public final TalonFX m_WinchMotorLeft = new TalonFX(11, "rio");
 
@@ -79,8 +82,12 @@ public class ClimbSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("LeftClimbValue",
     // m_WinchMotorLeft.getPosition().getValueAsDouble());
-    SmartDashboard.putNumber("Right Potentiometer", m_WinchPotRight.get());
-    SmartDashboard.putNumber("Left Potentiometer", m_WinchPotLeft.get());
+    // SmartDashboard.putNumber("Right Potentiometer", m_WinchPotRight.get());
+    // SmartDashboard.putNumber("Left Potentiometer", m_WinchPotLeft.get());
+
+    SmartDashboard.putNumber("Right Potentiometer", m_WinchStringPotRight.get());
+    SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
+
     Logger.recordOutput("LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());
     Logger.recordOutput("RightClimbValue", m_WinchMotorRight.getPosition().getValueAsDouble());
     Logger.recordOutput("LeftPotClimbValue", m_WinchPotLeft.get());

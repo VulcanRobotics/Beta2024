@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
 import org.littletonrobotics.junction.Logger;
 
@@ -22,12 +21,20 @@ public class ShooterSubsystem extends SubsystemBase {
   private VelocityVoltage m_request = new VelocityVoltage(0);
   private Follower m_follow = new Follower(ShooterConstants.kGuideMotorPort, false);
 
-  CANSparkMax intakeMotor = new CANSparkMax(ShooterConstants.kIntakeMotor, MotorType.kBrushless);
+  CANSparkMax intakeUpperMotor =
+      new CANSparkMax(ShooterConstants.kIntakeUpperMotor, MotorType.kBrushless);
+  CANSparkMax intakeLowerMotor =
+      new CANSparkMax(ShooterConstants.kIntakeLowerMotor, MotorType.kBrushless);
+
   CANSparkMax feederMotor = new CANSparkMax(ShooterConstants.kFeederMotor, MotorType.kBrushless);
 
   public DigitalInput intakeSensor = new DigitalInput(ShooterConstants.kPhotogatePort);
 
   public double savedShootSpeed = ShooterConstants.kShooterTargetVelocity; // 1.0
+
+  public float savedIntakeUpperSpeed = 0;
+  public float savedIntakeLowerSpeed = 0;
+
   public boolean upToSpeed;
 
   public ShooterSubsystem() {
@@ -42,12 +49,19 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void SetFeeder(float speed) {
-    speed = (Constants.name == "Swift") ? speed : -speed;
-    feederMotor.set(speed);
+    // speed = (Constants.name == "Swift") ? -speed : -speed;
+    feederMotor.set(-speed);
   }
 
   public void SetIntake(float speed) {
-    intakeMotor.set(speed);
+    intakeUpperMotor.set(speed);
+    intakeLowerMotor.set(-speed);
+  }
+
+  public void SetIntakeMotor(String motor, float speed) {
+    if (motor == "Upper") {
+      intakeUpperMotor.set(speed);
+    } else intakeLowerMotor.set(-speed);
   }
 
   public void SetShooter(double speed) {
@@ -78,7 +92,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     if (intakeSensor.get()) {
       setLED(-0.07);
-    } else if (intakeMotor.get() != 0) {
+    } else if (intakeUpperMotor.get() != 0) {
       setLED(-0.25);
     } else {
       setLED(0.87);
@@ -87,6 +101,9 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Avg Shoot Velocity", getAverageShootSpeed());
     // SmartDashboard.putNumber("m1 velocity", leftMotor.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Shooter up to Speed", upToSpeed);
+
+    SmartDashboard.putNumber("Upper Intake Speed", savedIntakeUpperSpeed);
+    SmartDashboard.putNumber("Lower Intake Speed", savedIntakeLowerSpeed);
 
     Logger.recordOutput("Avg Shooter Velocity", getAverageShootSpeed());
     Logger.recordOutput("Shooter up to speed", upToSpeed);

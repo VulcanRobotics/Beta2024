@@ -23,6 +23,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -71,6 +72,8 @@ public class Drive extends SubsystemBase {
   public boolean isUsingVision = false;
   public double armAngleOffset = 0.0;
 
+  public static boolean inShuttlePosition = false;
+
   private InterpolatingDoubleTreeMap shooterTable = new InterpolatingDoubleTreeMap();
   private double[][] shooterValues = {
     {0.0, 0.0},
@@ -99,7 +102,13 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition()
       };
   private SwerveDrivePoseEstimator poseEstimator =
-      new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+      new SwerveDrivePoseEstimator(
+          kinematics,
+          rawGyroRotation,
+          lastModulePositions,
+          new Pose2d(),
+          VecBuilder.fill(0.05, 0.05, 0.05),
+          VecBuilder.fill(0.5, 0.5, 0.5));
 
   public Drive(
       GyroIO gyroIO,

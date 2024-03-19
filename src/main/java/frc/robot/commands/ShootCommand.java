@@ -8,15 +8,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.drive.Drive;
 
 /** An example command that uses an example subsystem. */
 public class ShootCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   ArmSubsystem armSubsystem;
+  Drive drive;
 
-  public ShootCommand(ShooterSubsystem shooter, ArmSubsystem arm) {
+  public ShootCommand(ShooterSubsystem shooter, ArmSubsystem arm, Drive drive) {
     this.shooterSubsystem = shooter;
     this.armSubsystem = arm;
+    this.drive = drive;
   }
 
   private float feedSpeed = 1;
@@ -29,8 +32,10 @@ public class ShootCommand extends Command {
   public void execute() {
     if (shooterSubsystem.getAverageShootSpeed()
             > (Constants.ShooterConstants.kShooterTargetVelocity - 20.0)
-        || armSubsystem
-            .inAmpPosition) { // Make this conditional on whether the shooter is up to speed
+        || armSubsystem.inAmpPosition
+        || (drive.getPose().getX() < 10.75
+            && drive.getPose().getX()
+                > 5.85)) { // Make this conditional on whether the shooter is up to speed
       shooterSubsystem.SetFeeder(feedSpeed);
     }
   }

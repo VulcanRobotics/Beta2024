@@ -38,11 +38,11 @@ public class RevCommand extends Command {
   public void execute() {
     double velocity =
         (armSubsystem.inAmpPosition)
-            ? Constants.ShooterConstants.kShooterTargetVelocity * 1.0
+            ? Constants.ShooterConstants.kShooterTargetVelocity * 0.2
             : Constants.ShooterConstants.kShooterTargetVelocity;
 
     if (drive.getPose().getX() < 10.75 && drive.getPose().getX() > 5.85) {
-      velocity = 50;
+      velocity = 35;
     }
 
     shooterSubsystem.setShooterVelocity(velocity); // shooterSubsystem.savedShootSpeed);

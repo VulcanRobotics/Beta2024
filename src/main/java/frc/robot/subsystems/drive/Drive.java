@@ -69,7 +69,7 @@ public class Drive extends SubsystemBase {
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   private final SysIdRoutine sysId;
-  public boolean isUsingVision = false;
+  public boolean isUsingVision = true;
   public double armAngleOffset = 0.0;
 
   public static boolean inShuttlePosition = false;

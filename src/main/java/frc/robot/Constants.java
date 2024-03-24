@@ -104,7 +104,7 @@ public final class Constants {
                 -Units.inchesToMeters(12.5),
                 -Units.inchesToMeters(12.5),
                 Units.inchesToMeters(11.5)),
-            new Rotation3d(0, Math.toRadians(16), -3.0 * PI / 4.0));
+            new Rotation3d(0, Math.toRadians(16), PI));
 
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
@@ -125,7 +125,7 @@ public final class Constants {
     public static final int kPhotogatePort = 0;
 
     public static final double kShooterTargetVelocity =
-        30.0; // RPS, was 100, but feeder wouldn't spin sometimes
+        95.0; // RPS, was 100, but feeder wouldn't spin sometimes
   }
 
   public final class ClimbConstants {
@@ -134,11 +134,11 @@ public final class Constants {
     public static final double kLeftTopDistanceFromChain = 0.0;
     public static final double kRightTopDistanceFromChain = 0.0;
 
-    public static final double WinchLowerLeftLimit = 0.087;
-    public static final double WinchUpperLeftLimit = 0.625;
+    public static final double WinchLowerLeftLimit = 0.173;
+    public static final double WinchUpperLeftLimit = 0.8214;
 
-    public static final double WinchLowerRightLimit = 0.8587;
-    public static final double WinchUpperRightLimit = 0.3345;
+    public static final double WinchLowerRightLimit = 1 - 0.738;
+    public static final double WinchUpperRightLimit = 1 - 0.0847;
   }
 
   public final class ArmConstants {

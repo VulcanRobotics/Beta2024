@@ -19,8 +19,8 @@ public class ClimbSubsystem extends SubsystemBase {
   public final AnalogPotentiometer m_WinchPotRight = new AnalogPotentiometer(1);
   public final AnalogPotentiometer m_WinchPotLeft = new AnalogPotentiometer(0);
 
-  public final AnalogPotentiometer m_WinchStringPotRight = new AnalogPotentiometer(3);
-  public final AnalogPotentiometer m_WinchStringPotLeft = new AnalogPotentiometer(2);
+  public final AnalogPotentiometer m_WinchStringPotRight = new AnalogPotentiometer(2);
+  public final AnalogPotentiometer m_WinchStringPotLeft = new AnalogPotentiometer(3);
 
   public final TalonFX m_WinchMotorRight = new TalonFX(12, "rio");
   public final TalonFX m_WinchMotorLeft = new TalonFX(11, "rio");
@@ -44,18 +44,20 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public double applyWinchLimits(boolean left, double speed) {
     if (left) {
-      if (m_WinchPotLeft.get() > Constants.ClimbConstants.WinchUpperLeftLimit && speed > 0.0) {
+      if (m_WinchStringPotLeft.get() > Constants.ClimbConstants.WinchUpperLeftLimit
+          && speed > 0.0) {
         return 0.0;
-      } else if (m_WinchPotLeft.get() < Constants.ClimbConstants.WinchLowerLeftLimit
+      } else if (m_WinchStringPotLeft.get() < Constants.ClimbConstants.WinchLowerLeftLimit
           && speed < 0.0) {
         return 0.0;
       } else {
         return speed;
       }
     } else {
-      if (m_WinchPotRight.get() < Constants.ClimbConstants.WinchUpperRightLimit && speed > 0.0) {
+      if (1 - m_WinchStringPotRight.get() > Constants.ClimbConstants.WinchUpperRightLimit
+          && speed > 0.0) {
         return 0.0;
-      } else if (m_WinchPotRight.get() > Constants.ClimbConstants.WinchLowerRightLimit
+      } else if (1 - m_WinchStringPotRight.get() < Constants.ClimbConstants.WinchLowerRightLimit
           && speed < 0.0) {
         return 0.0;
       } else {
@@ -65,15 +67,15 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public void setRightWinchSpeed(double speed) {
-    // m_WinchMotorRight.set(applyWinchLimits(false, speed));
-    m_WinchMotorRight.set(speed);
+    m_WinchMotorRight.set(applyWinchLimits(false, speed));
+    // m_WinchMotorRight.set(speed);
 
     Logger.recordOutput("RightWinchSpeed", speed);
   }
 
   public void setLeftWinchSpeed(double speed) {
-    // m_WinchMotorLeft.set(applyWinchLimits(true, speed));
-    m_WinchMotorLeft.set(speed);
+    m_WinchMotorLeft.set(applyWinchLimits(true, speed));
+    // m_WinchMotorLeft.set(speed);
 
     Logger.recordOutput("LeftWinchSpeed", speed);
   }
@@ -85,7 +87,7 @@ public class ClimbSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Right Potentiometer", m_WinchPotRight.get());
     // SmartDashboard.putNumber("Left Potentiometer", m_WinchPotLeft.get());
 
-    SmartDashboard.putNumber("Right Potentiometer", m_WinchStringPotRight.get());
+    SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
     SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
 
     Logger.recordOutput("LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());

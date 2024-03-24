@@ -24,7 +24,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public boolean inAmpPosition = false;
 
-  public final double topLimit = 87.5;
+  public final double topLimit = 93; // 87.5
   public final double botLimit = 0.0;
 
   public ArmSubsystem() {

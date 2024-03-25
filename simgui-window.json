@@ -1,19 +1,19 @@
 {
   "Docking": {
     "Data": [
-      "DockNode  ID=0x00000002 Pos=275,497 Size=750,150 Selected=0x138219D4"
+      "DockNode  ID=0x00000002 Pos=275,497 Size=796,189 Selected=0xC8493FD8"
     ]
   },
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "854",
-      "maximized": "1",
+      "height": "789",
+      "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "1512",
-      "xpos": "804",
-      "ypos": "513"
+      "width": "1170",
+      "xpos": "1146",
+      "ypos": "407"
     }
   },
   "Window": {
@@ -34,15 +34,15 @@
     },
     "###FMS": {
       "Collapsed": "0",
-      "DockId": "0x00000002,0",
+      "DockId": "0x00000002,1",
       "Pos": "275,497",
-      "Size": "750,150"
+      "Size": "796,189"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "DockId": "0x00000002,1",
+      "DockId": "0x00000002,0",
       "Pos": "275,497",
-      "Size": "750,150"
+      "Size": "796,189"
     },
     "###Keyboard 0 Settings": {
       "Collapsed": "0",

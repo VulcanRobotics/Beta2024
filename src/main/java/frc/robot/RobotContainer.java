@@ -40,6 +40,7 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 // import frc.robot.subsystems.drive.ModuleIOSparkMax;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.vision.PhotonVisionSubsystem;
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 

@@ -1,6 +1,5 @@
 package frc.robot.subsystems.vision;
 
-
 import static frc.robot.Constants.Vision.*;
 
 import java.util.Optional;
@@ -27,19 +26,11 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class CameraIOPhoton implements CameraIO {
-    private final PhotonCamera camera;
-    private final PhotonPoseEstimator photonEstimator;
-    private double lastEstTimestamp = 0;
-    private PhotonCameraSim cameraSim;
-    private Drive drive;
-    private Transform3d robotToCam;
-
-    // The layout of the AprilTags on the field
-    public AprilTagFieldLayout kTagLayout = (AprilTagFields.kDefaultField.loadAprilTagLayoutField());
-
-    public CameraIOPhoton(Drive robotDrive, int index) {
-        drive = robotDrive;
+public class CameraIOPhotonSim extends CameraIOPhoton {
+    private final PhotonCameraSim cameraSim;
+    
+    public CameraIOPhotonSim(Drive robotDrive, int index) {
+        super(drive, index);
 
         switch (index) {
             default:

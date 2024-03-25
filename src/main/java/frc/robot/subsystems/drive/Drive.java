@@ -48,6 +48,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.util.LocalADStarAK;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
@@ -448,6 +449,33 @@ public class Drive extends SubsystemBase {
     goal = currentTranslation.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());
     return new Pose2d(currentTranslation, new Rotation2d(angle));
+  }
+
+  public Pose2d calculateIntakePose() {
+    Pose2d current = getPose();
+    return new Pose2d(
+        current.getTranslation(),
+        current
+            .getRotation()
+            .minus(new Rotation2d(Math.toRadians(PhotonVisionSubsystem.limelightNoteTrack()))));
+  }
+
+  public Pose2d calculateShootingDirectPose() {
+    Pose2d current = getPose();
+
+    if (Math.abs(PhotonVisionSubsystem.yawOffset) > 10) {
+      return new Pose2d(
+          current.getTranslation(),
+          current
+              .getRotation()
+              .minus(new Rotation2d(Math.toRadians(PhotonVisionSubsystem.yawOffset / 5))));
+    } else {
+      return new Pose2d(
+          current.getTranslation(),
+          current
+              .getRotation()
+              .minus(new Rotation2d(Math.toRadians(PhotonVisionSubsystem.yawOffset / 2))));
+    }
   }
 
   public Translation2d calculateProjectedTargetPose() {

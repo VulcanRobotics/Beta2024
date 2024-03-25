@@ -92,6 +92,8 @@ public class PhotonVisionSubsystem extends SubsystemBase {
   private PhotonCameraSim cameraSimBR;
   private VisionSystemSim visionSim;
 
+  public static double yawOffset;
+
   // The layout of the AprilTags on the field
   public AprilTagFieldLayout kTagLayout = (AprilTagFields.kDefaultField.loadAprilTagLayoutField());
 
@@ -207,6 +209,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     }
     return thisCamera.getLatestResult();
   }
+
   /**
    * The latest estimated robot pose on the field from vision data. This may be empty. This should
    * only be called once per loop.
@@ -391,6 +394,19 @@ public class PhotonVisionSubsystem extends SubsystemBase {
 
   // ----- Simulation
 
+  public static double limelightNoteTrack() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+
+    // read values periodically
+    double x = tx.getDouble(0.0);
+
+    // post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", x);
+
+    return x;
+  }
+
   @Override
   public void periodic() {
 
@@ -400,6 +416,15 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     var visionEstFR = getEstimatedGlobalPose(CameraPosition.FR);
     var visionEstBL = getEstimatedGlobalPose(CameraPosition.BL);
     var visionEstBR = getEstimatedGlobalPose(CameraPosition.BR);
+
+    PhotonPipelineResult latestResult = getLatestResult(CameraPosition.BR);
+
+    if (latestResult.hasTargets()) {
+      if (latestResult.getBestTarget().getFiducialId() == 7) {
+        yawOffset = latestResult.getBestTarget().getYaw();
+        SmartDashboard.putNumber("YawOffset", yawOffset);
+      }
+    }
 
     /* visionEst.ifPresent(
     est -> {

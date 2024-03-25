@@ -18,7 +18,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -230,12 +229,26 @@ public class RobotContainer {
                     drive::calculateShootingPose),
                 Commands.run(
                     () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
+
     driverController
         .b()
-        .onTrue(
-            Commands.runOnce(
-                () -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(0.0))),
-                drive));
+        .whileTrue(
+            new ParallelCommandGroup(
+                DriveCommands.driveWhileAiming(
+                    drive,
+                    () -> -driverController.getLeftY(),
+                    () -> -driverController.getLeftX(),
+                    drive::calculateShootingDirectPose),
+                Commands.run(
+                    () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
+
+    // driverController
+    //     .b()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //             () -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new
+    // Rotation2d(0.0))),
+    //             drive));
 
     driverController
         .leftBumper()
@@ -248,9 +261,14 @@ public class RobotContainer {
     driverController
         .rightTrigger()
         .whileTrue(
-            new ParallelCommandGroup(
-                new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseIntake),
-                new IntakeCommand(shooterSubsystem)));
+            new ParallelDeadlineGroup(
+                new IntakeCommand(shooterSubsystem),
+                DriveCommands.driveWhileAiming(
+                    drive,
+                    () -> -driverController.getLeftY(),
+                    () -> -driverController.getLeftX(),
+                    drive::calculateIntakePose),
+                new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseIntake)));
 
     driverController
         .back()

@@ -228,6 +228,18 @@ public class RobotContainer {
                     drive::calculateShootingPose),
                 Commands.run(
                     () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
+
+    // driverController
+    //     .a()
+    //     .whileTrue(
+    //         new ParallelCommandGroup(
+    //             DriveCommands.driveWhileAiming(
+    //                 drive,
+    //                 () -> -driverController.getLeftY(),
+    //                 () -> -driverController.getLeftX(),
+    //                 drive::calculateIntakePose),
+    //             new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseIntake)));
+
     driverController
         .b()
         .onTrue(

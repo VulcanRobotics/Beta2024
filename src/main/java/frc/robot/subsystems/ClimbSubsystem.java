@@ -4,7 +4,6 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
@@ -87,8 +86,8 @@ public class ClimbSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Right Potentiometer", m_WinchPotRight.get());
     // SmartDashboard.putNumber("Left Potentiometer", m_WinchPotLeft.get());
 
-    SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
-    SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
+    // SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
+    // SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
 
     Logger.recordOutput("LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());
     Logger.recordOutput("RightClimbValue", m_WinchMotorRight.getPosition().getValueAsDouble());

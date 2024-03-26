@@ -102,8 +102,8 @@ public class ShooterSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("m1 velocity", leftMotor.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Shooter up to Speed", upToSpeed);
 
-    SmartDashboard.putNumber("Upper Intake Speed", savedIntakeUpperSpeed);
-    SmartDashboard.putNumber("Lower Intake Speed", savedIntakeLowerSpeed);
+    // SmartDashboard.putNumber("Upper Intake Speed", savedIntakeUpperSpeed);
+    // SmartDashboard.putNumber("Lower Intake Speed", savedIntakeLowerSpeed);
 
     Logger.recordOutput("Avg Shooter Velocity", getAverageShootSpeed());
     Logger.recordOutput("Shooter up to speed", upToSpeed);

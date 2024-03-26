@@ -270,11 +270,11 @@ public class Drive extends SubsystemBase {
 
     m_field.setRobotPose(poseEstimator.getEstimatedPosition());
 
-    SmartDashboard.putNumber("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
-    SmartDashboard.putNumber("FL encoder val", modules[0].getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("FR encoder val", modules[1].getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("BL encoder val", modules[2].getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
+    // SmartDashboard.putNumber("FL encoder val", modules[0].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("FR encoder val", modules[1].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("BL encoder val", modules[2].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("Odometry X", poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
     SmartDashboard.putBoolean("Vision On?", isUsingVision);

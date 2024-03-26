@@ -15,7 +15,6 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -297,7 +296,7 @@ public class RobotContainer {
 
     // Button Board
 
-    buttonBoard
+    /*buttonBoard
         .a()
         .whileTrue(
             new InstantCommand(
@@ -351,7 +350,7 @@ public class RobotContainer {
         .povLeft()
         .onTrue(
             new InstantCommand(
-                () -> MathUtil.clamp(shooterSubsystem.savedIntakeLowerSpeed -= 0.1, -1, 0)));
+                () -> MathUtil.clamp(shooterSubsystem.savedIntakeLowerSpeed -= 0.1, -1, 0)));*/
 
     // Manual Arm Controls
     operatorController

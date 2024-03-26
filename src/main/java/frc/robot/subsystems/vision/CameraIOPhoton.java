@@ -5,18 +5,22 @@ import static frc.robot.Constants.Vision.*;
 
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class CameraIOPhoton implements CameraIO {
@@ -96,5 +100,15 @@ public class CameraIOPhoton implements CameraIO {
             estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 45));
 
         return estStdDevs;
+    }
+
+    @Override
+    public void updateInputs(CameraIOInputs inputs) {
+        Optional<EstimatedRobotPose> visionEst = photonEstimator.update();
+
+        PhotonPipelineResult result = camera.getLatestResult();
+        inputs.pipelineResult = result;
+        inputs.latestTimestamp = result.getTimestampSeconds();
+        inputs.poseDetected = visionEst.isPresent();
     }
 }

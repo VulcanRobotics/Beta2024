@@ -9,38 +9,26 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.simulation.PhotonCameraSim;
-import org.photonvision.simulation.SimCameraProperties;
-import org.photonvision.simulation.VisionSystemSim;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.subsystems.drive.Drive;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 public class CameraIOPhoton implements CameraIO {
-    private final PhotonCamera camera;
+    protected final PhotonCamera camera;
     private final PhotonPoseEstimator photonEstimator;
     private double lastEstTimestamp = 0;
-    private PhotonCameraSim cameraSim;
-    private Drive drive;
-    private Transform3d robotToCam;
+    protected Transform3d robotToCam;
 
     // The layout of the AprilTags on the field
     public AprilTagFieldLayout kTagLayout = (AprilTagFields.kDefaultField.loadAprilTagLayoutField());
 
-    public CameraIOPhoton(Drive robotDrive, int index) {
-        drive = robotDrive;
-
+    public CameraIOPhoton(int index) {
         switch (index) {
             default:
                 camera = new PhotonCamera(kCameraNameFL);
@@ -63,24 +51,6 @@ public class CameraIOPhoton implements CameraIO {
         photonEstimator = new PhotonPoseEstimator(
             kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, robotToCam);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
-
-        // ----- Simulation
-        if (Robot.isSimulation()) {
-            // Create simulated camera properties. These can be set to mimic your actual camera.
-            var cameraProp = new SimCameraProperties();
-            cameraProp.setCalibration(640, 400, Rotation2d.fromDegrees(67));
-            cameraProp.setCalibError(0.35, 0.10);
-            cameraProp.setFPS(50);
-            cameraProp.setAvgLatencyMs(20);
-            cameraProp.setLatencyStdDevMs(5);
-            
-            // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible targets.
-            cameraSim = new PhotonCameraSim(camera, cameraProp);
-
-            // Add the simulated camera to view the targets on this simulated field.
-            visionSim.addCamera(cameraSim, robotToCam);
-            cameraSim.enableDrawWireframe(true);
-        }
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
@@ -95,17 +65,6 @@ public class CameraIOPhoton implements CameraIO {
             }
         }
 
-        if (Robot.isSimulation()) {
-            /* visionEst.ifPresentOrElse(
-            est ->
-                getSimDebugField().getObject(fieldObjectName).setPose(est.estimatedPose.toPose2d()),
-            () -> {
-              if (newResult) {
-                getSimDebugField().getObject(fieldObjectName).setPoses();
-              }
-            }); */
-        }
-      
         return visionEst;
     }
 

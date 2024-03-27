@@ -248,7 +248,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     switch (camPos) {
       default: // Front-left
         visionEst = photonEstimatorFL.update();
-        SmartDashboard.putBoolean("visionEst FL:", visionEst.isPresent());
+        // SmartDashboard.putBoolean("visionEst FL:", visionEst.isPresent());
         Logger.recordOutput("visionEst FL", visionEst.isPresent());
         latestTimestamp = cameraFL.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampFL) > 1e-5;
@@ -256,7 +256,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
         break;
       case FR:
         visionEst = photonEstimatorFR.update();
-        SmartDashboard.putBoolean("visionEst FR:", visionEst.isPresent());
+        // SmartDashboard.putBoolean("visionEst FR:", visionEst.isPresent());
         Logger.recordOutput("visionEst FR", visionEst.isPresent());
         latestTimestamp = cameraFR.getLatestResult().getTimestampSeconds();
         newResult = Math.abs(latestTimestamp - lastEstTimestampFR) > 1e-5;
@@ -402,7 +402,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     double x = tx.getDouble(0.0);
 
     // post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
+    // SmartDashboard.putNumber("LimelightX", x);
 
     return x;
   }

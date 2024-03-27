@@ -146,6 +146,16 @@ public class RobotContainer {
         ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3.0));
 
     NamedCommands.registerCommand(
+        "AutoTargetIntake",
+        new ParallelDeadlineGroup(
+            new IntakeCommand(shooterSubsystem),
+            DriveCommands.driveWhileAiming(
+                drive,
+                () -> -driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
+                drive::calculateIntakePose)));
+
+    NamedCommands.registerCommand(
         "Rev", new RevCommand(shooterSubsystem, armSubsystem, drive).withTimeout(3));
 
     NamedCommands.registerCommand(

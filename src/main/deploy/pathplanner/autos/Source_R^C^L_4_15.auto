@@ -42,7 +42,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "AutoTargetIntake"
                 }
               }
             ]
@@ -67,7 +67,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "AutoTargetIntake"
                 }
               },
               {
@@ -104,7 +104,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "AutoTargetIntake"
                 }
               }
             ]

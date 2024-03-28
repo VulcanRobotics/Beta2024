@@ -87,6 +87,10 @@ public class ShooterSubsystem extends SubsystemBase {
     lights.set(color);
   }
 
+  public boolean hasNote() {
+    return intakeSensor.get();
+  }
+
   @Override
   public void periodic() {
 

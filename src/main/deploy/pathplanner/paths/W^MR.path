@@ -16,37 +16,61 @@
     },
     {
       "anchor": {
-        "x": 4.2090061144758835,
-        "y": 2.463214526134357
+        "x": 4.680827194987724,
+        "y": 1.7540363738134883
       },
       "prevControl": {
-        "x": 3.330532539012033,
-        "y": 3.048905889069146
+        "x": 3.802353619523873,
+        "y": 2.3397277367482756
       },
       "nextControl": {
-        "x": 5.385676766677518,
-        "y": 1.678710749057796
+        "x": 5.857497847189358,
+        "y": 0.969532596736927
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.82273705632873,
-        "y": 2.463214526134357
+        "x": 8.164849269513354,
+        "y": 2.4478240623147918
       },
       "prevControl": {
-        "x": 6.186888639739952,
-        "y": 2.0497143928963695
+        "x": 6.529000852924576,
+        "y": 2.034323929076804
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.5,
+      "rotationDegrees": 30.6105712294239,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.4,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "OverrideRotationAim"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,
@@ -55,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -2.003933274100404,
+    "rotation": 35.69410310636198,
     "rotateFast": false
   },
   "reversed": false,

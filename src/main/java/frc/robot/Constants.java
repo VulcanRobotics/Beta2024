@@ -171,6 +171,26 @@ public final class Constants {
     public static final double kArmPoseSource = 63.8;
     public static final double kArmPosePodium = 26.0;
 
+    public static enum ArmStates {
+      AMP,
+      INTAKE,
+      SHOOTING
+    }
+
+    public static final double[][] shooterValues = {
+      {0.0, 0.0},
+      {1.07, 0.0},
+      {1.53, 12.6},
+      {2.0, 18.58},
+      {2.7, 23.41},
+      {2.96, 25.17},
+      {3.47, 27.5},
+      {4.47, 31.78},
+      {5.15, 32.1},
+      {5.76, 33.65},
+      {6.98, 35.61}
+    };
+
     public static final double kArmPIDTolerance = 1.0;
 
     public static final double kCanCoderToArmMotorRatio =
@@ -192,6 +212,8 @@ public final class Constants {
 
     public static Translation2d kSpeakerTargetPoseRed = new Translation2d(16.1, 5.6);
     public static Translation2d kSpeakerTargetPoseBlue = new Translation2d(0.3, 5.6);
+    public static Translation2d kAmpTargetPoseRed = new Translation2d(14.71, 9.74);
+    public static Translation2d kAmpTargetPoseBlue = new Translation2d(1.84, 7.88);
 
     public static final Pose2d kSpeakerPose =
         new Pose2d(new Translation2d(1.37, 5.56), new Rotation2d(0));

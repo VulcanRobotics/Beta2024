@@ -15,6 +15,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -26,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.FieldConstants.FieldLocations;
 import frc.robot.commands.*;
@@ -38,6 +40,7 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 // import frc.robot.subsystems.drive.ModuleIOSparkMax;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import java.util.Optional;
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -146,6 +149,13 @@ public class RobotContainer {
         ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3.0));
 
     NamedCommands.registerCommand(
+        "NoteTrackMode",
+        Commands.runOnce(
+            () -> {
+              PPHolonomicDriveController.setRotationTargetOverride(drive::calculateIntakeAngle);
+            }));
+    /*
+    NamedCommands.registerCommand(
         "AutoTargetIntake",
         new ParallelDeadlineGroup(
             new IntakeCommand(shooterSubsystem),
@@ -154,7 +164,7 @@ public class RobotContainer {
                 () -> -driverController.getLeftY(),
                 () -> -driverController.getLeftX(),
                 drive::calculateIntakePose)));
-
+    */
     NamedCommands.registerCommand(
         "Rev", new RevCommand(shooterSubsystem, armSubsystem, drive).withTimeout(3));
 
@@ -169,6 +179,21 @@ public class RobotContainer {
                     new ShootCommand(shooterSubsystem, armSubsystem, drive),
                     new RevCommand(shooterSubsystem, armSubsystem, drive)))
             .withTimeout(3.0));
+
+    NamedCommands.registerCommand(
+        "OverrideRotationAim",
+        Commands.runOnce(
+            () ->
+                PPHolonomicDriveController.setRotationTargetOverride(
+                    drive::calculateShootingAngle)));
+
+    NamedCommands.registerCommand(
+        "UsePathRotation",
+        Commands.runOnce(
+            () -> PPHolonomicDriveController.setRotationTargetOverride(() -> Optional.empty())));
+
+    NamedCommands.registerCommand(
+        "AimArmShoot", ShooterTargeting.aimArmAndShoot(drive, shooterSubsystem, armSubsystem));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
@@ -207,6 +232,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    Trigger revTrigger = new Trigger(shooterSubsystem::hasNote);
 
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
@@ -250,6 +277,8 @@ public class RobotContainer {
                     drive::calculateShootingDirectPose),
                 Commands.run(
                     () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
+
+    revTrigger.whileTrue(new RevCommand(shooterSubsystem, armSubsystem, drive));
 
     // driverController
     //     .b()

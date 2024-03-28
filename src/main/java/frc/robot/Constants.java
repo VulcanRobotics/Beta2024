@@ -37,7 +37,7 @@ public final class Constants {
 
   public static final String name = "Swift";
 
-  public static final Mode currentMode = Mode.REAL;
+  public static final Mode currentMode = Mode.SIM;
   // public static final Mode currentMode = Mode.SIM;
 
   public static enum Mode {
@@ -164,10 +164,10 @@ public final class Constants {
     public static final boolean kArm2Inverted = true;
 
     // Fill these with actual values (now in degrees!)
-    public static final double kArmPoseAmp = 85.0;
+    public static final double kArmPoseAmp = 93.0;
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
-    public static final double kArmPoseTrap = 85.0;
+    public static final double kArmPoseTrap = 93.0;
     public static final double kArmPoseSource = 63.8;
     public static final double kArmPosePodium = 26.0;
 
@@ -212,8 +212,8 @@ public final class Constants {
 
     public static Translation2d kSpeakerTargetPoseRed = new Translation2d(16.1, 5.6);
     public static Translation2d kSpeakerTargetPoseBlue = new Translation2d(0.3, 5.6);
-    public static Translation2d kAmpTargetPoseRed = new Translation2d(14.71, 9.74);
-    public static Translation2d kAmpTargetPoseBlue = new Translation2d(1.84, 7.88);
+    public static Translation2d kAmpTargetPoseRed = new Translation2d(14.71, 7.8);
+    public static Translation2d kAmpTargetPoseBlue = new Translation2d(1.84, 7.8);
 
     public static final Pose2d kSpeakerPose =
         new Pose2d(new Translation2d(1.37, 5.56), new Rotation2d(0));

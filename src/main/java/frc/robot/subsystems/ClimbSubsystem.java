@@ -11,11 +11,6 @@ import org.littletonrobotics.junction.Logger;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-  // public final DigitalInput motor12LowerLimitSwitch = new DigitalInput(3);
-  // public final DigitalInput motor12UpperLimitSwitch = new DigitalInput(5);
-  // public final DigitalInput motor11LowerLimitSwitch = new DigitalInput(4);
-  // public final DigitalInput motor11UpperLimitSwitch = new DigitalInput(6);
-
   public final AnalogPotentiometer m_WinchPotRight = new AnalogPotentiometer(1);
   public final AnalogPotentiometer m_WinchPotLeft = new AnalogPotentiometer(0);
 
@@ -81,11 +76,6 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
-
-    // SmartDashboard.putNumber("LeftClimbValue",
-    // m_WinchMotorLeft.getPosition().getValueAsDouble());
-    // SmartDashboard.putNumber("Right Potentiometer", m_WinchPotRight.get());
-    // SmartDashboard.putNumber("Left Potentiometer", m_WinchPotLeft.get());
 
     SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
     SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());

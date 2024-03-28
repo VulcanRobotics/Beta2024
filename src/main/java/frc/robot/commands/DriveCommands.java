@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -31,6 +32,11 @@ import java.util.function.Supplier;
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
   private static final double AnglePIDValues[] = {0.45, 0.0, 0.0};
+  private static final double TranslationPIDValues[] = {1.2, 0.0, 0.01};
+  private static final PIDController xTranslationController =
+      new PIDController(TranslationPIDValues[0], TranslationPIDValues[1], TranslationPIDValues[2]);
+  private static final PIDController yTranslationController =
+      new PIDController(TranslationPIDValues[0], TranslationPIDValues[1], TranslationPIDValues[2]);
   private static final PIDController angleController =
       new PIDController(AnglePIDValues[0], AnglePIDValues[1], AnglePIDValues[2]);
 
@@ -132,6 +138,64 @@ public class DriveCommands {
                   linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                   omega * drive.getMaxAngularSpeedRadPerSec(),
                   isFlipped
+                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                      : drive.getRotation()));
+        },
+        drive);
+  }
+
+  public static Command driveToAmp(Drive drive, Supplier<Pose2d> poseSupplier) {
+
+    Translation2d amp;
+
+    if (DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == Alliance.Red) {
+      amp = Constants.FieldConstants.kAmpTargetPoseRed;
+    } else {
+      amp = Constants.FieldConstants.kAmpTargetPoseBlue;
+    }
+
+    angleController.reset();
+    angleController.setTolerance(Math.toRadians(0.25));
+    angleController.enableContinuousInput(-Math.PI, Math.PI);
+
+    yTranslationController.reset();
+    xTranslationController.reset();
+    yTranslationController.setTolerance(0.05);
+    xTranslationController.setTolerance(0.05);
+    yTranslationController.setSetpoint(amp.getY());
+    xTranslationController.setSetpoint(amp.getX());
+
+    return Commands.run(
+        () -> {
+          Pose2d pose = poseSupplier.get();
+          double x = poseSupplier.get().getX();
+          double y = poseSupplier.get().getY();
+          double xSpeed = xTranslationController.calculate(x);
+          double ySpeed = yTranslationController.calculate(y);
+
+          xSpeed = MathUtil.clamp(xSpeed, -0.8, 0.8);
+          ySpeed = MathUtil.clamp(ySpeed, -0.25, 0.25);
+
+          double thetaSpeed =
+              angleController.calculate(
+                  pose.getRotation().getRadians(),
+                  (Math.PI / 2)
+                      + (DriverStation.getAlliance().isPresent()
+                              && DriverStation.getAlliance().get() == Alliance.Red
+                          ? Math.PI
+                          : 0.0));
+
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+
+          drive.runVelocity(
+              ChassisSpeeds.fromFieldRelativeSpeeds(
+                  xSpeed * drive.getMaxLinearSpeedMetersPerSec(),
+                  ySpeed * drive.getMaxLinearSpeedMetersPerSec(),
+                  thetaSpeed * drive.getMaxAngularSpeedRadPerSec(),
+                  (isFlipped)
                       ? drive.getRotation().plus(new Rotation2d(Math.PI))
                       : drive.getRotation()));
         },

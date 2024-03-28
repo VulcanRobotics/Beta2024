@@ -341,6 +341,22 @@ public class Drive extends SubsystemBase {
     stop();
   }
 
+  public double[] getVelocity() {
+    double[] vec = {
+      kinematics.toChassisSpeeds(getModuleStates()).vxMetersPerSecond,
+      kinematics.toChassisSpeeds(getModuleStates()).vyMetersPerSecond,
+    };
+    return vec;
+  }
+
+  public double getVelocityX() {
+    return getVelocity()[0];
+  }
+
+  public double getVelocityY() {
+    return getVelocity()[1];
+  }
+
   /** Returns a command to run a quasistatic test in the specified direction. */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return sysId.quasistatic(direction);

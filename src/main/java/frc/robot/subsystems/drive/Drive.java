@@ -48,7 +48,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.PhotonVisionSubsystem;
+import frc.robot.subsystems.LimelightVisionSubsystem;
+import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.util.LocalADStarAK;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
@@ -478,7 +479,8 @@ public class Drive extends SubsystemBase {
         current
             .getRotation()
             .minus(
-                new Rotation2d(Math.toRadians(PhotonVisionSubsystem.limelightNoteTrack() / 1.1))));
+                new Rotation2d(
+                    Math.toRadians(LimelightVisionSubsystem.limelightNoteTrack() / 1.1))));
   }
 
   public Optional<Rotation2d> calculateIntakeAngle() {
@@ -491,18 +493,18 @@ public class Drive extends SubsystemBase {
   public Pose2d calculateShootingDirectPose() {
     Pose2d current = getPose();
 
-    if (Math.abs(PhotonVisionSubsystem.yawOffset) > 10) {
+    if (Math.abs(VisionSubsystem.yawOffset) > 10) {
       return new Pose2d(
           current.getTranslation(),
           current
               .getRotation()
-              .minus(new Rotation2d(Math.toRadians(PhotonVisionSubsystem.yawOffset / 5))));
+              .minus(new Rotation2d(Math.toRadians(VisionSubsystem.yawOffset / 5))));
     } else {
       return new Pose2d(
           current.getTranslation(),
           current
               .getRotation()
-              .minus(new Rotation2d(Math.toRadians(PhotonVisionSubsystem.yawOffset / 2))));
+              .minus(new Rotation2d(Math.toRadians(VisionSubsystem.yawOffset / 2))));
     }
   }
 

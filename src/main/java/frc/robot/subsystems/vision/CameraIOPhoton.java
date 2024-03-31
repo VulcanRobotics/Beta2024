@@ -111,6 +111,11 @@ public class CameraIOPhoton implements CameraIO {
   }
 
   @Override
+  public PhotonPipelineResult getLatestResult() {
+    return camera.getLatestResult();
+  }
+
+  @Override
   public void updateInputs(CameraIOInputs inputs) {
     byte[][] rawBytesFrames = rawBytesSubscriber.readQueueValues();
 

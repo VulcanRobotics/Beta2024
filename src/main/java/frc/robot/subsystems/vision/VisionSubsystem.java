@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.drive.Drive;
 import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class VisionSubsystem extends SubsystemBase {
   private final Camera[] cameras = new Camera[4];
@@ -22,6 +23,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   private Drive drive;
   private VisionSystemSim visionSim;
+  public static double yawOffset;
 
   // The layout of the AprilTags on the field
   public AprilTagFieldLayout kTagLayout = (AprilTagFields.kDefaultField.loadAprilTagLayoutField());
@@ -50,6 +52,15 @@ public class VisionSubsystem extends SubsystemBase {
   public void periodic() {
     for (int n = 0; n < 4; n++) {
       cameras[n].periodic();
+    }
+
+    PhotonPipelineResult latestResult = cameras[3].getLatestResult();
+
+    if (latestResult.hasTargets()) {
+      if (latestResult.getBestTarget().getFiducialId() == 7) {
+        yawOffset = latestResult.getBestTarget().getYaw();
+        // SmartDashboard.putNumber("YawOffset", yawOffset);
+      }
     }
   }
 

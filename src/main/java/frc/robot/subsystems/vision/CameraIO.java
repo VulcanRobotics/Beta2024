@@ -44,6 +44,8 @@ public interface CameraIO {
 
   public default void updateInputs(CameraIOInputs inputs) {}
 
+  public abstract PhotonPipelineResult getLatestResult();
+
   public abstract Matrix<N3, N1> getEstimationStdDevs(
       Pose2d estimatedPose, PhotonPipelineResult pipelineResult);
 }

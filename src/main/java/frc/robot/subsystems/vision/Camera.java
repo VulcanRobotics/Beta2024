@@ -5,6 +5,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.vision.CameraIO.CameraIOInputs;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class Camera {
   private CameraIO cameraIO;
@@ -23,6 +24,10 @@ public class Camera {
     if (Robot.isSimulation()) {
       cameraIO = new CameraIOPhotonSim(robotDrive, index, visionSim);
     }
+  }
+
+  public PhotonPipelineResult getLatestResult() {
+    return cameraIO.getLatestResult();
   }
 
   public void periodic() {

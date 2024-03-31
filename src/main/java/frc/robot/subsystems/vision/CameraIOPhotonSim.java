@@ -1,59 +1,56 @@
 package frc.robot.subsystems.vision;
 
-import static frc.robot.Constants.Vision.*;
-
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.subsystems.drive.Drive;
 import java.util.Optional;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.Constants;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class CameraIOPhotonSim extends CameraIOPhoton {
-    private final PhotonCameraSim cameraSim;
-    private final VisionSystemSim visionSim;
-    
-    public CameraIOPhotonSim(int index, VisionSystemSim visSim) {
-        super(index);
+  private final PhotonCameraSim cameraSim;
+  private final VisionSystemSim visionSim;
 
-        visionSim = visSim;
+  public CameraIOPhotonSim(Drive robotDrive, int index, VisionSystemSim visSim) {
+    super(robotDrive, index);
 
-        // Create simulated camera properties.
-        var cameraProp = new SimCameraProperties();
-        cameraProp.setCalibration(640, 400, Rotation2d.fromDegrees(67));
-        cameraProp.setCalibError(0.35, 0.10);
-        cameraProp.setFPS(50);
-        cameraProp.setAvgLatencyMs(20);
-        cameraProp.setLatencyStdDevMs(5);
-        
-        // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible targets.
-        cameraSim = new PhotonCameraSim(camera, cameraProp);
+    visionSim = visSim;
 
-        // Add the simulated camera to view the targets on this simulated field.
-        visionSim.addCamera(cameraSim, robotToCam);
-        cameraSim.enableDrawWireframe(true);
-    }
+    // Create simulated camera properties.
+    var cameraProp = new SimCameraProperties();
+    cameraProp.setCalibration(640, 400, Rotation2d.fromDegrees(67));
+    cameraProp.setCalibError(0.35, 0.10);
+    cameraProp.setFPS(50);
+    cameraProp.setAvgLatencyMs(20);
+    cameraProp.setLatencyStdDevMs(5);
 
-    @Override
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-        Optional<EstimatedRobotPose> visionEst = super.getEstimatedGlobalPose();
-        
-        /* visionEst.ifPresentOrElse(
-            est ->
-                getSimDebugField().getObject(fieldObjectName).setPose(est.estimatedPose.toPose2d()),
-            () -> {
-              if (newResult) {
-                getSimDebugField().getObject(fieldObjectName).setPoses();
-              }
-            });
-        } */
-      
-        return visionEst;
-    }
+    // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible
+    // targets.
+    cameraSim = new PhotonCameraSim(camera, cameraProp);
 
+    // Add the simulated camera to view the targets on this simulated field.
+    visionSim.addCamera(cameraSim, robotToCam);
+    cameraSim.enableDrawWireframe(true);
+  }
+
+  @Override
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(PhotonPipelineResult pipelineResult) {
+    Optional<EstimatedRobotPose> visionEst = photonEstimator.update(pipelineResult);
+
+    Field2d simField = visionSim.getDebugField();
+    Boolean newResult = (Math.abs(pipelineResult.getTimestampSeconds() - lastEstTimestamp) > 1e-5);
+
+    visionEst.ifPresentOrElse(
+        est -> simField.getObject(cameraName).setPose(est.estimatedPose.toPose2d()),
+        () -> {
+          if (newResult) {
+            simField.getObject(cameraName).setPoses();
+          }
+        });
+
+    return visionEst;
+  }
 }

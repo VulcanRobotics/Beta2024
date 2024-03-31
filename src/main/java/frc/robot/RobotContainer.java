@@ -40,7 +40,8 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 // import frc.robot.subsystems.drive.ModuleIOSparkMax;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.vision.PhotonVisionSubsystem;
+// import frc.robot.subsystems.vision.PhotonVisionSubsystem;
+import frc.robot.subsystems.vision.VisionSubsystem;
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -57,7 +58,8 @@ public class RobotContainer {
   public ShooterSubsystem shooterSubsystem;
   private final ArmSubsystem armSubsystem;
   private final ClimbSubsystem climbSubsystem;
-  private final PhotonVisionSubsystem vision;
+  // private final PhotonVisionSubsystem vision;
+  private final VisionSubsystem vision;
 
   // Controller
   private final CommandXboxController driverController = new CommandXboxController(0);
@@ -85,7 +87,8 @@ public class RobotContainer {
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
-        vision = new PhotonVisionSubsystem(drive);
+        // vision = new PhotonVisionSubsystem(drive);
+        vision = new VisionSubsystem(drive);
         break;
 
       case SIM:
@@ -101,7 +104,8 @@ public class RobotContainer {
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
-        vision = new PhotonVisionSubsystem(drive);
+        // vision = new PhotonVisionSubsystem(drive);
+        vision = new VisionSubsystem(drive);
         break;
 
       default:
@@ -117,7 +121,8 @@ public class RobotContainer {
         shooterSubsystem = new ShooterSubsystem();
         armSubsystem = new ArmSubsystem();
         climbSubsystem = new ClimbSubsystem();
-        vision = new PhotonVisionSubsystem(drive);
+        // vision = new PhotonVisionSubsystem(drive);
+        vision = new VisionSubsystem(drive);
         break;
     }
 

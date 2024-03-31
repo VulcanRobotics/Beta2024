@@ -42,7 +42,7 @@ public class RevCommand extends Command {
             : Constants.ShooterConstants.kShooterTargetVelocity;
 
     if (drive.getPose().getX() < 10.75 && drive.getPose().getX() > 5.85) {
-      velocity = 35;
+      velocity = 50;
     }
 
     shooterSubsystem.setShooterVelocity(velocity); // shooterSubsystem.savedShootSpeed);

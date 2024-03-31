@@ -121,8 +121,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     Logger.recordOutput("Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
-    SmartDashboard.putNumber("Arm Encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
-    SmartDashboard.putNumber("Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
+    // SmartDashboard.putNumber("Arm Encoder",
+    // m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
+    // SmartDashboard.putNumber("Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());
 
     Logger.recordOutput("Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());

@@ -14,13 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ArmToIntake"
+            "name": "RampShooter"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RampShooter"
+            "name": "ArmToIntake"
           }
         },
         {
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SR^R"
+                  "pathName": "Source^MR2^W"
                 }
               },
               {
@@ -51,38 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoTargetShoot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "R^MR2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "MR2^W"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoTargetShoot"
+            "name": "AimArmShoot"
           }
         },
         {
@@ -100,6 +69,12 @@
                 "data": {
                   "pathName": "W^MR"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmToIntake"
+                }
               }
             ]
           }
@@ -113,7 +88,7 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoTargetShoot"
+            "name": "AimArmShoot"
           }
         }
       ]

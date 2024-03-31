@@ -51,7 +51,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Timer.get() > 0.5 && shooterSubsystem.intakeSensor.get()) {
+    if (Timer.get() > 0.25 && shooterSubsystem.intakeSensor.get()) {
       return true;
     } else {
       return false;

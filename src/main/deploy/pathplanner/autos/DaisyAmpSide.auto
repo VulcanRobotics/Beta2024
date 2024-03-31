@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7527076333773519,
-      "y": 4.393773015034181
+      "x": 1.2739145851318967,
+      "y": 7.254262707951528
     },
-    "rotation": -60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -18,31 +18,19 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ArmToIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SR^MR"
+                  "pathName": "Amp^AW"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeNoDeadline"
+                  "name": "ArmToIntake"
                 }
               }
             ]
@@ -51,7 +39,7 @@
         {
           "type": "named",
           "data": {
-            "name": "UsePathRotation"
+            "name": "AutoTargetShoot"
           }
         },
         {
@@ -61,32 +49,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "UnderStage"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeNoDeadline"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AimArmShoot"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Stage^MR3"
+                  "pathName": "AW^ML1"
                 }
               },
               {
@@ -105,19 +68,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "UsePathRotation"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "UnderStage"
+                  "pathName": "M^AW"
                 }
               },
               {
@@ -132,13 +89,57 @@
         {
           "type": "named",
           "data": {
-            "name": "AimArmShoot"
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "AW^ML2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmToIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "M^AW"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "UsePathRotation"
+            "name": "AutoTargetShoot"
           }
         }
       ]

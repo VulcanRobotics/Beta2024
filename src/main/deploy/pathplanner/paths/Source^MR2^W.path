@@ -8,36 +8,36 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6848933135489057,
-        "y": 4.379278305462309
+        "x": 1.4984777608444106,
+        "y": 2.7813861136981535
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.18325842670204,
-        "y": 0.7534689884194589
+        "x": 8.439680171027009,
+        "y": 0.7230048024910868
       },
       "prevControl": {
-        "x": 6.9509138138646644,
-        "y": 0.3123024440493331
+        "x": 7.207335558189634,
+        "y": 0.281838258120961
       },
       "nextControl": {
-        "x": 9.124747568942373,
-        "y": 1.0905123017243659
+        "x": 9.381169313267343,
+        "y": 1.0600481157959938
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.899007227287539,
-        "y": 2.6168093568996573
+        "x": 2.211743525338903,
+        "y": 3.0779516975700623
       },
       "prevControl": {
-        "x": 4.304717273481696,
-        "y": 2.1287966900589987
+        "x": 2.483596912920742,
+        "y": 1.8721745469940771
       },
       "nextControl": null,
       "isLocked": false,
@@ -57,7 +57,42 @@
     }
   ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Track",
+      "waypointRelativePos": 0.7,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "NoteTrackMode"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Normal",
+      "waypointRelativePos": 1.3,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "OverrideRotationAim"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,

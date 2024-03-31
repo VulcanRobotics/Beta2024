@@ -48,6 +48,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.PhotonVisionSubsystem;
 import frc.robot.util.LocalADStarAK;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
@@ -70,24 +71,11 @@ public class Drive extends SubsystemBase {
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   private final SysIdRoutine sysId;
   public boolean isUsingVision = true;
-  public double armAngleOffset = 0.0;
+  public double armAngleOffset = 3.0;
 
   public static boolean inShuttlePosition = false;
 
   private InterpolatingDoubleTreeMap shooterTable = new InterpolatingDoubleTreeMap();
-  private double[][] shooterValues = {
-    {0.0, 0.0},
-    {1.07, 0.0},
-    {1.53, 12.6},
-    {2.0, 18.58},
-    {2.7, 23.41},
-    {2.96, 25.17},
-    {3.47, 27.5},
-    {4.47, 31.78},
-    {5.15, 32.1},
-    {5.76, 33.65},
-    {6.98, 35.61}
-  };
 
   private Field2d m_field = new Field2d();
   private Alliance allianceColor;
@@ -161,7 +149,7 @@ public class Drive extends SubsystemBase {
       }
     }
 
-    for (double[] d : shooterValues) {
+    for (double[] d : Constants.ArmConstants.shooterValues) {
       shooterTable.put(d[0], d[1]);
     }
 
@@ -269,11 +257,11 @@ public class Drive extends SubsystemBase {
 
     m_field.setRobotPose(poseEstimator.getEstimatedPosition());
 
-    SmartDashboard.putNumber("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
-    SmartDashboard.putNumber("FL encoder val", modules[0].getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("FR encoder val", modules[1].getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("BL encoder val", modules[2].getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
+    // SmartDashboard.putNumber("FL encoder val", modules[0].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("FR encoder val", modules[1].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("BL encoder val", modules[2].getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("BR encoder val", modules[3].getPosition().angle.getDegrees());
     SmartDashboard.putNumber("Odometry X", poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Odometry Y", poseEstimator.getEstimatedPosition().getY());
     SmartDashboard.putBoolean("Vision On?", isUsingVision);
@@ -353,6 +341,22 @@ public class Drive extends SubsystemBase {
     stop();
   }
 
+  public double[] getVelocity() {
+    double[] vec = {
+      kinematics.toChassisSpeeds(getModuleStates()).vxMetersPerSecond,
+      kinematics.toChassisSpeeds(getModuleStates()).vyMetersPerSecond,
+    };
+    return vec;
+  }
+
+  public double getVelocityX() {
+    return getVelocity()[0];
+  }
+
+  public double getVelocityY() {
+    return getVelocity()[1];
+  }
+
   /** Returns a command to run a quasistatic test in the specified direction. */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
     return sysId.quasistatic(direction);
@@ -418,6 +422,8 @@ public class Drive extends SubsystemBase {
   }
 
   // The following three functions are all for shooting calculations for both
+
+  // Use lerp table to get arm angle for autoshoot
   public double getArmShootingAngle() {
     Pose2d current = getPose();
     Translation2d difference =
@@ -437,20 +443,83 @@ public class Drive extends SubsystemBase {
     return armDegrees;
   }
 
+  // used to calculate shooting for teleop autoshoot
   public Pose2d calculateShootingPose() {
-    Pose2d current = getPose();
-    Translation2d goal = calculateProjectedTargetPose();
-    /*  (DriverStation.getAlliance().isPresent()
-        && DriverStation.getAlliance().get() == Alliance.Red)
-    ? Constants.FieldConstants.kSpeakerTargetPoseRed
-    : Constants.FieldConstants.kSpeakerTargetPoseBlue; */
-    Translation2d currentTranslation = current.getTranslation();
-    goal = currentTranslation.minus(goal);
+    Translation2d current = calculateProjectedRobotPose();
+    Translation2d goal =
+        (DriverStation.getAlliance().isPresent()
+                && (DriverStation.getAlliance().get() == Alliance.Red
+                    || allianceColor == Alliance.Red))
+            ? Constants.FieldConstants.kSpeakerTargetPoseRed
+            : Constants.FieldConstants.kSpeakerTargetPoseBlue;
+    goal = current.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());
-    return new Pose2d(currentTranslation, new Rotation2d(angle));
+    return new Pose2d(getPose().getTranslation(), new Rotation2d(angle));
   }
 
-  public Translation2d calculateProjectedTargetPose() {
+  // used in teleop to aim at the amp and shoot funneling shots.
+  public Pose2d calculateShuttlePose() {
+    Translation2d current = calculateProjectedRobotPose();
+    Translation2d goal =
+        (DriverStation.getAlliance().isPresent()
+                && (DriverStation.getAlliance().get() == Alliance.Red
+                    || allianceColor == Alliance.Red))
+            ? Constants.FieldConstants.kAmpTargetPoseRed
+            : Constants.FieldConstants.kAmpTargetPoseBlue;
+    goal = current.minus(goal);
+    double angle = Math.atan(goal.getY() / goal.getX());
+    return new Pose2d(getPose().getTranslation(), new Rotation2d(angle));
+  }
+
+  public Pose2d calculateIntakePose() {
+    Pose2d current = getPose();
+    return new Pose2d(
+        current.getTranslation(),
+        current
+            .getRotation()
+            .minus(
+                new Rotation2d(Math.toRadians(PhotonVisionSubsystem.limelightNoteTrack() / 1.1))));
+  }
+
+  public Optional<Rotation2d> calculateIntakeAngle() {
+    Pose2d pose = calculateIntakePose();
+    Optional<Rotation2d> angle = Optional.of(pose.getRotation());
+    // Might have to add the different case for red side, address this after krytpon
+    return angle;
+  }
+
+  public Pose2d calculateShootingDirectPose() {
+    Pose2d current = getPose();
+
+    if (Math.abs(PhotonVisionSubsystem.yawOffset) > 10) {
+      return new Pose2d(
+          current.getTranslation(),
+          current
+              .getRotation()
+              .minus(new Rotation2d(Math.toRadians(PhotonVisionSubsystem.yawOffset / 5))));
+    } else {
+      return new Pose2d(
+          current.getTranslation(),
+          current
+              .getRotation()
+              .minus(new Rotation2d(Math.toRadians(PhotonVisionSubsystem.yawOffset / 2))));
+    }
+  }
+
+  // Used in autonomous paths, not in teleop
+  public Optional<Rotation2d> calculateShootingAngle() {
+    Optional<Rotation2d> angle = Optional.of(calculateShootingPose().getRotation());
+    if (DriverStation.getAlliance().isPresent()
+        && (DriverStation.getAlliance().get() == Alliance.Red || allianceColor == Alliance.Red)
+        && angle.isPresent()) {
+      angle = Optional.of(angle.get().plus(new Rotation2d(Math.PI * .95)));
+    }
+    return (angle.isPresent()) ? angle : Optional.empty();
+  }
+
+  // calculates the predicted robot pose by the time the shot meets the target, allowing us to move
+  // and shoot.
+  public Translation2d calculateProjectedRobotPose() {
     var invert = (allianceColor == Alliance.Red) ? -1.0 : 1.0;
     Translation2d originalTargetTranslation =
         (DriverStation.getAlliance().isPresent()
@@ -458,19 +527,21 @@ public class Drive extends SubsystemBase {
             ? Constants.FieldConstants.kSpeakerTargetPoseRed
             : Constants.FieldConstants.kSpeakerTargetPoseBlue;
     Translation2d currentRobotTranslation = getTranslation();
-    double Vs = 17.5; // m/s
+    double Vs = 10.0; // m/s
     double Xr = currentRobotTranslation.getX();
     double Yr = currentRobotTranslation.getY();
     double Xt = originalTargetTranslation.getX();
     double Yt = originalTargetTranslation.getY();
-    double Vx = -kinematics.toChassisSpeeds(getModuleStates()).vxMetersPerSecond;
-    double Vy = -kinematics.toChassisSpeeds(getModuleStates()).vyMetersPerSecond;
+    double Vx = kinematics.toChassisSpeeds(getModuleStates()).vxMetersPerSecond;
+    double Vy = kinematics.toChassisSpeeds(getModuleStates()).vyMetersPerSecond;
     double k1 = (sqr(Xt) + sqr(Xr) - 2 * Xr * Xt + sqr(Yt) + sqr(Yr) - 2 * Yr * Yt);
     double k2 = (2 * Vx * Xt - 2 * Vx * Xr + 2 * Vy * Yt - 2 * Vy * Yr);
     double k3 = (sqr(Vs) - (sqr(Vx) + sqr(Vy)));
     double Ts = ((k2 + sqrt(sqr(k2) + 4 * k3 * k1)) / (2 * k3));
     Translation2d projTarget =
-        new Translation2d(2 * Vx * Ts * invert + Xt, 2 * Vy * Ts * invert + Yt);
+        new Translation2d(
+            sqr(Vx) * Math.signum(Vx) * Ts * invert + Xr,
+            sqr(Vy) * Math.signum(Vy) * Ts * invert + Yr);
     SmartDashboard.putNumber("New Target X", projTarget.getY());
     Logger.recordOutput("projTarget", projTarget);
     return projTarget;

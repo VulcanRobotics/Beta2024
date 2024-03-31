@@ -22,8 +22,8 @@ public class DispenseCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSubsystem.SetIntake(-0.5f);
-    shooterSubsystem.SetFeeder(-0.5f);
+    shooterSubsystem.SetIntake(-0.25f);
+    shooterSubsystem.SetFeeder(-0.25f);
     shooterSubsystem.SetShooter(-0.25f);
   }
 

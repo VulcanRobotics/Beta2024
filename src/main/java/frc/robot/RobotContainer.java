@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -205,7 +204,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    Trigger revTrigger = new Trigger(shooterSubsystem::hasNote);
+    // Trigger revTrigger = new Trigger(shooterSubsystem::hasNote);
 
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
@@ -266,10 +265,11 @@ public class RobotContainer {
             new ParallelDeadlineGroup(
                 new IntakeCommand(shooterSubsystem),
                 DriveCommands.driveWhileAiming(
-                    drive,
-                    () -> -driverController.getLeftY(),
-                    () -> -driverController.getLeftX(),
-                    drive::calculateShuttlePose)));
+                        drive,
+                        () -> -driverController.getLeftY(),
+                        () -> -driverController.getLeftX(),
+                        drive::getShuttlePoseConstant)
+                    .alongWith(new SetArmPosition(armSubsystem, () -> 10.0))));
 
     driverController
         .rightTrigger()
@@ -360,7 +360,7 @@ public class RobotContainer {
                   drive.armAngleOffset -= 1.0;
                 }));
 
-    revTrigger.whileTrue(new RevCommand(shooterSubsystem, armSubsystem, drive));
+    // revTrigger.whileTrue(new RevCommand(shooterSubsystem, armSubsystem, drive));
   }
 
   /**

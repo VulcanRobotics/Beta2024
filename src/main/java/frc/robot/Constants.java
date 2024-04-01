@@ -214,7 +214,7 @@ public final class Constants {
     public static Translation2d kSpeakerTargetPoseRed = new Translation2d(16.1, 5.6);
     public static Translation2d kSpeakerTargetPoseBlue = new Translation2d(0.3, 5.6);
     public static Translation2d kAmpTargetPoseRed = new Translation2d(14.71, 7.8);
-    public static Translation2d kAmpTargetPoseBlue = new Translation2d(1.84, 7.8);
+    public static Translation2d kAmpTargetPoseBlue = new Translation2d(1.70, 7.8);
 
     public static final Pose2d kSpeakerPose =
         new Pose2d(new Translation2d(1.37, 5.56), new Rotation2d(0));

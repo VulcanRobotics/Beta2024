@@ -18,6 +18,7 @@ public class ShooterTargeting {
                     new DriveToPosition(drive, drive::calculateShootingPose),
                     new SetArmPosition(arm, drive::getArmShootingAngle),
                     new IntakeCommand(shooter))
+                .onlyWhile(() -> shooter.intakeSensor.get())
                 .withTimeout(2.0),
             new ShootCommand(shooter, arm, drive))
         .onlyWhile(() -> shooter.intakeSensor.get())

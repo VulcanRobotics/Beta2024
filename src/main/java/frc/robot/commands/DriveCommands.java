@@ -175,12 +175,12 @@ public class DriveCommands {
           double ySpeed = yTranslationController.calculate(y);
 
           xSpeed = MathUtil.clamp(xSpeed, -0.8, 0.8);
-          ySpeed = MathUtil.clamp(ySpeed, -0.25, 0.25);
+          ySpeed = MathUtil.clamp(ySpeed, -0.5, 0.5);
 
           double thetaSpeed =
               angleController.calculate(
                   pose.getRotation().getRadians(),
-                  (Math.PI / 2)
+                  (-Math.PI / 2)
                       + (DriverStation.getAlliance().isPresent()
                               && DriverStation.getAlliance().get() == Alliance.Red
                           ? Math.PI

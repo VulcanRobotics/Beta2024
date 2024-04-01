@@ -72,7 +72,7 @@ public class Drive extends SubsystemBase {
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   private final SysIdRoutine sysId;
   public boolean isUsingVision = true;
-  public double armAngleOffset = 3.0;
+  public double armAngleOffset = 6.0;
 
   public static boolean inShuttlePosition = false;
 
@@ -470,6 +470,15 @@ public class Drive extends SubsystemBase {
     goal = current.minus(goal);
     double angle = Math.atan(goal.getY() / goal.getX());
     return new Pose2d(getPose().getTranslation(), new Rotation2d(angle));
+  }
+
+  public Pose2d getShuttlePoseConstant() {
+    if (DriverStation.getAlliance().isPresent()
+        && DriverStation.getAlliance().get() == Alliance.Red) {
+      return new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(Math.PI / 5));
+    } else {
+      return new Pose2d(new Translation2d(0.0, 0.0), new Rotation2d(-Math.PI / 5));
+    }
   }
 
   public Pose2d calculateIntakePose() {

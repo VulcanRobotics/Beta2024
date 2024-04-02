@@ -23,8 +23,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   CANSparkMax intakeUpperMotor =
       new CANSparkMax(ShooterConstants.kIntakeUpperMotor, MotorType.kBrushless);
-  CANSparkMax intakeLowerMotor =
-      new CANSparkMax(ShooterConstants.kIntakeLowerMotor, MotorType.kBrushless);
 
   CANSparkMax feederMotor = new CANSparkMax(ShooterConstants.kFeederMotor, MotorType.kBrushless);
 
@@ -36,6 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public float savedIntakeLowerSpeed = 0;
 
   public boolean upToSpeed;
+
+  public static boolean hasNote;
 
   public ShooterSubsystem() {
     var slot0Configs = new Slot0Configs();
@@ -55,13 +55,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void SetIntake(float speed) {
     intakeUpperMotor.set(speed);
-    intakeLowerMotor.set(-speed);
   }
 
   public void SetIntakeMotor(String motor, float speed) {
-    if (motor == "Upper") {
-      intakeUpperMotor.set(speed);
-    } else intakeLowerMotor.set(-speed);
+    intakeUpperMotor.set(speed);
   }
 
   public void SetShooter(double speed) {
@@ -93,6 +90,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    hasNote = intakeSensor.get();
 
     if (intakeSensor.get()) {
       setLED(-0.07);

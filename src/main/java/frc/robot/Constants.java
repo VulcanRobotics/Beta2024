@@ -120,7 +120,6 @@ public final class Constants {
     public static final int kFollowMotorPort = 16;
 
     public static final int kIntakeUpperMotor = 18;
-    public static final int kIntakeLowerMotor = 20;
     public static final int kFeederMotor = 19;
 
     public static final int kPhotogatePort = 0;
@@ -140,6 +139,10 @@ public final class Constants {
 
     public static final double WinchLowerRightLimit = 1 - 0.738;
     public static final double WinchUpperRightLimit = 1 - 0.0847;
+
+    public static final double kTrapMotorUpperOffset = 145.053;
+
+    public static final int kTrapMotorPort = 20;
   }
 
   public final class ArmConstants {

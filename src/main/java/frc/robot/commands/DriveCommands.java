@@ -25,13 +25,16 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
+import frc.robot.subsystems.LimelightVisionSubsystem;
 import frc.robot.subsystems.drive.Drive;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
   private static final double AnglePIDValues[] = {0.45, 0.0, 0.0};
+  private static final double NoteTrackPIDValues[] = {0.45, 0.0, 0.0};
   private static final double TranslationPIDValues[] = {1.2, 0.0, 0.01};
   private static final PIDController xTranslationController =
       new PIDController(TranslationPIDValues[0], TranslationPIDValues[1], TranslationPIDValues[2]);
@@ -39,6 +42,8 @@ public class DriveCommands {
       new PIDController(TranslationPIDValues[0], TranslationPIDValues[1], TranslationPIDValues[2]);
   private static final PIDController angleController =
       new PIDController(AnglePIDValues[0], AnglePIDValues[1], AnglePIDValues[2]);
+  private static final PIDController noteTrackController =
+      new PIDController(NoteTrackPIDValues[0], NoteTrackPIDValues[1], NoteTrackPIDValues[2]);
 
   private DriveCommands() {}
 
@@ -196,6 +201,54 @@ public class DriveCommands {
                   ySpeed * drive.getMaxLinearSpeedMetersPerSec(),
                   thetaSpeed * drive.getMaxAngularSpeedRadPerSec(),
                   (isFlipped)
+                      ? drive.getRotation().plus(new Rotation2d(Math.PI))
+                      : drive.getRotation()));
+        },
+        drive);
+  }
+
+  public static Command driveWhileNoteTracking(
+      Drive drive,
+      DoubleSupplier xSupplier,
+      DoubleSupplier ySupplier,
+      DoubleSupplier omegaSupplier) {
+
+    noteTrackController.reset();
+    noteTrackController.setTolerance(Math.toRadians(0.25));
+    noteTrackController.enableContinuousInput(-Math.PI, Math.PI);
+
+    return Commands.run(
+        () -> {
+          Optional<Double> tx = LimelightVisionSubsystem.getNoteDistLL();
+          double linearMagnitude =
+              MathUtil.applyDeadband(
+                  Math.hypot(xSupplier.getAsDouble(), ySupplier.getAsDouble()), DEADBAND);
+          Rotation2d linearDirection =
+              new Rotation2d(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+
+          var omega =
+              (tx.isPresent())
+                  ? noteTrackController.calculate(tx.get(), 0.0)
+                  : MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+
+          // Square values
+          linearMagnitude = linearMagnitude * linearMagnitude;
+
+          // Calcaulate new linear velocity
+          Translation2d linearVelocity =
+              new Pose2d(new Translation2d(), linearDirection)
+                  .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
+                  .getTranslation();
+
+          boolean isFlipped =
+              DriverStation.getAlliance().isPresent()
+                  && DriverStation.getAlliance().get() == Alliance.Red;
+          drive.runVelocity(
+              ChassisSpeeds.fromFieldRelativeSpeeds(
+                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                  omega * drive.getMaxAngularSpeedRadPerSec(),
+                  isFlipped
                       ? drive.getRotation().plus(new Rotation2d(Math.PI))
                       : drive.getRotation()));
         },

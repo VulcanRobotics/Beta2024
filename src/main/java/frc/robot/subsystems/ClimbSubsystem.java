@@ -3,10 +3,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ClimbConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class ClimbSubsystem extends SubsystemBase {
@@ -19,6 +22,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public final TalonFX m_WinchMotorRight = new TalonFX(12, "rio");
   public final TalonFX m_WinchMotorLeft = new TalonFX(11, "rio");
+
+  public final CANSparkMax m_TrapMotor =
+      new CANSparkMax(ClimbConstants.kTrapMotorPort, MotorType.kBrushless);
 
   // public final Servo m_WinchRightServo = new Servo(0);
   // public final Servo m_WinchLeftServo = new Servo(1);
@@ -61,6 +67,16 @@ public class ClimbSubsystem extends SubsystemBase {
     }
   }
 
+  public void setTrapMotorPosition(double targetPosition) {
+    double currentPosition = m_TrapMotor.getEncoder().getPosition();
+
+    if ((targetPosition - currentPosition) > 0.1f) {
+      m_TrapMotor.set(0.25f);
+    } else if ((targetPosition - currentPosition) < -0.1f) {
+      m_TrapMotor.set(-0.25f);
+    }
+  }
+
   public void setRightWinchSpeed(double speed) {
     m_WinchMotorRight.set(applyWinchLimits(false, speed));
     // m_WinchMotorRight.set(speed);
@@ -79,6 +95,8 @@ public class ClimbSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
     SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
+
+    SmartDashboard.putNumber("Trap Motor Position", m_TrapMotor.getEncoder().getPosition());
 
     Logger.recordOutput("LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());
     Logger.recordOutput("RightClimbValue", m_WinchMotorRight.getPosition().getValueAsDouble());

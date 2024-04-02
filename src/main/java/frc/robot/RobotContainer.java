@@ -19,6 +19,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,7 +27,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -204,7 +207,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // Trigger revTrigger = new Trigger(shooterSubsystem::hasNote);
+    Trigger rumbleTrigger = new Trigger(shooterSubsystem::hasNote);
 
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
@@ -251,14 +254,6 @@ public class RobotContainer {
                 Commands.run(
                     () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
 
-    // driverController
-    //     .b()
-    //     .onTrue(
-    //         Commands.runOnce(
-    //             () -> drive.setPose(new Pose2d(new Translation2d(0.0, 0.0), new
-    // Rotation2d(0.0))),
-    //             drive));
-
     driverController
         .rightBumper()
         .whileTrue(
@@ -274,14 +269,11 @@ public class RobotContainer {
     driverController
         .rightTrigger()
         .whileTrue(
-            new ParallelDeadlineGroup(
-                new IntakeCommand(shooterSubsystem),
-                DriveCommands.driveWhileAiming(
-                    drive,
-                    () -> -driverController.getLeftY(),
-                    () -> -driverController.getLeftX(),
-                    drive::calculateIntakePose),
-                new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseIntake)));
+            DriveCommands.driveWhileNoteTracking(
+                drive,
+                () -> -driverController.getLeftY(),
+                () -> -driverController.getLeftX(),
+                () -> -driverController.getRightX()));
 
     driverController
         .back()
@@ -293,6 +285,29 @@ public class RobotContainer {
 
     driverController.povUp().onTrue(new InstantCommand(() -> ArmConstants.kVariable += 0.1));
     driverController.povDown().onTrue(new InstantCommand(() -> ArmConstants.kVariable -= 0.1));
+
+    // Both controllers will rumble for a second when they intake a note.
+    rumbleTrigger.onTrue(
+        Commands.runOnce(
+                () -> {
+                  driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+                })
+            .andThen(new WaitCommand(1.0))
+            .finallyDo(
+                () -> {
+                  driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+                }));
+
+    rumbleTrigger.onTrue(
+        Commands.runOnce(
+                () -> {
+                  operatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+                })
+            .andThen(new WaitCommand(1.0))
+            .finallyDo(
+                () -> {
+                  operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+                }));
 
     // Operator
 
@@ -317,7 +332,15 @@ public class RobotContainer {
         .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseSource));
     operatorController
         .b()
-        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPosePodium));
+        .whileTrue(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0.25f)));
+    operatorController.b().onFalse(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0)));
+
+    operatorController
+        .button(7)
+        .whileTrue(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(-0.25f)));
+    operatorController
+        .button(7)
+        .onFalse(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0)));
 
     operatorController
         .rightStick()

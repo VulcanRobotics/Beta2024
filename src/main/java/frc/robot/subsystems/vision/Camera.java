@@ -1,6 +1,6 @@
 package frc.robot.subsystems.vision;
 
-import frc.robot.Robot;
+import frc.robot.Constants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.vision.CameraIO.CameraIOInputs;
 import org.littletonrobotics.junction.Logger;
@@ -14,14 +14,14 @@ public class Camera {
 
   public Camera(Drive robotDrive, int index) {
     cameraIndex = index;
-    if (Robot.isReal()) {
+    if (Constants.currentMode != Constants.Mode.SIM) {
       cameraIO = new CameraIOPhoton(robotDrive, cameraIndex);
     }
   }
 
   public Camera(Drive robotDrive, int index, VisionSystemSim visionSim) {
     cameraIndex = index;
-    if (Robot.isSimulation()) {
+    if (Constants.currentMode == Constants.Mode.SIM) {
       cameraIO = new CameraIOPhotonSim(robotDrive, index, visionSim);
     }
   }

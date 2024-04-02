@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.*;
+import frc.robot.Constants;
 import frc.robot.subsystems.drive.Drive;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
@@ -117,22 +118,49 @@ public class CameraIOPhoton implements CameraIO {
 
   @Override
   public void updateInputs(CameraIOInputs inputs) {
-    byte[][] rawBytesFrames = rawBytesSubscriber.readQueueValues();
+    if (Constants.currentMode != Constants.Mode.REPLAY) {
+      // byte[][] rawBytesFrames = rawBytesSubscriber.readQueueValues();
 
-    if (rawBytesFrames.length > 0) {
-      inputs.rawBytes = rawBytesFrames;
-      byte[] latestFrame = rawBytesFrames[rawBytesFrames.length - 1];
+      // // if (rawBytesFrames.length > 0) {
+      // if (inputs.numFrames > 0) {
+      //   inputs.rawBytes = rawBytesFrames;
+      // }
+
+      TimestampedRaw[] rawBytesFrames = rawBytesSubscriber.readQueue();
+      inputs.numFrames = rawBytesFrames.length;
+      inputs.rawBytes = new byte[inputs.numFrames][];
+      inputs.timestamps = new double[inputs.numFrames];
+
+      for (int n = 0; n < rawBytesFrames.length; n++) {
+        inputs.rawBytes[n] = rawBytesFrames[n].value;
+        inputs.timestamps[n] = rawBytesFrames[n].timestamp;
+      }
+    }
+
+    // if (inputs.numFrames > 0) {
+    if (inputs.rawBytes.length > 0) {
+      // byte[] latestFrame = rawBytesFrames[rawBytesFrames.length - 1];
+
+      byte[] latestFrame = inputs.rawBytes[0];
+      // byte[] latestFrame = inputs.rawBytes[inputs.numFrames - 1];
 
       var pipelineResult = PhotonPipelineResult.serde.unpack(new Packet(latestFrame));
-      // Set the timestamp of the result.
-      // getLatestChange returns in microseconds, so we divide by 1e6 to convert to seconds.
-      pipelineResult.setTimestampSeconds(
-          (rawBytesSubscriber.getLastChange() / 1e6) - pipelineResult.getLatencyMillis() / 1e3);
 
+      if (Constants.currentMode != Constants.Mode.REPLAY) {
+        // Set the timestamp of the result.
+        // getLatestChange returns in microseconds, so we divide by 1e6 to convert to seconds.
+        pipelineResult.setTimestampSeconds(
+            (rawBytesSubscriber.getLastChange() / 1e6) - pipelineResult.getLatencyMillis() / 1e3);
+      } else {
+        pipelineResult.setTimestampSeconds(inputs.latestTimestamp);
+      }
       // Optional<EstimatedRobotPose> visionEst = photonEstimator.update(pipelineResult);
       var visionEst = getEstimatedGlobalPose(pipelineResult);
-      inputs.latestTimestamp = pipelineResult.getTimestampSeconds();
-      inputs.poseDetected = false; // Could be changed below
+
+      if (Constants.currentMode != Constants.Mode.REPLAY) {
+        inputs.latestTimestamp = pipelineResult.getTimestampSeconds();
+        inputs.poseDetected = false; // Could be changed below
+      }
 
       if (visionEst.isPresent()) {
         var photonPoseEst = visionEst.get();
@@ -144,7 +172,8 @@ public class CameraIOPhoton implements CameraIO {
           var estStdDevs = this.getEstimationStdDevs(estPose2d, pipelineResult);
           drive.addVisionMeasurement(estPose2d, photonPoseEst.timestampSeconds, estStdDevs);
 
-          inputs.poseDetected = true;
+          if (Constants.currentMode != Constants.Mode.REPLAY) inputs.poseDetected = true;
+
           Logger.recordOutput("Vision/" + cameraName, estPose2d);
           // Logger.recordOutput("Vision/" + cameraName + "/rawBytes", latestFrame);
         }

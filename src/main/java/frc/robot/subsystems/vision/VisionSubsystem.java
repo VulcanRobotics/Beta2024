@@ -32,7 +32,8 @@ public class VisionSubsystem extends SubsystemBase {
     drive = robotDrive;
 
     // ----- Simulation
-    if (Robot.isSimulation()) {
+    // if (Robot.isSimulation()) {
+    if (Constants.currentMode == Constants.Mode.SIM) { // SIM only, not REPLAY
       // Create the vision system simulation which handles cameras and targets on the field.
       visionSim = new VisionSystemSim("main");
       // Add all the AprilTags inside the tag layout as visible targets to this simulated field.
@@ -67,11 +68,13 @@ public class VisionSubsystem extends SubsystemBase {
   @Override
   //  public void simulationPeriodic(Pose2d robotSimPose) {
   public void simulationPeriodic() {
-    visionSim.update(drive.getPose());
+    if (Constants.currentMode == Constants.Mode.SIM) { // Not REPLAY
+      visionSim.update(drive.getPose());
 
-    var debugField = getSimDebugField();
-    debugField.getObject("EstimatedRobot").setPose(drive.getPose());
-    debugField.getObject("EstimatedRobotModules").setPoses(drive.getModulePoses());
+      var debugField = getSimDebugField();
+      debugField.getObject("EstimatedRobot").setPose(drive.getPose());
+      debugField.getObject("EstimatedRobotModules").setPoses(drive.getModulePoses());
+    }
   }
 
   /** Reset pose history of the robot in the vision system simulation. */

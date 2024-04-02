@@ -37,8 +37,8 @@ public final class Constants {
 
   public static final String name = "Swift";
 
-  public static final Mode currentMode = Mode.REAL;
-  // public static final Mode currentMode = Mode.SIM;
+  // public static final Mode currentMode = Mode.REAL;
+  public static final Mode currentMode = Mode.SIM;
   // public static final Mode currentMode = Mode.REPLAY;
 
   public static enum Mode {
@@ -111,8 +111,10 @@ public final class Constants {
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs =
         VecBuilder.fill(3.0, 3.0, 8.0); // VecBuilder.fill(4, 4, 8);
+    // VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> kMultiTagStdDevs =
         VecBuilder.fill(0.4, 0.4, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
+    // VecBuilder.fill(0.01, 0.01, 0.01);
   }
 
   public final class ShooterConstants {

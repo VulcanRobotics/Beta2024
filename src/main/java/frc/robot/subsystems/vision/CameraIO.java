@@ -14,6 +14,8 @@ public interface CameraIO {
     // public Pose2d estimatedPose = new Pose2d();
     public boolean poseDetected = false;
     public double latestTimestamp = 0;
+    public double[] timestamps = new double[] {};
+    public int numFrames = 0;
     public byte[][] rawBytes = new byte[][] {};
 
     // These types don't work with AdvantageKit logging
@@ -25,6 +27,8 @@ public interface CameraIO {
     @Override
     public void toLog(LogTable table) {
       table.put("Timestamps", latestTimestamp);
+      // table.put("Timestamps", timestamps);
+      table.put("NumFrames", numFrames);
       table.put("FrameCount", rawBytes.length);
       for (int i = 0; i < rawBytes.length; i++) {
         table.put("rawBytes/" + Integer.toString(i), rawBytes[i]);

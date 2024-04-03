@@ -37,8 +37,8 @@ public final class Constants {
 
   public static final String name = "Swift";
 
-  // public static final Mode currentMode = Mode.REAL;
-  public static final Mode currentMode = Mode.SIM;
+  public static final Mode currentMode = Mode.REAL;
+  // public static final Mode currentMode = Mode.SIM;
   // public static final Mode currentMode = Mode.REPLAY;
 
   public static enum Mode {
@@ -136,10 +136,10 @@ public final class Constants {
     public static final double kLeftTopDistanceFromChain = 0.0;
     public static final double kRightTopDistanceFromChain = 0.0;
 
-    public static final double WinchLowerLeftLimit = 0.173;
+    public static final double WinchLowerLeftLimit = 0.127; // 0.173;
     public static final double WinchUpperLeftLimit = 0.8214;
 
-    public static final double WinchLowerRightLimit = 1 - 0.738;
+    public static final double WinchLowerRightLimit = 0.229; // 1 - 0.738;
     public static final double WinchUpperRightLimit = 1 - 0.0847;
 
     public static final double kTrapMotorUpperOffset = 145.053;

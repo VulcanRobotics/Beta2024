@@ -242,17 +242,18 @@ public class RobotContainer {
                 Commands.run(
                     () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
 
-    driverController
-        .b()
-        .whileTrue(
-            new ParallelCommandGroup(
-                DriveCommands.driveWhileAiming(
-                    drive,
-                    () -> -driverController.getLeftY(),
-                    () -> -driverController.getLeftX(),
-                    drive::calculateShootingDirectPose),
-                Commands.run(
-                    () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
+    // driverController
+    //     .b()
+    //     .whileTrue(
+    //         new ParallelCommandGroup(
+    //             DriveCommands.driveWhileAiming(
+    //                 drive,
+    //                 () -> -driverController.getLeftY(),
+    //                 () -> -driverController.getLeftX(),
+    //                 drive::calculateShootingDirectPose),
+    //             Commands.run(
+    //                 () -> armSubsystem.setArmPosition(drive::getArmShootingAngle),
+    // armSubsystem)));
 
     driverController
         .rightBumper()
@@ -280,6 +281,8 @@ public class RobotContainer {
         .onTrue(
             Commands.runOnce(() -> drive.isUsingVision = !drive.isUsingVision, drive)
                 .ignoringDisable(true));
+
+    driverController.b().whileTrue(ClimbCommands.releaseTrapBar(climbSubsystem));
 
     driverController.leftBumper().whileTrue(DriveCommands.driveToAmp(drive, drive::getPose));
 

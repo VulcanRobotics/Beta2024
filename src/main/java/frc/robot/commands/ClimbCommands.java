@@ -56,6 +56,14 @@ public class ClimbCommands {
         climb);
   }
 
+  public static Command releaseTrapBar(ClimbSubsystem climb) {
+    return Commands.run(
+        () -> {
+          climb.setTrapMotorPosition(220.939);
+        },
+        climb);
+  }
+
   public static Command autoClimb(
       ClimbSubsystem climb, ArmSubsystem arm, ShooterSubsystem shooter) {
     return new SequentialCommandGroup(

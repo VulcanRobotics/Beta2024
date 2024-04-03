@@ -333,28 +333,26 @@ public class RobotContainer {
     operatorController
         .y()
         .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseSource));
-    operatorController
-        .b()
-        .whileTrue(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0.25f)));
-    operatorController.b().onFalse(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0)));
+
+    operatorController.b().whileTrue(ClimbCommands.releaseTrapAndRaiseToLowChain(climbSubsystem));
+    operatorController.b().onFalse(ClimbCommands.stopTrapBar(climbSubsystem));
+
+    // operatorController
+    //     .povUp()
+    //     .whileTrue(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0.25f)));
+    // operatorController.povUp().onFalse(new InstantCommand(() ->
+    // climbSubsystem.m_TrapMotor.set(0)));
 
     operatorController
-        .button(7)
+        .povDown()
         .whileTrue(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(-0.25f)));
     operatorController
-        .button(7)
+        .povDown()
         .onFalse(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0)));
 
     operatorController
         .rightStick()
         .onTrue(Commands.runOnce(() -> shooterSubsystem.SetIntake(-0.02f), shooterSubsystem));
-
-    operatorController
-        .button(8)
-        .whileTrue(
-            new ParallelCommandGroup(
-                new SetArmPosition(armSubsystem, () -> Constants.ArmConstants.kArmPoseAmp),
-                ClimbCommands.raiseToLowChain(climbSubsystem)));
 
     // Shooter and intake commands
     operatorController
@@ -367,7 +365,7 @@ public class RobotContainer {
     operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem));
     operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController
-        .povDown()
+        .button(7)
         .onTrue(
             new InstantCommand(
                 () -> {
@@ -377,7 +375,7 @@ public class RobotContainer {
                 }));
 
     operatorController
-        .povUp()
+        .button(8)
         .onTrue(
             new InstantCommand(
                 () -> {

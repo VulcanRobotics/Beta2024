@@ -26,6 +26,8 @@ public class ClimbSubsystem extends SubsystemBase {
   public final CANSparkMax m_TrapMotor =
       new CANSparkMax(ClimbConstants.kTrapMotorPort, MotorType.kBrushless);
 
+  public final double trapMotorStartingPos = m_TrapMotor.getEncoder().getPosition();
+
   // public final Servo m_WinchRightServo = new Servo(0);
   // public final Servo m_WinchLeftServo = new Servo(1);
 
@@ -77,18 +79,28 @@ public class ClimbSubsystem extends SubsystemBase {
     }
   }
 
+  public void stopTrapMotor() {
+    m_TrapMotor.set(0.0);
+  }
+
   public void setRightWinchSpeed(double speed) {
-    // m_WinchMotorRight.set(applyWinchLimits(false, speed));
-    m_WinchMotorRight.set(speed);
+    m_WinchMotorRight.set(applyWinchLimits(false, speed));
+    // m_WinchMotorRight.set(speed);
 
     Logger.recordOutput("RightWinchSpeed", speed);
   }
 
   public void setLeftWinchSpeed(double speed) {
-    // m_WinchMotorLeft.set(applyWinchLimits(true, speed));
-    m_WinchMotorLeft.set(speed);
+    m_WinchMotorLeft.set(applyWinchLimits(true, speed));
+    // m_WinchMotorLeft.set(speed);
 
     Logger.recordOutput("LeftWinchSpeed", speed);
+  }
+
+  public void climbSetup() {
+    setLeftWinchSpeed(1.0);
+    setRightWinchSpeed(1.0);
+    setTrapMotorPosition(141);
   }
 
   public void periodic() {

@@ -59,7 +59,23 @@ public class ClimbCommands {
   public static Command releaseTrapBar(ClimbSubsystem climb) {
     return Commands.run(
         () -> {
-          climb.setTrapMotorPosition(220.939);
+          climb.setTrapMotorPosition(141.6);
+        },
+        climb);
+  }
+
+  public static Command releaseTrapAndRaiseToLowChain(ClimbSubsystem climb) {
+    return Commands.run(
+        () -> {
+          climb.climbSetup();
+        },
+        climb);
+  }
+
+  public static Command stopTrapBar(ClimbSubsystem climb) {
+    return Commands.run(
+        () -> {
+          climb.stopTrapMotor();
         },
         climb);
   }

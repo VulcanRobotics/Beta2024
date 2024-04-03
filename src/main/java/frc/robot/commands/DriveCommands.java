@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
   private static final double AnglePIDValues[] = {0.45, 0.0, 0.0};
-  private static final double NoteTrackPIDValues[] = {0.45, 0.0, 0.0};
+  private static final double NoteTrackPIDValues[] = {0.006, 0.0001, 0.0};
   private static final double TranslationPIDValues[] = {1.2, 0.0, 0.01};
   private static final PIDController xTranslationController =
       new PIDController(TranslationPIDValues[0], TranslationPIDValues[1], TranslationPIDValues[2]);
@@ -215,7 +215,7 @@ public class DriveCommands {
 
     noteTrackController.reset();
     noteTrackController.setTolerance(Math.toRadians(0.25));
-    noteTrackController.enableContinuousInput(-Math.PI, Math.PI);
+    // noteTrackController.enableContinuousInput(-Math.PI, Math.PI);
 
     return Commands.run(
         () -> {

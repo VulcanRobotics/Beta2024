@@ -137,12 +137,12 @@ public class CameraIOPhoton implements CameraIO {
       }
     }
 
-    // if (inputs.numFrames > 0) {
-    if (inputs.rawBytes.length > 0) {
+    if (inputs.numFrames > 0) {
+      // if (inputs.rawBytes.length > 0) {
       // byte[] latestFrame = rawBytesFrames[rawBytesFrames.length - 1];
 
-      byte[] latestFrame = inputs.rawBytes[0];
-      // byte[] latestFrame = inputs.rawBytes[inputs.numFrames - 1];
+      // byte[] latestFrame = inputs.rawBytes[0];
+      byte[] latestFrame = inputs.rawBytes[inputs.numFrames - 1];
 
       var pipelineResult = PhotonPipelineResult.serde.unpack(new Packet(latestFrame));
 

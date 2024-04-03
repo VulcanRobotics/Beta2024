@@ -26,8 +26,8 @@ public interface CameraIO {
 
     @Override
     public void toLog(LogTable table) {
-      table.put("Timestamps", latestTimestamp);
-      // table.put("Timestamps", timestamps);
+      table.put("LatestTimestamps", latestTimestamp);
+      table.put("Timestamps", timestamps);
       table.put("NumFrames", numFrames);
       table.put("FrameCount", rawBytes.length);
       for (int i = 0; i < rawBytes.length; i++) {
@@ -37,10 +37,11 @@ public interface CameraIO {
 
     @Override
     public void fromLog(LogTable table) {
-      latestTimestamp = table.get("Timestamps", latestTimestamp);
-      int frameCount = (int) table.get("FrameCount", 0);
-      rawBytes = new byte[frameCount][];
-      for (int i = 0; i < frameCount; i++) {
+      latestTimestamp = table.get("LatestTimestamp", latestTimestamp);
+      timestamps = table.get("Timestamps", new double[] {});
+      numFrames = (int) table.get("FrameCount", 0);
+      rawBytes = new byte[numFrames][];
+      for (int i = 0; i < numFrames; i++) {
         rawBytes[i] = table.get("rawBytes/" + Integer.toString(i), new byte[] {});
       }
     }

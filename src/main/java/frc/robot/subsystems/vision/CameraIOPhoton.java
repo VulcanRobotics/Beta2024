@@ -133,7 +133,7 @@ public class CameraIOPhoton implements CameraIO {
 
       for (int n = 0; n < rawBytesFrames.length; n++) {
         inputs.rawBytes[n] = rawBytesFrames[n].value;
-        inputs.timestamps[n] = rawBytesFrames[n].timestamp;
+        inputs.timestamps[n] = rawBytesFrames[n].timestamp / 1e6;
       }
     }
 
@@ -146,14 +146,16 @@ public class CameraIOPhoton implements CameraIO {
 
       var pipelineResult = PhotonPipelineResult.serde.unpack(new Packet(latestFrame));
 
-      if (Constants.currentMode != Constants.Mode.REPLAY) {
-        // Set the timestamp of the result.
-        // getLatestChange returns in microseconds, so we divide by 1e6 to convert to seconds.
-        pipelineResult.setTimestampSeconds(
-            (rawBytesSubscriber.getLastChange() / 1e6) - pipelineResult.getLatencyMillis() / 1e3);
-      } else {
-        pipelineResult.setTimestampSeconds(inputs.latestTimestamp);
-      }
+      // if (Constants.currentMode != Constants.Mode.REPLAY) {
+      // Set the timestamp of the result.
+      // getLatestChange returns in microseconds, so we divide by 1e6 to convert to seconds.
+      // pipelineResult.setTimestampSeconds(
+      //     (rawBytesSubscriber.getLastChange() / 1e6) - pipelineResult.getLatencyMillis() / 1e3);
+      pipelineResult.setTimestampSeconds(
+          inputs.timestamps[inputs.numFrames - 1] - pipelineResult.getLatencyMillis() / 1e3);
+      // } else {
+      //   pipelineResult.setTimestampSeconds(inputs.latestTimestamp);
+      // }
       // Optional<EstimatedRobotPose> visionEst = photonEstimator.update(pipelineResult);
       var visionEst = getEstimatedGlobalPose(pipelineResult);
 

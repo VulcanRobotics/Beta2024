@@ -139,8 +139,8 @@ public final class Constants {
     public static final double WinchLowerLeftLimit = 0.1392; // 0.173;
     public static final double WinchUpperLeftLimit = 0.7573;
 
-    public static final double WinchLowerRightLimit = 0.009; // 1 - 0.738;
-    public static final double WinchUpperRightLimit = 0.0148;
+    public static final double WinchLowerRightLimit = 0.09; // 1 - 0.738;
+    public static final double WinchUpperRightLimit = 0.8533;
 
     public static final double kTrapMotorUpperOffset = 145.053;
 

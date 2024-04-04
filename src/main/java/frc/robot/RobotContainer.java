@@ -334,8 +334,13 @@ public class RobotContainer {
         .y()
         .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseSource));
 
-    operatorController.b().whileTrue(ClimbCommands.releaseTrapAndRaiseToLowChain(climbSubsystem));
-    operatorController.b().onFalse(ClimbCommands.stopTrapBar(climbSubsystem));
+    operatorController
+        .b()
+        .whileTrue(
+            new ParallelCommandGroup(
+                ClimbCommands.raiseToLowChain(climbSubsystem),
+                new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseAmp)));
+    // operatorController.b().onFalse(ClimbCommands.stopTrapBar(climbSubsystem));
 
     // operatorController
     //     .povUp()
@@ -344,11 +349,15 @@ public class RobotContainer {
     // climbSubsystem.m_TrapMotor.set(0)));
 
     operatorController
-        .povDown()
-        .whileTrue(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(-0.25f)));
+        .povUp()
+        .whileTrue(new InstantCommand(() -> climbSubsystem.setTrapSpeed(0.25)));
+    operatorController.povUp().onFalse(new InstantCommand(() -> climbSubsystem.setTrapSpeed(0)));
+
     operatorController
         .povDown()
-        .onFalse(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0)));
+        .whileTrue(new InstantCommand(() -> climbSubsystem.setTrapSpeed(-0.25)));
+
+    operatorController.povDown().onFalse(new InstantCommand(() -> climbSubsystem.setTrapSpeed(0)));
 
     operatorController
         .rightStick()

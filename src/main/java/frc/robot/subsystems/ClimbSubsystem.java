@@ -73,14 +73,21 @@ public class ClimbSubsystem extends SubsystemBase {
     double currentPosition = m_TrapMotor.getEncoder().getPosition();
 
     if ((targetPosition - currentPosition) > 0.1f) {
-      m_TrapMotor.set(0.25f);
+      setTrapSpeed(0.25f);
     } else if ((targetPosition - currentPosition) < -0.1f) {
-      m_TrapMotor.set(-0.25f);
+      setTrapSpeed(-0.25f);
     }
   }
 
-  public void stopTrapMotor() {
-    m_TrapMotor.set(0.0);
+  public void setTrapSpeed(double speed) {
+    if (m_TrapMotor.getEncoder().getPosition() <= 0 && speed < 0) {
+      speed = 0;
+    } else if (m_TrapMotor.getEncoder().getPosition() >= ClimbConstants.kTrapMotorUpperOffset
+        && speed > 0) {
+      speed = 0;
+    }
+
+    m_TrapMotor.set(speed);
   }
 
   public void setRightWinchSpeed(double speed) {
@@ -97,18 +104,13 @@ public class ClimbSubsystem extends SubsystemBase {
     Logger.recordOutput("LeftWinchSpeed", speed);
   }
 
-  public void climbSetup() {
-    setLeftWinchSpeed(1.0);
-    setRightWinchSpeed(1.0);
-    setTrapMotorPosition(141);
-  }
-
   public void periodic() {
 
     SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
     SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
 
     SmartDashboard.putNumber("Trap Motor Position", m_TrapMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("Trap Speed", m_TrapMotor.get());
 
     Logger.recordOutput("LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());
     Logger.recordOutput("RightClimbValue", m_WinchMotorRight.getPosition().getValueAsDouble());

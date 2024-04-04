@@ -64,22 +64,6 @@ public class ClimbCommands {
         climb);
   }
 
-  public static Command releaseTrapAndRaiseToLowChain(ClimbSubsystem climb) {
-    return Commands.run(
-        () -> {
-          climb.climbSetup();
-        },
-        climb);
-  }
-
-  public static Command stopTrapBar(ClimbSubsystem climb) {
-    return Commands.run(
-        () -> {
-          climb.stopTrapMotor();
-        },
-        climb);
-  }
-
   public static Command autoClimb(
       ClimbSubsystem climb, ArmSubsystem arm, ShooterSubsystem shooter) {
     return new SequentialCommandGroup(

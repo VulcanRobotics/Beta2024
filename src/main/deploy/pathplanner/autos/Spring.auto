@@ -74,7 +74,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SC^L"
+                  "pathName": "Test SC^L"
                 }
               },
               {
@@ -94,6 +94,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "Back To Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "UsePathRotation"
                 }
               }
             ]
@@ -112,7 +118,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SC^R"
+                  "pathName": "Test SC^R"
                 }
               },
               {
@@ -132,6 +138,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "Back To Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "UsePathRotation"
                 }
               }
             ]

@@ -396,6 +396,10 @@ public class RobotContainer {
     // revTrigger.whileTrue(new RevCommand(shooterSubsystem, armSubsystem, drive));
   }
 
+  public void setVision(boolean mode) {
+    drive.isUsingVision = mode;
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

@@ -13,13 +13,213 @@
         }
       },
       "/SmartDashboard/Field": {
+        "EstimatedRobot": {
+          "arrowWeight": 3.0,
+          "length": 0.800000011920929,
+          "selectable": false,
+          "weight": 3.0,
+          "width": 0.800000011920929
+        },
+        "EstimatedRobotModules": {
+          "arrows": false,
+          "image": "swerve_module.png",
+          "length": 0.30000001192092896,
+          "selectable": false,
+          "width": 0.30000001192092896
+        },
+        "Robot": {
+          "arrowColor": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "arrowWeight": 2.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "length": 0.800000011920929,
+          "selectable": false,
+          "weight": 2.0,
+          "width": 0.800000011920929
+        },
+        "VisionEstimation": {
+          "arrowColor": [
+            0.0,
+            0.6075949668884277,
+            1.0,
+            255.0
+          ],
+          "arrowWeight": 2.0,
+          "color": [
+            0.0,
+            0.6075949668884277,
+            1.0,
+            255.0
+          ],
+          "selectable": false,
+          "weight": 2.0
+        },
+        "apriltag": {
+          "arrows": false,
+          "image": "tag-green.png",
+          "length": 0.6000000238418579,
+          "width": 0.5
+        },
         "bottom": 1476,
+        "cameras": {
+          "arrowColor": [
+            0.29535865783691406,
+            1.0,
+            0.9910804033279419,
+            255.0
+          ],
+          "arrowSize": 19,
+          "arrowWeight": 3.0,
+          "length": 1.0,
+          "style": "Hidden",
+          "weight": 1.0,
+          "width": 1.0
+        },
         "height": 8.210550308227539,
         "left": 150,
         "right": 2961,
         "top": 79,
+        "visibleTargetPoses": {
+          "arrows": false,
+          "image": "tag-blue.png",
+          "length": 0.5,
+          "selectable": false,
+          "width": 0.4000000059604645
+        },
         "width": 16.541748046875,
         "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": {
+        "BackLeftCam": {
+          "arrowColor": [
+            0.0,
+            0.7843137383460999,
+            1.0,
+            255.0
+          ],
+          "arrowWeight": 2.0,
+          "color": [
+            0.0,
+            0.7843137383460999,
+            1.0,
+            255.0
+          ],
+          "weight": 2.0
+        },
+        "BackRightCam": {
+          "arrowColor": [
+            1.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "arrowWeight": 2.0,
+          "color": [
+            1.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "weight": 2.0
+        },
+        "EstimatedRobotModules": {
+          "arrowSize": 72,
+          "arrowWeight": 0.0,
+          "arrows": false,
+          "selectable": false,
+          "style": "Hidden"
+        },
+        "FrontLeftCam": {
+          "arrowColor": [
+            255.0,
+            0.0,
+            0.0,
+            255.0
+          ],
+          "arrowWeight": 2.0,
+          "color": [
+            1.0,
+            0.0,
+            0.0,
+            255.0
+          ],
+          "weight": 2.0
+        },
+        "FrontRightCam": {
+          "arrowColor": [
+            0.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "arrowWeight": 2.0,
+          "color": [
+            0.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "weight": 2.0
+        },
+        "Robot": {
+          "arrowColor": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "arrowWeight": 2.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "length": 0.800000011920929,
+          "weight": 2.0,
+          "width": 0.800000011920929
+        },
+        "apriltag": {
+          "image": "/Users/ykim/Documents/GitHub/Beta2024_MtOlive/tag-green.png",
+          "length": 0.6000000238418579,
+          "width": 0.5
+        },
+        "bottom": 1476,
+        "cameras": {
+          "arrowColor": [
+            0.0,
+            255.0,
+            217.49996948242188,
+            255.0
+          ],
+          "arrowSize": 19,
+          "arrowWeight": 3.0,
+          "style": "Hidden",
+          "weight": 0.0
+        },
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "visibleTargetPoses": {
+          "image": "/Users/ykim/Documents/GitHub/Beta2024_MtOlive/tag-blue.png",
+          "length": 0.5,
+          "width": 0.4000000059604645
+        },
+        "width": 16.541748046875,
+        "window": {
+          "name": "sawa",
           "visible": true
         }
       }

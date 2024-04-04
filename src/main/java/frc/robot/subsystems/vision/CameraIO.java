@@ -14,6 +14,7 @@ public interface CameraIO {
     // public Pose2d estimatedPose = new Pose2d();
     public boolean poseDetected = false;
     public double latestTimestamp = 0;
+    public double photonLatency = 0;
     public double[] timestamps = new double[] {};
     public int numFrames = 0;
     public byte[][] rawBytes = new byte[][] {};
@@ -29,6 +30,8 @@ public interface CameraIO {
       table.put("LatestTimestamps", latestTimestamp);
       table.put("Timestamps", timestamps);
       table.put("NumFrames", numFrames);
+      table.put("PoseDetected", poseDetected);
+      table.put("Latency", photonLatency);
       table.put("FrameCount", rawBytes.length);
       for (int i = 0; i < rawBytes.length; i++) {
         table.put("rawBytes/" + Integer.toString(i), rawBytes[i]);
@@ -40,6 +43,8 @@ public interface CameraIO {
       latestTimestamp = table.get("LatestTimestamp", latestTimestamp);
       timestamps = table.get("Timestamps", new double[] {});
       numFrames = (int) table.get("FrameCount", 0);
+      poseDetected = table.get("PoseDetected", false);
+      photonLatency = table.get("Latency", 0.0);
       rawBytes = new byte[numFrames][];
       for (int i = 0; i < numFrames; i++) {
         rawBytes[i] = table.get("rawBytes/" + Integer.toString(i), new byte[] {});

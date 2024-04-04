@@ -150,9 +150,11 @@ public class CameraIOPhoton implements CameraIO {
       // Set the timestamp of the result.
       // getLatestChange returns in microseconds, so we divide by 1e6 to convert to seconds.
       // pipelineResult.setTimestampSeconds(
-      //     (rawBytesSubscriber.getLastChange() / 1e6) - pipelineResult.getLatencyMillis() / 1e3);
+      //    (rawBytesSubscriber.getLastChange() / 1e6) - pipelineResult.getLatencyMillis() / 1e3);
       pipelineResult.setTimestampSeconds(
           inputs.timestamps[inputs.numFrames - 1] - pipelineResult.getLatencyMillis() / 1e3);
+      // inputs.timestamps[0] - pipelineResult.getLatencyMillis() / 1e3);
+
       // } else {
       //   pipelineResult.setTimestampSeconds(inputs.latestTimestamp);
       // }
@@ -161,6 +163,7 @@ public class CameraIOPhoton implements CameraIO {
 
       if (Constants.currentMode != Constants.Mode.REPLAY) {
         inputs.latestTimestamp = pipelineResult.getTimestampSeconds();
+        inputs.photonLatency = pipelineResult.getLatencyMillis() / 1e3;
         inputs.poseDetected = false; // Could be changed below
       }
 
@@ -174,7 +177,9 @@ public class CameraIOPhoton implements CameraIO {
           var estStdDevs = this.getEstimationStdDevs(estPose2d, pipelineResult);
           drive.addVisionMeasurement(estPose2d, photonPoseEst.timestampSeconds, estStdDevs);
 
-          if (Constants.currentMode != Constants.Mode.REPLAY) inputs.poseDetected = true;
+          if (Constants.currentMode != Constants.Mode.REPLAY) {
+            inputs.poseDetected = true;
+          }
 
           Logger.recordOutput("Vision/" + cameraName, estPose2d);
           // Logger.recordOutput("Vision/" + cameraName + "/rawBytes", latestFrame);

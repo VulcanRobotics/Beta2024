@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.7266654672198234,
-        "y": 4.047045362609244
+        "x": 2.7271999266220757,
+        "y": 4.04508567813432
       },
       "prevControl": {
-        "x": 2.350633366701168,
-        "y": 4.165247155243453
+        "x": 2.35116782610342,
+        "y": 4.163287470768529
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,25 +30,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.45,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "NoteTrackMode"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.3,
     "maxAcceleration": 2.3,

@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.390220039699339,
+        "y": 5.5367024854420075
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.5086918738652295,
+        "y": 6.562270693985832
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.733494670693045,
+        "y": 6.983305934204462
+      },
+      "prevControl": {
+        "x": 1.546519722669075,
+        "y": 6.964659239503665
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.8,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 10.027605790114087,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "Advanced Short Paths",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

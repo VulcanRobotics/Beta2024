@@ -59,8 +59,8 @@ public final class Constants {
     public static final String kCameraNameBL = "BackLeftCam";
     public static final String kCameraNameBR = "BackRightCam";
 
-    private static final double TRACK_WIDTH_X = Units.inchesToMeters(25.0);
-    private static final double TRACK_WIDTH_Y = Units.inchesToMeters(25.0);
+    // private static final double TRACK_WIDTH_X = Units.inchesToMeters(25.0);
+    // private static final double TRACK_WIDTH_Y = Units.inchesToMeters(25.0);
     private static final double PI = Math.PI;
 
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.

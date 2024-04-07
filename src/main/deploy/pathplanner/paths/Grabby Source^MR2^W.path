@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.994130573477257,
-        "y": 3.6669664105536466
+        "x": 0.6848933135489061,
+        "y": 4.379278305462309
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.047397605109552,
-        "y": 2.946467022600057
+        "x": 0.964077742970301,
+        "y": 2.8525285985757165
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.680827194987724,
-        "y": 1.7540363738134883
+        "x": 7.991625038805633,
+        "y": 0.9828114563636536
       },
       "prevControl": {
-        "x": 3.802353619523873,
-        "y": 2.3397277367482756
+        "x": 5.9720750060112335,
+        "y": 1.025549144629792
       },
       "nextControl": {
-        "x": 5.857497847189358,
-        "y": 0.969532596736927
+        "x": 8.917665029774502,
+        "y": 0.9632146116144084
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.164849269513354,
-        "y": 2.4478240623147918
+        "x": 4.608556406927629,
+        "y": 1.578139846094507
       },
       "prevControl": {
-        "x": 6.529000852924576,
-        "y": 2.034323929076804
+        "x": 5.448607818511934,
+        "y": 0.8010358752198988
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,26 +46,34 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.5,
-      "rotationDegrees": 30.6105712294239,
-      "rotateFast": false
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": 0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": true
     }
   ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 35.69410310636198,
+    "rotation": -36.864887850284404,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Advanced Long Paths",
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": -59.50570765910474,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }

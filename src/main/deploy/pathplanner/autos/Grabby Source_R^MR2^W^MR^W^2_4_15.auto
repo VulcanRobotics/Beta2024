@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Source^MR2^W"
+                  "pathName": "Grabby Source^MR2^W"
                 }
               },
               {
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "W^MR"
+                  "pathName": "Grabby W^MR"
                 }
               },
               {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "MR^W"
+                  "pathName": "Grabby MR^W"
                 }
               },
               {
@@ -96,12 +96,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoTargetShoot"
           }
         }
       ]

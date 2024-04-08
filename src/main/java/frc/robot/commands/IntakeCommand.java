@@ -34,7 +34,7 @@ public class IntakeCommand extends Command {
       shooterSubsystem.SetIntake(0);
       shooterSubsystem.SetFeeder(0);
     } else {
-      shooterSubsystem.SetIntake(0.75f);
+      shooterSubsystem.SetIntake(1.0f);
       shooterSubsystem.SetFeeder(0.25f);
       Timer.reset();
       Timer.start();

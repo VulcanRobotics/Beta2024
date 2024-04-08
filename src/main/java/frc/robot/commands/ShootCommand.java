@@ -21,8 +21,6 @@ public class ShootCommand extends Command {
     this.armSubsystem = arm;
     this.drive = drive;
   }
-
-  private float feedSpeed = 1;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -31,12 +29,12 @@ public class ShootCommand extends Command {
   @Override
   public void execute() {
     if (shooterSubsystem.getAverageShootSpeed()
-            > (Constants.ShooterConstants.kShooterTargetVelocity - 20.0)
+            > (Constants.ShooterConstants.kShooterTargetVelocity - 10.0)
         || armSubsystem.inAmpPosition
         || (drive.getPose().getX() < 10.75
             && drive.getPose().getX()
                 > 5.85)) { // Make this conditional on whether the shooter is up to speed
-      shooterSubsystem.SetFeeder(feedSpeed);
+      shooterSubsystem.SetFeeder(1.0f);
     }
   }
 

@@ -96,8 +96,8 @@ public class Drive extends SubsystemBase {
           rawGyroRotation,
           lastModulePositions,
           new Pose2d(),
-          VecBuilder.fill(0.05, 0.05, 0.05),
-          VecBuilder.fill(0.5, 0.5, 0.5));
+          VecBuilder.fill(0.1, 0.1, 0.1),
+          VecBuilder.fill(0.5, 0.5, 2.0));
 
   public Drive(
       GyroIO gyroIO,
@@ -523,7 +523,7 @@ public class Drive extends SubsystemBase {
     if (DriverStation.getAlliance().isPresent()
         && (DriverStation.getAlliance().get() == Alliance.Red || allianceColor == Alliance.Red)
         && angle.isPresent()) {
-      angle = Optional.of(angle.get().plus(new Rotation2d(Math.PI * .95)));
+      angle = Optional.of(new Rotation2d(Math.PI).minus(angle.get()));
     }
     return (angle.isPresent()) ? angle : Optional.empty();
   }

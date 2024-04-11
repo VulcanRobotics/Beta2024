@@ -6,11 +6,14 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ArmConstants.ArmStates;
 import frc.robot.util.*;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -26,6 +29,9 @@ public class ArmSubsystem extends SubsystemBase {
 
   public final double topLimit = 93; // 87.5
   public final double botLimit = 0.0;
+
+  private ArmStates currentState = ArmStates.DRIVER;
+  private Optional<DoubleSupplier> angleSupplier;
 
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
@@ -81,6 +87,24 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor2.setControl(m_follow);
   }
 
+  public void setArmPosition(double angle) {
+    double targetPositionInDegrees = angle;
+    targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
+    double targetPositionInRotation =
+        targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
+    MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
+    m_ArmMotor1.setControl(m_request);
+    m_ArmMotor2.setControl(m_follow);
+  }
+
+  public void configArmAngleSupplier(DoubleSupplier supplier) {
+    this.angleSupplier = Optional.of(supplier);
+  }
+
+  public void setArmState(ArmConstants.ArmStates state) {
+    this.currentState = state;
+  }
+
   /**
    * This method sets the integrated encoder of TalonFX to 0. Without an absolute encoder present,
    * this should be done before the start of every match.
@@ -118,6 +142,26 @@ public class ArmSubsystem extends SubsystemBase {
       inAmpPosition = true;
     } else {
       inAmpPosition = false;
+    }
+
+    // This is specifically used for auto in order to control the arm throughout the routing.
+    if (DriverStation.isAutonomous()) {
+      switch (currentState) {
+        case SHOOTING:
+          if (angleSupplier.isPresent()) setArmPosition(angleSupplier.get());
+          break;
+
+        case INTAKE:
+          setArmPosition(ArmConstants.kArmPoseIntake);
+          break;
+
+        case AMP:
+          setArmPosition(ArmConstants.kArmPoseAmp);
+          break;
+
+        default:
+          break;
+      }
     }
 
     Logger.recordOutput("Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());

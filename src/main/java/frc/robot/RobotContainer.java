@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ArmConstants.ArmStates;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.Drive;
@@ -190,6 +191,27 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "AimArmShoot", ShooterTargeting.aimArmAndShoot(drive, shooterSubsystem, armSubsystem));
+
+    NamedCommands.registerCommand(
+        "IntakeState",
+        Commands.runOnce(() -> armSubsystem.setArmState(ArmStates.INTAKE), armSubsystem));
+
+    NamedCommands.registerCommand(
+        "ShootingState",
+        Commands.runOnce(() -> armSubsystem.setArmState(ArmStates.SHOOTING), armSubsystem));
+
+    NamedCommands.registerCommand(
+        "ShootThenIntake",
+        new ShootCommand(shooterSubsystem, armSubsystem, drive)
+            .onlyWhile(shooterSubsystem::hasNote)
+            .andThen(
+                Commands.runOnce(
+                    () -> armSubsystem.setArmState(ArmStates.INTAKE), shooterSubsystem))
+            .andThen(new IntakeCommand(shooterSubsystem)));
+
+    NamedCommands.registerCommand(
+        "ResetState",
+        Commands.runOnce(() -> armSubsystem.setArmState(ArmStates.DRIVER), armSubsystem));
 
     // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
@@ -392,12 +414,19 @@ public class RobotContainer {
                   //                      Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
                   drive.armAngleOffset -= 1.0;
                 }));
-
-    // revTrigger.whileTrue(new RevCommand(shooterSubsystem, armSubsystem, drive));
   }
 
   public void setVision(boolean mode) {
     drive.isUsingVision = mode;
+  }
+
+  public void configArm() {
+    armSubsystem.configArmAngleSupplier(drive::getArmShootingAngle);
+    armSubsystem.setArmState(ArmStates.DRIVER);
+  }
+
+  public void configSubsystems() {
+    configArm();
   }
 
   /**

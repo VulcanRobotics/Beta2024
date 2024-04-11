@@ -3,9 +3,10 @@
   "robotLength": 0.91,
   "holonomicMode": true,
   "pathFolders": [
+    "Advanced Long Paths",
     "Advanced Short Paths",
     "BasicPaths",
-    "Advanced Long Paths",
+    "DaisyAmpV2",
     "StraightAndBack"
   ],
   "autoFolders": [

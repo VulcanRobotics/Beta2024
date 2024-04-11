@@ -1,0 +1,174 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.394555099295384,
+        "y": 7.246853803892794
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.3911701897477873,
+        "y": 7.704588589732735
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.0403931363418284,
+        "y": 7.664385365807769
+      },
+      "prevControl": {
+        "x": 2.283435827647518,
+        "y": 7.6633645688268395
+      },
+      "nextControl": {
+        "x": 4.738201735149703,
+        "y": 7.6666749505332925
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.826912764936641,
+        "y": 7.062405925737777
+      },
+      "prevControl": {
+        "x": 4.464436102715805,
+        "y": 7.062405925737777
+      },
+      "nextControl": {
+        "x": 5.601198890623719,
+        "y": 7.062405925737777
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.298992111873113,
+        "y": 7.062405925737777
+      },
+      "prevControl": {
+        "x": 5.790719385170723,
+        "y": 7.062405925737777
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 0,
+      "rotateFast": true
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "SlowShoot",
+      "minWaypointRelativePos": 1.85,
+      "maxWaypointRelativePos": 2.05,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "ShootingRotation",
+      "waypointRelativePos": 1.5500000000000003,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "OverrideRotationAim"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootingState"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 1.9500000000000002,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootThenIntake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "NormalRotation",
+      "waypointRelativePos": 2.25,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "UsePathRotation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "ResetState",
+      "waypointRelativePos": 2.55,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ResetState"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.2,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 4.2,
+    "rotation": 0.6381691724793385,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "DaisyAmpV2",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

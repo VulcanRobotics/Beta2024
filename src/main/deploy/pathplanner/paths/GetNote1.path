@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.3,
+        "y": 7.06
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.7320229964534,
+        "y": 7.088416283314048
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.976066331762293,
+        "y": 7.387357242307077
+      },
+      "prevControl": {
+        "x": 7.6303304828831875,
+        "y": 7.387297857929049
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.7,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 9.331477564481942,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "DaisyAmpV2",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

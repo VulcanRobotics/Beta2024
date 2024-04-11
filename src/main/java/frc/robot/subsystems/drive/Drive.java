@@ -523,7 +523,7 @@ public class Drive extends SubsystemBase {
     if (DriverStation.getAlliance().isPresent()
         && (DriverStation.getAlliance().get() == Alliance.Red || allianceColor == Alliance.Red)
         && angle.isPresent()) {
-      angle = Optional.of(new Rotation2d(Math.PI).minus(angle.get()));
+      angle = Optional.of(new Rotation2d(Math.PI).plus(angle.get()));
     }
     return (angle.isPresent()) ? angle : Optional.empty();
   }

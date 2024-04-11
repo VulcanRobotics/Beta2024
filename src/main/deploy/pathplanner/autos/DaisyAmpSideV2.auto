@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.394555099295384,
+      "y": 7.246853803892794
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "UsePathRotation"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FirstShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "GetNote1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DaisyPath3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DaisyPath4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DaisyPath5"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Advanced Long Autons",
+  "choreoAuto": false
+}

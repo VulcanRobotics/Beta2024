@@ -11,7 +11,9 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
+import frc.robot.Constants.Vision;
 import frc.robot.subsystems.drive.Drive;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
@@ -107,6 +109,10 @@ public class CameraIOPhoton implements CameraIO {
     if (numTags == 1 && avgDist > 4)
       estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
     else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 40));
+
+    if (DriverStation.isAutonomous()) {
+      estStdDevs = estStdDevs.times(Vision.kVisionAutoMultiplier);
+    }
 
     return estStdDevs;
   }

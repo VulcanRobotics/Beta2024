@@ -1,0 +1,90 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.452949345713506,
+        "y": 5.378383733619319
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.843665627146069,
+        "y": 6.737335840412422
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.19440975456025,
+        "y": 6.476400883357323
+      },
+      "prevControl": {
+        "x": 5.035589469327087,
+        "y": 6.852363380652688
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Aim",
+      "waypointRelativePos": 0.65,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootingState"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "OverrideRotationAim"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.2,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 17.02737287986776,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "DaisyAmpV2",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

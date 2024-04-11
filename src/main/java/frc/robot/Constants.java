@@ -38,8 +38,8 @@ public final class Constants {
   public static final String name = "Swift";
 
   // public static final Mode currentMode = Mode.REAL;
-  // public static final Mode currentMode = Mode.SIM;
-  public static final Mode currentMode = Mode.REPLAY;
+  public static final Mode currentMode = Mode.SIM;
+  // public static final Mode currentMode = Mode.REPLAY;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -115,6 +115,8 @@ public final class Constants {
     public static final Matrix<N3, N1> kMultiTagStdDevs =
         VecBuilder.fill(0.25, 0.25, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
     // VecBuilder.fill(0.01, 0.01, 0.01);
+
+    public static final double kVisionAutoMultiplier = 4.0;
   }
 
   public final class ShooterConstants {
@@ -162,7 +164,7 @@ public final class Constants {
     public static final double kArmKV = 0.12;
     public static final double kArmKA = 0.01;
 
-    public static final double kArmTargetVelocity = 120; // 300 Rotations per second
+    public static final double kArmTargetVelocity = 100; // 300 Rotations per second
     public static final double kArmTargetAcceleration = 500; // rps/s
     public static final double kArmTargetJerk = 1600; // rps/s/s
 
@@ -180,7 +182,8 @@ public final class Constants {
     public static enum ArmStates {
       AMP,
       INTAKE,
-      SHOOTING
+      SHOOTING,
+      DRIVER
     }
 
     public static final double[][] shooterValues = {

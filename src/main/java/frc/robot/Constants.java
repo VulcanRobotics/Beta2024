@@ -164,7 +164,7 @@ public final class Constants {
     public static final double kArmKV = 0.12;
     public static final double kArmKA = 0.01;
 
-    public static final double kArmTargetVelocity = 100; // 300 Rotations per second
+    public static final double kArmTargetVelocity = 80; // 300 Rotations per second
     public static final double kArmTargetAcceleration = 500; // rps/s
     public static final double kArmTargetJerk = 1600; // rps/s/s
 
@@ -172,10 +172,10 @@ public final class Constants {
     public static final boolean kArm2Inverted = true;
 
     // Fill these with actual values (now in degrees!)
-    public static final double kArmPoseAmp = 89.0;
+    public static final double kArmPoseAmp = 93.0;
     public static final double kArmPoseSpeaker = 0.0;
     public static final double kArmPoseIntake = 0.0;
-    public static final double kArmPoseTrap = 89.0;
+    public static final double kArmPoseTrap = 93.0;
     public static final double kArmPoseSource = 63.8;
     public static final double kArmPosePodium = 26.0;
 

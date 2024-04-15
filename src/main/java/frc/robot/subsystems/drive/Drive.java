@@ -96,7 +96,7 @@ public class Drive extends SubsystemBase {
           rawGyroRotation,
           lastModulePositions,
           new Pose2d(),
-          VecBuilder.fill(0.1, 0.1, 0.1),
+          VecBuilder.fill(0.075, 0.075, 0.075),
           VecBuilder.fill(0.5, 0.5, 2.0));
 
   public Drive(

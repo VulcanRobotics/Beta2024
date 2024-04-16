@@ -29,7 +29,7 @@ public class ShootCommand extends Command {
   @Override
   public void execute() {
     if (shooterSubsystem.getAverageShootSpeed()
-            > (Constants.ShooterConstants.kShooterTargetVelocity - 10.0)
+            > (Constants.ShooterConstants.kShooterTargetVelocity - 15.0)
         || armSubsystem.inAmpPosition
         || (drive.getPose().getX() < 10.75
             && drive.getPose().getX()

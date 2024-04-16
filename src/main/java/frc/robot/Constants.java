@@ -37,8 +37,8 @@ public final class Constants {
 
   public static final String name = "Swift";
 
-  // public static final Mode currentMode = Mode.REAL;
-  public static final Mode currentMode = Mode.SIM;
+  public static final Mode currentMode = Mode.REAL;
+  // public static final Mode currentMode = Mode.SIM;
   // public static final Mode currentMode = Mode.REPLAY;
 
   public static enum Mode {
@@ -110,7 +110,7 @@ public final class Constants {
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs =
-        VecBuilder.fill(4.0, 4.0, 8.0); // VecBuilder.fill(4, 4, 8);
+        VecBuilder.fill(3.0, 3.0, 3.0); // VecBuilder.fill(4, 4, 8);
     // VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> kMultiTagStdDevs =
         VecBuilder.fill(0.25, 0.25, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
@@ -129,7 +129,7 @@ public final class Constants {
     public static final int kPhotogatePort = 0;
 
     public static final double kShooterTargetVelocity =
-        100.0; // RPS, was 100, but feeder wouldn't spin sometimes
+        95.0; // RPS, was 100, but feeder wouldn't spin sometimes
   }
 
   public final class ClimbConstants {
@@ -164,7 +164,7 @@ public final class Constants {
     public static final double kArmKV = 0.12;
     public static final double kArmKA = 0.01;
 
-    public static final double kArmTargetVelocity = 80; // 300 Rotations per second
+    public static final double kArmTargetVelocity = 60; // 300 Rotations per second
     public static final double kArmTargetAcceleration = 500; // rps/s
     public static final double kArmTargetJerk = 1600; // rps/s/s
 

@@ -268,15 +268,17 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putBoolean("Vision On?", isUsingVision);
     SmartDashboard.putNumber("Arm angle offset", armAngleOffset);
 
-    Logger.recordOutput("Gyro Yaw", gyroInputs.yawPosition.getDegrees());
-    Logger.recordOutput("FL encoder val", modules[0].getPosition().angle.getDegrees());
-    Logger.recordOutput("FR encoder val", modules[1].getPosition().angle.getDegrees());
-    Logger.recordOutput("BL encoder val", modules[2].getPosition().angle.getDegrees());
-    Logger.recordOutput("BR encoder val", modules[3].getPosition().angle.getDegrees());
-    Logger.recordOutput("Odometry X", poseEstimator.getEstimatedPosition().getX());
-    Logger.recordOutput("Odometry Y", poseEstimator.getEstimatedPosition().getY());
+    SmartDashboard.putBoolean("Gyro connected?", gyroInputs.connected);
+
+    Logger.recordOutput("Drive/Gyro Yaw", gyroInputs.yawPosition.getDegrees());
+    // Logger.recordOutput("FL encoder val", modules[0].getPosition().angle.getDegrees());
+    // Logger.recordOutput("FR encoder val", modules[1].getPosition().angle.getDegrees());
+    // Logger.recordOutput("BL encoder val", modules[2].getPosition().angle.getDegrees());
+    // Logger.recordOutput("BR encoder val", modules[3].getPosition().angle.getDegrees());
+    // Logger.recordOutput("Odometry X", poseEstimator.getEstimatedPosition().getX());
+    // Logger.recordOutput("Odometry Y", poseEstimator.getEstimatedPosition().getY());
     Logger.recordOutput("Vision On?", isUsingVision);
-    Logger.recordOutput("Arm angle offset", armAngleOffset);
+    Logger.recordOutput("Arm/Arm angle offset", armAngleOffset);
 
     Boolean redVar;
     if (Robot.isReal()) {
@@ -437,9 +439,9 @@ public class Drive extends SubsystemBase {
         shooterTable.get(distance) + armAngleOffset; // armAngleOffset should start at 0.0
     armDegrees = MathUtil.clamp(armDegrees, 0.0, 90.0);
 
-    Logger.recordOutput("Distance X", difference.getX());
-    Logger.recordOutput("Distance Y", difference.getY());
-    Logger.recordOutput("Target Arm Angle", armDegrees);
+    Logger.recordOutput("AutoShoot/Distance X", difference.getX());
+    Logger.recordOutput("AutoShoot/Distance Y", difference.getY());
+    Logger.recordOutput("AutoShoot/Target Arm Angle", armDegrees);
 
     return armDegrees;
   }

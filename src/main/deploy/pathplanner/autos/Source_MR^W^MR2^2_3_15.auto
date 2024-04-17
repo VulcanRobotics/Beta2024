@@ -1,0 +1,125 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7457807693393167,
+      "y": 4.376984966932897
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "RampShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmToIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SR^MR"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MR^W"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "W^MR2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MR2^W"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNoDeadline"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Advanced Long Autons",
+  "choreoAuto": false
+}

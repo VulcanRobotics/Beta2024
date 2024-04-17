@@ -99,6 +99,7 @@ public class CameraIOPhoton implements CameraIO {
     if (numTags == 0) return estStdDevs;
 
     avgDist /= numTags;
+    Logger.recordOutput("Vision/Avg. distance", avgDist);
 
     // Decrease std devs if multiple targets are visible
     if (numTags > 1) estStdDevs = kMultiTagStdDevs;
@@ -106,7 +107,9 @@ public class CameraIOPhoton implements CameraIO {
     // Increase std devs based on (average) distance
     if (numTags == 1 && avgDist > 4)
       estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-    else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 45));
+    else
+      // estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 45));
+      estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 32));
 
     return estStdDevs;
   }
@@ -137,12 +140,15 @@ public class CameraIOPhoton implements CameraIO {
       }
     }
 
+    // for (int n = 0; n < inputs.numFrames; n++) {
     if (inputs.numFrames > 0) {
+
       // if (inputs.rawBytes.length > 0) {
       // byte[] latestFrame = rawBytesFrames[rawBytesFrames.length - 1];
 
       // byte[] latestFrame = inputs.rawBytes[0];
       byte[] latestFrame = inputs.rawBytes[inputs.numFrames - 1];
+      // byte[] latestFrame = inputs.rawBytes[n];
 
       var pipelineResult = PhotonPipelineResult.serde.unpack(new Packet(latestFrame));
 
@@ -152,8 +158,9 @@ public class CameraIOPhoton implements CameraIO {
       // pipelineResult.setTimestampSeconds(
       //    (rawBytesSubscriber.getLastChange() / 1e6) - pipelineResult.getLatencyMillis() / 1e3);
       pipelineResult.setTimestampSeconds(
+          // inputs.timestamps[0] - pipelineResult.getLatencyMillis() / 1e3);
           inputs.timestamps[inputs.numFrames - 1] - pipelineResult.getLatencyMillis() / 1e3);
-      // inputs.timestamps[0] - pipelineResult.getLatencyMillis() / 1e3);
+          // inputs.timestamps[n] - pipelineResult.getLatencyMillis() / 1e3);
 
       // } else {
       //   pipelineResult.setTimestampSeconds(inputs.latestTimestamp);

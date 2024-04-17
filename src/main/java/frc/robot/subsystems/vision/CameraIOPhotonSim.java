@@ -23,9 +23,9 @@ public class CameraIOPhotonSim extends CameraIOPhoton {
     var cameraProp = new SimCameraProperties();
     cameraProp.setCalibration(640, 400, Rotation2d.fromDegrees(67));
     cameraProp.setCalibError(0.35, 0.10);
-    cameraProp.setFPS(120);
-    cameraProp.setAvgLatencyMs(15);
-    cameraProp.setLatencyStdDevMs(5);
+    cameraProp.setFPS(60);
+    cameraProp.setAvgLatencyMs(12);
+    cameraProp.setLatencyStdDevMs(3);
 
     // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible
     // targets.

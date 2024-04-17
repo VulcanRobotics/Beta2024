@@ -110,11 +110,13 @@ public final class Constants {
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs =
-        VecBuilder.fill(3.0, 3.0, 8.0); // VecBuilder.fill(4, 4, 8);
-    // VecBuilder.fill(0.1, 0.1, 0.1);
+        VecBuilder.fill(3.0, 3.0, 5.0); // VecBuilder.fill(4, 4, 8);
+        // VecBuilder.fill(2.0, 2.0, 5.0); // VecBuilder.fill(4, 4, 8);
+        // VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> kMultiTagStdDevs =
-        VecBuilder.fill(0.4, 0.4, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
-    // VecBuilder.fill(0.01, 0.01, 0.01);
+        // VecBuilder.fill(0.4, 0.4, 1.0); // VecBuilder.fill(0.5, 0.5, 1);
+        // VecBuilder.fill(0.01, 0.01, 0.01);
+        VecBuilder.fill(0.25, 0.25, 0.5);
   }
 
   public final class ShooterConstants {

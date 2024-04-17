@@ -94,14 +94,14 @@ public class ClimbSubsystem extends SubsystemBase {
     // m_WinchMotorRight.set(applyWinchLimits(false, speed));
     m_WinchMotorRight.set(speed);
 
-    Logger.recordOutput("RightWinchSpeed", speed);
+    Logger.recordOutput("Climb/RightWinchSpeed", speed);
   }
 
   public void setLeftWinchSpeed(double speed) {
     // m_WinchMotorLeft.set(applyWinchLimits(true, speed));
     m_WinchMotorLeft.set(speed);
 
-    Logger.recordOutput("LeftWinchSpeed", speed);
+    Logger.recordOutput("Climb/LeftWinchSpeed", speed);
   }
 
   public void periodic() {
@@ -112,9 +112,10 @@ public class ClimbSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Trap Motor Position", m_TrapMotor.getEncoder().getPosition());
     SmartDashboard.putNumber("Trap Speed", m_TrapMotor.get());
 
-    Logger.recordOutput("LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());
-    Logger.recordOutput("RightClimbValue", m_WinchMotorRight.getPosition().getValueAsDouble());
-    Logger.recordOutput("LeftPotClimbValue", m_WinchPotLeft.get());
-    Logger.recordOutput("RightPotClimbValue", 1 - m_WinchPotRight.get());
+    Logger.recordOutput("Climb/LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());
+    Logger.recordOutput(
+        "Climb/RightClimbValue", m_WinchMotorRight.getPosition().getValueAsDouble());
+    Logger.recordOutput("Climb/LeftPotClimbValue", m_WinchPotLeft.get());
+    Logger.recordOutput("Climb/RightPotClimbValue", 1 - m_WinchPotRight.get());
   }
 }

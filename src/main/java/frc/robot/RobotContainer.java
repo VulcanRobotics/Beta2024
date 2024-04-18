@@ -399,21 +399,23 @@ public class RobotContainer {
         .button(7)
         .onTrue(
             new InstantCommand(
-                () -> {
-                  //                  shooterSubsystem.savedShootSpeed =
-                  //                      Math.max(shooterSubsystem.savedShootSpeed -= 0.1, 0);
-                  drive.armAngleOffset += 1.0;
-                }));
+                    () -> {
+                      //                  shooterSubsystem.savedShootSpeed =
+                      //                      Math.max(shooterSubsystem.savedShootSpeed -= 0.1, 0);
+                      drive.armAngleOffset += 1.0;
+                    })
+                .ignoringDisable(true));
 
     operatorController
         .button(8)
         .onTrue(
             new InstantCommand(
-                () -> {
-                  //                  shooterSubsystem.savedShootSpeed =
-                  //                      Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
-                  drive.armAngleOffset -= 1.0;
-                }));
+                    () -> {
+                      //                  shooterSubsystem.savedShootSpeed =
+                      //                      Math.min(shooterSubsystem.savedShootSpeed += 0.1, 1);
+                      drive.armAngleOffset -= 1.0;
+                    })
+                .ignoringDisable(true));
   }
 
   public void setVision(boolean mode) {

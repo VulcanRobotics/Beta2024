@@ -14,14 +14,16 @@ import org.littletonrobotics.junction.Logger;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-  public final AnalogPotentiometer m_WinchPotRight = new AnalogPotentiometer(1);
-  public final AnalogPotentiometer m_WinchPotLeft = new AnalogPotentiometer(0);
+  // public final AnalogPotentiometer m_WinchPotRight = new AnalogPotentiometer(1);
+  // public final AnalogPotentiometer m_WinchPotLeft = new AnalogPotentiometer(0);
 
-  public final AnalogPotentiometer m_WinchStringPotRight = new AnalogPotentiometer(2);
-  public final AnalogPotentiometer m_WinchStringPotLeft = new AnalogPotentiometer(3);
+  // public final AnalogPotentiometer m_WinchStringPotRight = new AnalogPotentiometer(2);
+  // public final AnalogPotentiometer m_WinchStringPotLeft = new AnalogPotentiometer(3);
 
   public final TalonFX m_WinchMotorRight = new TalonFX(12, "rio");
   public final TalonFX m_WinchMotorLeft = new TalonFX(11, "rio");
+
+  public final AnalogPotentiometer m_TrapPot = new AnalogPotentiometer(2);
 
   public final CANSparkMax m_TrapMotor =
       new CANSparkMax(ClimbConstants.kTrapMotorPort, MotorType.kBrushless);
@@ -45,27 +47,36 @@ public class ClimbSubsystem extends SubsystemBase {
     m_WinchMotorRight.setInverted(false);
   }
 
-  public double applyWinchLimits(boolean left, double speed) {
-    if (left) {
-      if (m_WinchStringPotLeft.get() > Constants.ClimbConstants.WinchUpperLeftLimit
-          && speed > 0.0) {
-        return 0.0;
-      } else if (m_WinchStringPotLeft.get() < Constants.ClimbConstants.WinchLowerLeftLimit
-          && speed < 0.0) {
-        return 0.0;
-      } else {
-        return speed;
-      }
+  // public double applyWinchLimits(boolean left, double speed) {
+  //   if (left) {
+  //     if (m_WinchStringPotLeft.get() > Constants.ClimbConstants.WinchUpperLeftLimit
+  //         && speed > 0.0) {
+  //       return 0.0;
+  //     } else if (m_WinchStringPotLeft.get() < Constants.ClimbConstants.WinchLowerLeftLimit
+  //         && speed < 0.0) {
+  //       return 0.0;
+  //     } else {
+  //       return speed;
+  //     }
+  //   } else {
+  //     if (1 - m_WinchStringPotRight.get() > Constants.ClimbConstants.WinchUpperRightLimit
+  //         && speed > 0.0) {
+  //       return 0.0;
+  //     } else if (1 - m_WinchStringPotRight.get() < Constants.ClimbConstants.WinchLowerRightLimit
+  //         && speed < 0.0) {
+  //       return 0.0;
+  //     } else {
+  //       return speed;
+  //     }
+  //   }
+  // }
+
+  public double applyTrapLimits(double speed) {
+    if (m_TrapPot.get() > Constants.ClimbConstants.TrapBotLimit
+        || m_TrapPot.get() < Constants.ClimbConstants.TrapTopLimit) {
+      return 0.0;
     } else {
-      if (1 - m_WinchStringPotRight.get() > Constants.ClimbConstants.WinchUpperRightLimit
-          && speed > 0.0) {
-        return 0.0;
-      } else if (1 - m_WinchStringPotRight.get() < Constants.ClimbConstants.WinchLowerRightLimit
-          && speed < 0.0) {
-        return 0.0;
-      } else {
-        return speed;
-      }
+      return speed;
     }
   }
 
@@ -80,13 +91,7 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   public void setTrapSpeed(double speed) {
-    if (m_TrapMotor.getEncoder().getPosition() <= 0 && speed < 0) {
-      speed = 0;
-    } else if (m_TrapMotor.getEncoder().getPosition() >= ClimbConstants.kTrapMotorUpperOffset
-        && speed > 0) {
-      speed = 0;
-    }
-
+    // m_TrapMotor.set(applyTrapLimits(speed));
     m_TrapMotor.set(speed);
   }
 
@@ -106,16 +111,16 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void periodic() {
 
-    SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
-    SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
+    // SmartDashboard.putNumber("Right Potentiometer", 1 - m_WinchStringPotRight.get());
+    // SmartDashboard.putNumber("Left Potentiometer", m_WinchStringPotLeft.get());
 
-    SmartDashboard.putNumber("Trap Motor Position", m_TrapMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("Trap Motor Position", m_TrapPot.get());
     SmartDashboard.putNumber("Trap Speed", m_TrapMotor.get());
 
     Logger.recordOutput("Climb/LeftClimbValue", m_WinchMotorLeft.getPosition().getValueAsDouble());
     Logger.recordOutput(
         "Climb/RightClimbValue", m_WinchMotorRight.getPosition().getValueAsDouble());
-    Logger.recordOutput("Climb/LeftPotClimbValue", m_WinchPotLeft.get());
-    Logger.recordOutput("Climb/RightPotClimbValue", 1 - m_WinchPotRight.get());
+    // Logger.recordOutput("Climb/LeftPotClimbValue", m_WinchPotLeft.get());
+    // Logger.recordOutput("Climb/RightPotClimbValue", 1 - m_WinchPotRight.get());
   }
 }

@@ -37,7 +37,7 @@ public final class Constants {
 
   public static final String name = "Swift";
 
-   public static final Mode currentMode = Mode.REAL;
+  public static final Mode currentMode = Mode.REAL;
   // public static final Mode currentMode = Mode.SIM;
   // public static final Mode currentMode = Mode.REPLAY;
 
@@ -145,6 +145,9 @@ public final class Constants {
     public static final double WinchUpperRightLimit = 0.8533;
 
     public static final double kTrapMotorUpperOffset = 145.053;
+
+    public static final double TrapBotLimit = 0.0;
+    public static final double TrapTopLimit = 0.0;
 
     public static final int kTrapMotorPort = 20;
   }

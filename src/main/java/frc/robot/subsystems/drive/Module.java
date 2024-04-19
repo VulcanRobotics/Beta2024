@@ -23,7 +23,7 @@ import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 public class Module {
-  private static final double WHEEL_RADIUS = Units.inchesToMeters(1.925);
+  private static final double WHEEL_RADIUS = Units.inchesToMeters(1.985);
   static final double ODOMETRY_FREQUENCY = 250.0;
 
   private final ModuleIO io;

@@ -74,6 +74,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ArmToIntake"
+          }
+        },
+        {
           "type": "deadline",
           "data": {
             "commands": [

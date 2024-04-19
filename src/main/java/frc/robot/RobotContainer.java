@@ -304,7 +304,7 @@ public class RobotContainer {
             Commands.runOnce(() -> drive.isUsingVision = !drive.isUsingVision, drive)
                 .ignoringDisable(true));
 
-    driverController.b().whileTrue(ClimbCommands.releaseTrapBar(climbSubsystem));
+    // driverController.b().whileTrue(ClimbCommands.releaseTrapBar(climbSubsystem));
 
     driverController.leftBumper().whileTrue(DriveCommands.driveToAmp(drive, drive::getPose));
 

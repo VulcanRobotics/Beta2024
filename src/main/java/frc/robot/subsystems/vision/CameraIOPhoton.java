@@ -102,7 +102,7 @@ public class CameraIOPhoton implements CameraIO {
 
     avgDist /= numTags;
     Logger.recordOutput("Vision/Avg. distance", avgDist);
-    
+
     // Decrease std devs if multiple targets are visible
     if (numTags > 1) estStdDevs = kMultiTagStdDevs;
 

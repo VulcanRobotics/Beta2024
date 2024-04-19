@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7457807693393167,
-      "y": 4.376984966932897
+      "x": 1.4039972154018383,
+      "y": 7.252020244781231
     },
-    "rotation": -60.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -18,15 +18,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "ArmToIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "waitTime": 4.0
           }
         },
         {
@@ -36,13 +30,44 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SR^MR"
+                  "pathName": "Amp^AW"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmToIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoTargetShoot"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "AW^ML1"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "IntakeNoDeadline"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmToIntake"
                 }
               }
             ]
@@ -55,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "MR^W"
+                  "pathName": "M^AW"
                 }
               },
               {
@@ -74,25 +99,25 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ArmToIntake"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "W^MR2"
+                  "pathName": "AW^ML2"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "IntakeNoDeadline"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmToIntake"
                 }
               }
             ]
@@ -105,7 +130,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "MR2^W"
+                  "pathName": "M^AW"
                 }
               },
               {

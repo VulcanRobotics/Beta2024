@@ -129,7 +129,7 @@ public final class Constants {
     public static final int kPhotogatePort = 0;
 
     public static final double kShooterTargetVelocity =
-        95.0; // RPS, was 100, but feeder wouldn't spin sometimes
+        100.0; // RPS, was 100, but feeder wouldn't spin sometimes
   }
 
   public final class ClimbConstants {

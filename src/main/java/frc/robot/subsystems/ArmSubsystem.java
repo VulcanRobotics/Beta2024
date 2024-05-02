@@ -38,6 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     // set slot 0 gains
 
+    // Set up PID and Feedforward config for the motors.
     var slot0Configs = talonFXConfigs.Slot0;
     slot0Configs.kS = ArmConstants.kArmKS; // Add 0.25 V output to overcome static friction
     slot0Configs.kV = ArmConstants.kArmKV; // A velocity target of 1 rps results in 0.12 V output
@@ -77,6 +78,7 @@ public class ArmSubsystem extends SubsystemBase {
     return m_ArmMotor1.getPosition().getValueAsDouble();
   }
 
+  /** Used to constantly update the angle (0 - 90) of the arm with a supplier. */
   public void setArmPosition(DoubleSupplier supplier) {
     double targetPositionInDegrees = supplier.getAsDouble();
     targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
@@ -87,6 +89,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor2.setControl(m_follow);
   }
 
+  /** Used to set the arm to a certain constant angle (0 - 90). */
   public void setArmPosition(double angle) {
     double targetPositionInDegrees = angle;
     targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
@@ -107,19 +110,24 @@ public class ArmSubsystem extends SubsystemBase {
 
   /**
    * This method sets the integrated encoder of TalonFX to 0. Without an absolute encoder present,
-   * this should be done before the start of every match.
+   * this should be done before the start of every match. However, we currently have a CANCoder, so
+   * there is no need to use this function.
    */
   public void zeroArmEncoder() {
     m_ArmMotor1.setPosition(0.0);
   }
 
-  // This method ensures that the the Talon's 'zero' position is equivalent to its intake state
+  /**
+   * This method uses the absolute encoder to determine where the arm is and set the internal motor
+   * encoder according to that position.
+   */
   public void calibrateTalonEncoder() {
     double delta =
         ArmConstants.kCanCoderZeroPosition - m_ArmEncoder.getAbsolutePosition().getValueAsDouble();
     m_ArmMotor1.setPosition(delta * ArmConstants.kCanCoderToArmMotorRatio);
   }
 
+  /** This is pretty janky ngl */
   public void setArmSpeed(double speed) {
     speed = speed *= 0.6;
     speed = applyLimits(speed);
@@ -165,13 +173,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     Logger.recordOutput("Arm/Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
-    // SmartDashboard.putNumber("Arm Encoder",
-    // m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
-    // SmartDashboard.putNumber("Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
-    SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());
-
-    Logger.recordOutput("Arm/Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
     Logger.recordOutput("Arm/Arm Angle (0-90)", getArmEncoder());
     Logger.recordOutput("Arm/Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());
   }
 }

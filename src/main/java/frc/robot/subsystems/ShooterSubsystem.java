@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -10,6 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ShooterConstants;
 import org.littletonrobotics.junction.Logger;
 
@@ -17,6 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public TalonFX leftMotor = new TalonFX(ShooterConstants.kGuideMotorPort, "rio");
   public TalonFX rightMotor = new TalonFX(ShooterConstants.kFollowMotorPort, "rio");
   public Spark lights = new Spark(9);
+  private SysIdRoutine sysId;
 
   private VelocityVoltage m_request = new VelocityVoltage(0);
   private Follower m_follow = new Follower(ShooterConstants.kGuideMotorPort, false);
@@ -46,6 +51,20 @@ public class ShooterSubsystem extends SubsystemBase {
     slot0Configs.kD = 0.0;
     leftMotor.getConfigurator().apply(slot0Configs, 0.050);
     rightMotor.getConfigurator().apply(slot0Configs, 0.050);
+
+    sysId =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null,
+                null,
+                null,
+                (state) -> Logger.recordOutput("Shooter/SysIdState", state.toString())),
+            new SysIdRoutine.Mechanism((voltage) -> runVolts(voltage.in(Volts)), null, this));
+  }
+
+  public void runVolts(double volts) {
+    leftMotor.setControl(new VoltageOut(volts));
+    rightMotor.setControl(new VoltageOut(volts));
   }
 
   public void SetFeeder(float speed) {

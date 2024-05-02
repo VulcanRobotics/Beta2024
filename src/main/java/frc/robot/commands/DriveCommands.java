@@ -34,7 +34,7 @@ import java.util.function.Supplier;
 public class DriveCommands {
   private static final double DEADBAND = 0.1;
   private static final double AnglePIDValues[] = {0.45, 0.0, 0.0};
-  private static final double NoteTrackPIDValues[] = {0.006, 0.0001, 0.0};
+  private static final double NoteTrackPIDValues[] = {0.005, 0.0, 0.0};
   private static final double TranslationPIDValues[] = {1.2, 0.0, 0.01};
   private static final PIDController xTranslationController =
       new PIDController(TranslationPIDValues[0], TranslationPIDValues[1], TranslationPIDValues[2]);
@@ -244,7 +244,7 @@ public class DriveCommands {
               DriverStation.getAlliance().isPresent()
                   && DriverStation.getAlliance().get() == Alliance.Red;
           drive.runVelocity(
-              ChassisSpeeds.fromFieldRelativeSpeeds(
+              ChassisSpeeds.fromRobotRelativeSpeeds(
                   linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                   linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                   omega * drive.getMaxAngularSpeedRadPerSec(),

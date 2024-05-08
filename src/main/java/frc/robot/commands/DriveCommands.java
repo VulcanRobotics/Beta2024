@@ -95,6 +95,11 @@ public class DriveCommands {
         drive);
   }
 
+  /**
+   * Field relative drive command using one joystick (other joystick being overwritten by autoaim
+   * rotation). Allows driver to control the robot's translation while having its rotation be
+   * controlled by autotargetting.
+   */
   public static Command driveWhileAiming(
       Drive drive,
       DoubleSupplier xSupplier,
@@ -207,6 +212,11 @@ public class DriveCommands {
         drive);
   }
 
+  /**
+   * Field relative drive command using one joystick (other joystick being overwritten by autoaim
+   * rotation). Allows driver to control the robot's translation while having its rotation be
+   * controlled by auto note tracking.
+   */
   public static Command driveWhileNoteTracking(
       Drive drive,
       DoubleSupplier xSupplier,
@@ -215,7 +225,6 @@ public class DriveCommands {
 
     noteTrackController.reset();
     noteTrackController.setTolerance(Math.toRadians(0.25));
-    // noteTrackController.enableContinuousInput(-Math.PI, Math.PI);
 
     return Commands.run(
         () -> {

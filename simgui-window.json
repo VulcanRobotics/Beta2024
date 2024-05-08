@@ -5,11 +5,11 @@
   "MainWindow": {
     "GLOBAL": {
       "fps": "120",
-      "height": "848",
+      "height": "762",
       "maximized": "1",
       "style": "0",
       "userScale": "2",
-      "width": "1512",
+      "width": "1440",
       "xpos": "38",
       "ypos": "230"
     }
@@ -33,11 +33,11 @@
     "###FMS": {
       "Collapsed": "0",
       "Pos": "377,497",
-      "Size": "169,184"
+      "Size": "283,140"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "155,754",
+      "Pos": "155,743",
       "Size": "796,155"
     },
     "###Keyboard 1 Settings": {

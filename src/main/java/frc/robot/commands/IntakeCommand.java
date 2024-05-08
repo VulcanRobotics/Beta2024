@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
-/** An example command that uses an example subsystem. */
+/**
+ * This turns on the intake rollers indefinatly until the robot has the note for at least 0.25
+ * seconds.
+ */
 public class IntakeCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   Timer Timer = new Timer();
@@ -30,7 +33,9 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
 
-    if (shooterSubsystem.intakeSensor.get()) { // TURN BACK ON
+    if (shooterSubsystem.intakeSensor
+        .get()) { // If you have the note, stop intaking. If you don't keep intaking while
+      // constantly restarting clock.
       shooterSubsystem.SetIntake(0);
       shooterSubsystem.SetFeeder(0);
     } else {
@@ -51,7 +56,9 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Timer.get() > 0.25 && shooterSubsystem.intakeSensor.get()) {
+    if (Timer.get() > 0.25
+        && shooterSubsystem.intakeSensor
+            .get()) { // If clock higher than 0.25 seconds and we still have note, stop command
       return true;
     } else {
       return false;

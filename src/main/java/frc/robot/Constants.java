@@ -37,9 +37,9 @@ public final class Constants {
 
   public static final String name = "Swift";
 
-  public static final Mode currentMode = Mode.REAL;
+  // public static final Mode currentMode = Mode.REAL;
   // public static final Mode currentMode = Mode.SIM;
-  // public static final Mode currentMode = Mode.REPLAY;
+  public static final Mode currentMode = Mode.REPLAY;
 
   public static enum Mode {
     /** Running on a real robot. */

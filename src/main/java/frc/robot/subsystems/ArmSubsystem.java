@@ -6,6 +6,8 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,6 +34,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   private ArmStates currentState = ArmStates.DRIVER;
   private Optional<DoubleSupplier> angleSupplier;
+  public static Pose3d armComponent = new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0));
+  public static double armAngle = 0.0;
 
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
@@ -171,9 +175,9 @@ public class ArmSubsystem extends SubsystemBase {
           break;
       }
     }
-
     Logger.recordOutput("Arm/Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
     Logger.recordOutput("Arm/Arm Angle (0-90)", getArmEncoder());
+    Logger.recordOutput("Arm/Arm Radians", Math.toRadians(getArmEncoder()));
     Logger.recordOutput("Arm/Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());
   }

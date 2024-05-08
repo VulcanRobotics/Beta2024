@@ -44,6 +44,7 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 // import frc.robot.subsystems.vision.PhotonVisionSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.util.NoteVisualizer;
 import java.util.Optional;
 // import frc.robot.subsystems.flywheel.FlywheelIOSparkMax;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -337,7 +338,9 @@ public class RobotContainer {
     // Operator
 
     armSubsystem.setDefaultCommand(
-        WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()));
+        new ParallelCommandGroup(
+            WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()),
+            new UpdateArmComponent(armSubsystem, drive)));
 
     climbSubsystem.setDefaultCommand(
         ClimbCommands.winchDrive(
@@ -392,7 +395,10 @@ public class RobotContainer {
 
     operatorController
         .rightBumper()
-        .whileTrue(new ShootCommand(shooterSubsystem, armSubsystem, drive));
+        .whileTrue(
+            new ParallelCommandGroup(
+                new ShootCommand(shooterSubsystem, armSubsystem, drive),
+                NoteVisualizer.shoot(drive)));
     operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem));
     operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController

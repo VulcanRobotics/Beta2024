@@ -11,7 +11,13 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
 
-/** An example command that uses an example subsystem. */
+/**
+ * This command spins the shooter motors to a desired exit velocity. This desired velocity changes
+ * depending on the position of the robot on the field: - if the robot is within our wing, the
+ * motors will spin up close to max - if the robot is within the midzone (between both wings), the
+ * motors will spin slower to properly shuttle the note without launching it out. - if the robot's
+ * arm is up in Amp position, the motors will spin very slowly to drop the note in
+ */
 public class RevCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   ArmSubsystem armSubsystem;
@@ -24,14 +30,9 @@ public class RevCommand extends Command {
     this.drive = drive;
   }
 
-  private double shootSpeed = 75;
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    /*if (fullPower == true) {
-      shooterSubsystem.savedShootSpeed = 1;
-    }*/
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -39,14 +40,20 @@ public class RevCommand extends Command {
     double velocity =
         (armSubsystem.inAmpPosition)
             ? Constants.ShooterConstants.kShooterTargetVelocity * 0.2
-            : Constants.ShooterConstants.kShooterTargetVelocity;
+            : Constants.ShooterConstants
+                .kShooterTargetVelocity; // If the robot's arm is in Amp Position, decrease default
+    // velocity by 80%
 
-    if (drive.getPose().getX() < 10.75 && drive.getPose().getX() > 5.85) {
+    if (drive.getPose().getX() < 10.75
+        && drive.getPose().getX() > 5.85) { // If the robot is in the midfield, set velocity to 50
       velocity = 50;
     }
 
-    shooterSubsystem.setShooterVelocity(velocity); // shooterSubsystem.savedShootSpeed);
-    if (shooterSubsystem.getAverageShootSpeed() >= (velocity)) {
+    shooterSubsystem.setShooterVelocity(velocity); // After parameters, set shooter velocity
+
+    if (shooterSubsystem.getAverageShootSpeed()
+        >= (velocity)) { // Used to help other systems know whether the shooter is reved up all the
+      // way
       shooterSubsystem.upToSpeed = true;
     } else {
       shooterSubsystem.upToSpeed = false;

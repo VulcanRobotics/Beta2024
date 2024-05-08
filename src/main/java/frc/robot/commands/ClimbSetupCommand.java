@@ -12,7 +12,9 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
 
-/** An example command that uses an example subsystem. */
+/**
+ * A command that automatically lifts up climb hooks and arm mechanism to set up the climb process.
+ */
 public class ClimbSetupCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   ClimbSubsystem climb;

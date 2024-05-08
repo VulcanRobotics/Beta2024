@@ -6,10 +6,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.ArmSubsystem;
 import java.util.function.DoubleSupplier;
 
+/** All winchcommands are stored under this class. */
 public class WinchCommands {
 
   private WinchCommands() {}
 
+  /** Takes the y-axis value and applies it to the arm along with some limits and deadbands. */
   public static Command winchDrive(ArmSubsystem winchSubsystem, DoubleSupplier yAxis) {
     double DEADBAND = 0.1f;
 

@@ -6,10 +6,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.ClimbSubsystem;
 import java.util.function.DoubleSupplier;
 
+/** All climb commands used to control the climb motors. */
 public class ClimbCommands {
 
   private ClimbCommands() {}
 
+  /** Mannual control over climb hooks using joystick values to control the motors. */
   public static Command winchDrive(
       ClimbSubsystem climbSubsystem, DoubleSupplier yAxis, DoubleSupplier xAxis) {
     double DEADBAND = 0.5;
@@ -35,12 +37,11 @@ public class ClimbCommands {
           }
 
           SmartDashboard.putNumber("speed climb", speed);
-
-          // speed *= speed;
         },
         climbSubsystem);
   }
 
+  /** Automatic control over climb hooks to move both up without manually controlling both. */
   public static Command raiseToLowChain(ClimbSubsystem climb) {
     return Commands.run(
         () -> {
@@ -50,6 +51,7 @@ public class ClimbCommands {
         climb);
   }
 
+  /** Automatic control over trap bar to bring it out to the desired position quickly (NOT USED) */
   public static Command releaseTrapBar(ClimbSubsystem climb) {
     return Commands.run(
         () -> {
@@ -57,6 +59,8 @@ public class ClimbCommands {
         },
         climb);
   }
+
+  // Tried to do this, didn't have enough time. //
 
   // public static Command autoClimb(
   //     ClimbSubsystem climb, ArmSubsystem arm, ShooterSubsystem shooter) {

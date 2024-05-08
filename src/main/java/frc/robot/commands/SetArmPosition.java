@@ -9,6 +9,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import java.util.function.DoubleSupplier;
 
+// ** Uses motion magic on the two kraken motors to smoothly move the arm to its desired position */
 public class SetArmPosition extends Command {
 
   private double goalPosition;

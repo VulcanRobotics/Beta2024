@@ -11,7 +11,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
 
-/** An example command that uses an example subsystem. */
+/** Runs the shooter and will automatically change velocity depending on certain conditions */
 public class RevCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   ArmSubsystem armSubsystem;
@@ -36,6 +36,8 @@ public class RevCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // Changing velocity for amp and passing mode based on arm position and field location
     double velocity =
         (armSubsystem.inAmpPosition)
             ? Constants.ShooterConstants.kShooterTargetVelocity * 0.2

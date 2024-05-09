@@ -37,6 +37,7 @@ public class CameraIOPhoton implements CameraIO {
   // The layout of the AprilTags on the field
   public AprilTagFieldLayout kTagLayout = (AprilTagFields.kDefaultField.loadAprilTagLayoutField());
 
+  // Change this depending on camera setup
   public CameraIOPhoton(Drive robotDrive, int index) {
     drive = robotDrive;
 

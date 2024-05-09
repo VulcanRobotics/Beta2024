@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
-/** An example command that uses an example subsystem. */
+/** Command that runs the intake and ends when a note has been detected. Pretty strightforward. */
 public class IntakeCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   Timer Timer = new Timer();
@@ -51,6 +51,8 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // This timer is basically debouncing the intake because otherwise the beambreak will sense a
+    // note twice and work incorrectly in auto.
     if (Timer.get() > 0.25 && shooterSubsystem.intakeSensor.get()) {
       return true;
     } else {

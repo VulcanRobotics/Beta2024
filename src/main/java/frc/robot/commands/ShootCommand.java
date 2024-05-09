@@ -10,7 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.Drive;
 
-/** An example command that uses an example subsystem. */
+/** Shoots the note with the feeder and ends when there is no longer a note detected. */
 public class ShootCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   ArmSubsystem armSubsystem;

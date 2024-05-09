@@ -10,6 +10,7 @@ public class ClimbCommands {
 
   private ClimbCommands() {}
 
+  /** Simple voltage out control of our climbers. Uses dynamic joystick control for climbing. */
   public static Command winchDrive(
       ClimbSubsystem climbSubsystem, DoubleSupplier yAxis, DoubleSupplier xAxis) {
     double DEADBAND = 0.5;
@@ -41,6 +42,7 @@ public class ClimbCommands {
         climbSubsystem);
   }
 
+  /** Command that guarantees a pure upward motion of the climbers. */
   public static Command raiseToLowChain(ClimbSubsystem climb) {
     return Commands.run(
         () -> {
@@ -50,6 +52,7 @@ public class ClimbCommands {
         climb);
   }
 
+  /** Simple command to set trap bar position. */
   public static Command releaseTrapBar(ClimbSubsystem climb) {
     return Commands.run(
         () -> {

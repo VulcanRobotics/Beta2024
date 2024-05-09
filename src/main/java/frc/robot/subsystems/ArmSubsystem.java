@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
+/** Contains all arm funcionality */
 public class ArmSubsystem extends SubsystemBase {
   public final TalonFX m_ArmMotor1 = new TalonFX(15, "rio");
   public final TalonFX m_ArmMotor2 = new TalonFX(14, "rio");
@@ -30,7 +31,9 @@ public class ArmSubsystem extends SubsystemBase {
   public final double topLimit = 93; // 87.5
   public final double botLimit = 0.0;
 
+  // This state is only ever used in experimental autos.
   private ArmStates currentState = ArmStates.DRIVER;
+  // Supplier is also only used in those autos.
   private Optional<DoubleSupplier> angleSupplier;
 
   public ArmSubsystem() {
@@ -38,24 +41,21 @@ public class ArmSubsystem extends SubsystemBase {
 
     // set slot 0 gains
 
-    // Set up PID and Feedforward config for the motors.
+    // Set up PID and Feedforward config for the motors. Calculated bases on experimental values.
     var slot0Configs = talonFXConfigs.Slot0;
-    slot0Configs.kS = ArmConstants.kArmKS; // Add 0.25 V output to overcome static friction
-    slot0Configs.kV = ArmConstants.kArmKV; // A velocity target of 1 rps results in 0.12 V output
-    slot0Configs.kA = ArmConstants.kArmKA; // An acceleration of 1 rps/s requires 0.01 V output
-    slot0Configs.kP =
-        ArmConstants.kArmKP; // A position error of 2.5 rotations results in 12 V output
-    slot0Configs.kI = ArmConstants.kArmKI; // no output for integrated error
-    slot0Configs.kD = ArmConstants.kArmKD; // A velocity error of 1 rps results in 0.1 V output
+    slot0Configs.kS = ArmConstants.kArmKS;
+    slot0Configs.kV = ArmConstants.kArmKV;
+    slot0Configs.kA = ArmConstants.kArmKA;
+    slot0Configs.kP = ArmConstants.kArmKP;
+    slot0Configs.kI = ArmConstants.kArmKI;
+    slot0Configs.kD = ArmConstants.kArmKD;
 
-    // set Motion Magic settings
+    // set Motion Magic settings; basically a motion profile that is very easy to use
     var motionMagicConfigs = talonFXConfigs.MotionMagic;
     motionMagicConfigs.MotionMagicCruiseVelocity =
         ArmConstants.kArmTargetVelocity; // Target cruise velocity of 80 rps
-    motionMagicConfigs.MotionMagicAcceleration =
-        ArmConstants.kArmTargetAcceleration; // Target acceleration of 160 rps/s (0.5 seconds)
-    motionMagicConfigs.MotionMagicJerk =
-        ArmConstants.kArmTargetJerk; // Target jerk of 1600 rps/s/s (0.1 seconds
+    motionMagicConfigs.MotionMagicAcceleration = ArmConstants.kArmTargetAcceleration;
+    motionMagicConfigs.MotionMagicJerk = ArmConstants.kArmTargetJerk;
 
     m_ArmMotor1.getConfigurator().apply(talonFXConfigs);
     m_ArmMotor2.getConfigurator().apply(talonFXConfigs);
@@ -69,6 +69,7 @@ public class ArmSubsystem extends SubsystemBase {
     calibrateTalonEncoder();
   }
 
+  /** Reads the arm angle in degrees (0 - 90) */
   public double getArmEncoder() {
     return m_ArmMotor1.getPosition().getValueAsDouble()
         * Constants.ArmConstants.kMotorEncoderToDegrees;
@@ -100,10 +101,12 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor2.setControl(m_follow);
   }
 
+  // Used once in robot container
   public void configArmAngleSupplier(DoubleSupplier supplier) {
     this.angleSupplier = Optional.of(supplier);
   }
 
+  // Only used in some autos
   public void setArmState(ArmConstants.ArmStates state) {
     this.currentState = state;
   }
@@ -135,6 +138,7 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmMotor2.setControl(m_follow);
   }
 
+  // Soft limits for both speed and position
   public double applyLimits(double speed) {
     if (getArmEncoder() < botLimit && speed < 0) { // getArmEncoder() - 0.5f <= 0 && speed < 0
       return 0;
@@ -146,6 +150,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void periodic() {
 
+    // Used for determining shooter velocity
     if (getArmEncoder() > 70.0) {
       inAmpPosition = true;
     } else {

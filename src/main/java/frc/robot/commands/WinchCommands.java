@@ -6,6 +6,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.ArmSubsystem;
 import java.util.function.DoubleSupplier;
 
+/**
+ * Very simple voltage out control for the arm. Not completely sure why it is labled winch though???
+ * Not really even used in competition since all arm control is done via postions and state control.
+ */
 public class WinchCommands {
 
   private WinchCommands() {}

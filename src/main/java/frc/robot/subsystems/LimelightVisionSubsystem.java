@@ -16,6 +16,7 @@ public class LimelightVisionSubsystem extends SubsystemBase {
     }
   }
 
+  // Used for tele
   public static double limelightNoteTrack() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
@@ -23,6 +24,7 @@ public class LimelightVisionSubsystem extends SubsystemBase {
     return x;
   }
 
+  // Used for auto
   public static Optional<Double> getNoteDistLL() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");

@@ -12,7 +12,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.DoubleSupplier;
 
-/** An example command that uses an example subsystem. */
+/** Used to prepare for a climb and trap */
 public class ClimbSetupCommand extends Command {
   ShooterSubsystem shooterSubsystem;
   ClimbSubsystem climb;

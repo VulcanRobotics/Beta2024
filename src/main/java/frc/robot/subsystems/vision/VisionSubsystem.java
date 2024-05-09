@@ -12,14 +12,9 @@ import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 public class VisionSubsystem extends SubsystemBase {
-  private final Camera[] cameras = new Camera[4];
-
-  /* private enum CameraPosition {
-    FL,
-    FR,
-    BL,
-    BR
-  }; */
+  // Change this value in constants depending on how many cameras you plan to use.
+  private final int numCams = Constants.Vision.kNumberOfCameras;
+  private final Camera[] cameras = new Camera[numCams];
 
   private Drive drive;
   private VisionSystemSim visionSim;
@@ -39,11 +34,11 @@ public class VisionSubsystem extends SubsystemBase {
       // Add all the AprilTags inside the tag layout as visible targets to this simulated field.
       visionSim.addAprilTags(kTagLayout);
 
-      for (int n = 0; n < 4; n++) {
+      for (int n = 0; n < numCams; n++) {
         cameras[n] = new Camera(drive, n, visionSim);
       }
     } else {
-      for (int n = 0; n < 4; n++) {
+      for (int n = 0; n < numCams; n++) {
         cameras[n] = new Camera(drive, n);
       }
     }
@@ -51,8 +46,9 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    for (int n = 0; n < 4; n++) {
-      cameras[n].periodic();
+
+    for (Camera camera : cameras) {
+      camera.periodic();
     }
 
     PhotonPipelineResult latestResult = cameras[3].getLatestResult();

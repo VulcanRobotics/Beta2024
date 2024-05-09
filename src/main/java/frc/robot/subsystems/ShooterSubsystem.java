@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ShooterConstants;
 import org.littletonrobotics.junction.Logger;
 
+/** Subsystem class for the shooter and intake. */
 public class ShooterSubsystem extends SubsystemBase {
   public TalonFX leftMotor = new TalonFX(ShooterConstants.kGuideMotorPort, "rio");
   public TalonFX rightMotor = new TalonFX(ShooterConstants.kFollowMotorPort, "rio");

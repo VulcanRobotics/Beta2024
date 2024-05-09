@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.Drive;
 import java.util.function.Supplier;
 
+/** Command for driving to a specified position on the field and stopping. Code inspired by 2539. */
 public class DriveToPosition extends Command {
 
   private final double AnglePIDValues[] = {0.5, 0.0, 0.0};

@@ -9,6 +9,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import java.util.function.DoubleSupplier;
 
+/** Set the arm to a postion in degrees using FF and FB control */
 public class SetArmPosition extends Command {
 
   private double goalPosition;

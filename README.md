@@ -39,6 +39,6 @@ The climber we decided to use was made from carbon-fiber boat hooks, which allow
 * Dynamic controls for climber adjustment with the joystick (up moves both up, down moves both down, left only moves the left, right only the right, and values between the axis will move both at differential values)
 
 ## Shooting and Trapping in Action
-Below is what I would consider to be a good showcase of what our code allowed us to do in terms of teleop performance by the end of the season.
+Below is what I would consider to be a good showcase of what our code allowed us to do in teleop by the end of the season:
 https://github.com/VulcanRobotics/Beta2024/assets/58490916/7c328b0c-fe46-4b72-b677-d904e0d45e66
 

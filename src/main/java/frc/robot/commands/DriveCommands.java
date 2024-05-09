@@ -95,6 +95,7 @@ public class DriveCommands {
         drive);
   }
 
+  /** Allows the driver to drive while aiming at a target (the speaker, for example). */
   public static Command driveWhileAiming(
       Drive drive,
       DoubleSupplier xSupplier,
@@ -149,6 +150,10 @@ public class DriveCommands {
         drive);
   }
 
+  /**
+   * Command that auto-aligns with the amp and prepares to score. Most useful if the driver does not
+   * have good amp visibility.
+   */
   public static Command driveToAmp(Drive drive, Supplier<Pose2d> poseSupplier) {
 
     Translation2d amp;
@@ -207,6 +212,7 @@ public class DriveCommands {
         drive);
   }
 
+  /** Allows the driver to use ML to turn to a note and intake it. */
   public static Command driveWhileNoteTracking(
       Drive drive,
       DoubleSupplier xSupplier,

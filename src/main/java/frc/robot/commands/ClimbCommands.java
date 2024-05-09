@@ -57,48 +57,4 @@ public class ClimbCommands {
         },
         climb);
   }
-
-  // public static Command autoClimb(
-  //     ClimbSubsystem climb, ArmSubsystem arm, ShooterSubsystem shooter) {
-  //   return new SequentialCommandGroup(
-  //       new ParallelCommandGroup(
-  //               Commands.run(
-  //                   () -> {
-  //                     if (1 - climb.m_WinchStringPotRight.get()
-  //                         < Constants.ClimbConstants.WinchUpperRightLimit - 0.32665) {
-  //                       climb.setRightWinchSpeed(1.0);
-  //                     } else {
-  //                       climb.setRightWinchSpeed(0.0);
-  //                     }
-
-  //                     if (climb.m_WinchMotorRight.get()
-  //                         < Constants.ClimbConstants.WinchUpperLeftLimit - 0.32665) {
-  //                       climb.setLeftWinchSpeed(1.0);
-  //                     } else {
-  //                       climb.setLeftWinchSpeed(0.0);
-  //                     }
-  //                   },
-  //                   climb),
-  //               Commands.run(
-  //                       () -> {
-  //                         shooter.SetIntake(-0.2f);
-  //                         shooter.SetFeeder(-0.2f);
-  //                       })
-  //                   .withTimeout(2))
-  //           .withTimeout(5),
-  //       new SetArmPosition(arm, () -> ArmConstants.kArmPoseSource),
-  //       Commands.run(
-  //               () -> {
-  //                 climb.setLeftWinchSpeed(1.0);
-  //                 climb.setRightWinchSpeed(1.0);
-  //               },
-  //               climb)
-  //           .withTimeout(5),
-  //       Commands.run(
-  //           () -> {
-  //             shooter.SetIntake(-1);
-  //             shooter.SetFeeder(-1);
-  //           },
-  //           climb));
-  // }
 }

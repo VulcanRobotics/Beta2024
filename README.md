@@ -1,4 +1,4 @@
-# Beta2024
+# Beta2024 (aka Swift)
 Team 1218's new robot code repository for FRC 2024 season, Crescendo:
 * Based on the initial 3.0.0 release of Team 6328's AdvantageKit - AdvancedSwerveDriveProject code, distributed here:
     * https://github.com/Mechanical-Advantage/AdvantageKit/releases

@@ -37,3 +37,8 @@ Our arm/pivot was the main mechanism of our robot this year. The idea was that t
 The climber we decided to use was made from carbon-fiber boat hooks, which allowed us to get very high up on the chain in order to trap with our arm. However, because the boathooks tended to slip, finding a sensing solution was difficult. We tried magnetic limit switches, potentiometers, string potentiometers, and motor encoders throughout the course of the season, but none worked well enough with our design to be consistent so we put everything in the hands of our operator (who did an amazing job with pretty much zero software assistance on the climb)! The climbers specifically included the following:
 * Each controlled by a simple voltage output on Falcon 500 motors.
 * Dynamic controls for climber adjustment with the joystick (up moves both up, down moves both down, left only moves the left, right only the right, and values between the axis will move both at differential values)
+
+## Shooting and Trapping in Action
+Below is what I would consider to be a good showcase of what our code allowed us to do in terms of teleop performance by the end of the season.
+https://github.com/VulcanRobotics/Beta2024/assets/58490916/7c328b0c-fe46-4b72-b677-d904e0d45e66
+

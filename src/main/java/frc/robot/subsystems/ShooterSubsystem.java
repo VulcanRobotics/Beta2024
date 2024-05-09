@@ -67,24 +67,25 @@ public class ShooterSubsystem extends SubsystemBase {
     rightMotor.setControl(new VoltageOut(volts));
   }
 
+  /** Spins feeder. */
   public void SetFeeder(float speed) {
-    // speed = (Constants.name == "Swift") ? -speed : -speed;
     feederMotor.set(-speed);
   }
 
+  /** Spins intake. */
   public void SetIntake(float speed) {
     intakeUpperMotor.set(speed);
   }
 
-  public void SetIntakeMotor(String motor, float speed) {
-    intakeUpperMotor.set(speed);
-  }
-
+  /**
+   * Uitilizes motion magic to set a motor output value on both shooter motors to the desired value.
+   */
   public void SetShooter(double speed) {
     leftMotor.set(-speed);
     rightMotor.setControl(m_follow);
   }
 
+  /** Uitilizes motion magic to set a velocity on both shooter motors to the desired value. */
   public void setShooterVelocity(double velocity) {
     m_request.Slot = 0;
     m_request = m_request.withVelocity(-velocity);
@@ -92,6 +93,7 @@ public class ShooterSubsystem extends SubsystemBase {
     rightMotor.setControl(m_follow);
   }
 
+  /** Takes the two velocities of the shooter motors and returns the average velocity. */
   public double getAverageShootSpeed() {
     double avgSpeed =
         (leftMotor.getVelocity().getValueAsDouble() + rightMotor.getVelocity().getValueAsDouble())
@@ -99,10 +101,16 @@ public class ShooterSubsystem extends SubsystemBase {
     return -avgSpeed;
   }
 
+  /**
+   * Manually sets the LED to a specific color. For more information on what color to input, please
+   * visit https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf for more information. The
+   * index pages are at the end of the document.
+   */
   public void setLED(double color) {
     lights.set(color);
   }
 
+  /** Returns the value of the intake sensor */
   public boolean hasNote() {
     return intakeSensor.get();
   }
@@ -112,11 +120,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     hasNote = intakeSensor.get();
 
-    if (intakeSensor.get()) {
+    if (intakeSensor
+        .get()) { // Automatically sets the color of the lights depending on if we have a note
       setLED(-0.07);
-    } else if (intakeUpperMotor.get() != 0) {
+    } else if (intakeUpperMotor.get() != 0) { // or if the motors are running
       setLED(-0.25);
-    } else {
+    } else { // or if nothing is happening
       setLED(0.87);
     }
 

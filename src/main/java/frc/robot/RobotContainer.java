@@ -398,7 +398,7 @@ public class RobotContainer {
         .whileTrue(
             new ParallelCommandGroup(
                 new ShootCommand(shooterSubsystem, armSubsystem, drive),
-                NoteVisualizer.shoot(drive)));
+                NoteVisualizer.shoot(drive, armSubsystem)));
     operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem));
     operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController

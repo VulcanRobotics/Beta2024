@@ -36,7 +36,7 @@ public class UpdateArmComponent extends Command {
             0.8,
             new Rotation3d(
                 0,
-                2 * Math.toRadians(armSubsystem.getArmEncoder()),
+                Math.toRadians(armSubsystem.getArmEncoder()),
                 drive.getRotation().getRadians())));
   }
 

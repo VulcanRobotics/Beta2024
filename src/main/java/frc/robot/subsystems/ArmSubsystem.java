@@ -3,8 +3,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -20,10 +18,6 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class ArmSubsystem extends SubsystemBase {
-  public final TalonFX m_ArmMotor1 = new TalonFX(15, "rio");
-  public final TalonFX m_ArmMotor2 = new TalonFX(14, "rio");
-
-  public final CANcoder m_ArmEncoder = new CANcoder(13, "rio");
 
   private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
 
@@ -37,20 +31,28 @@ public class ArmSubsystem extends SubsystemBase {
   public static Pose3d armComponent = new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0));
   public static double armAngle = 0.0;
 
+  private ArmIO io;
+  private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
+
   public ArmSubsystem() {
+
+    if (Constants.currentMode == Constants.Mode.SIM) {
+      io = new ArmIOSim();
+    } else {
+      io = new ArmIOTalonFX();
+    }
+
     var talonFXConfigs = new TalonFXConfiguration();
 
     // set slot 0 gains
-
     // Set up PID and Feedforward config for the motors.
     var slot0Configs = talonFXConfigs.Slot0;
-    slot0Configs.kS = ArmConstants.kArmKS; // Add 0.25 V output to overcome static friction
-    slot0Configs.kV = ArmConstants.kArmKV; // A velocity target of 1 rps results in 0.12 V output
-    slot0Configs.kA = ArmConstants.kArmKA; // An acceleration of 1 rps/s requires 0.01 V output
-    slot0Configs.kP =
-        ArmConstants.kArmKP; // A position error of 2.5 rotations results in 12 V output
-    slot0Configs.kI = ArmConstants.kArmKI; // no output for integrated error
-    slot0Configs.kD = ArmConstants.kArmKD; // A velocity error of 1 rps results in 0.1 V output
+    slot0Configs.kS = 0.25; // Add 0.25 V output to overcome static friction
+    slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    slot0Configs.kP = 0.6; // A position error of 2.5 rotations results in 12 V output
+    slot0Configs.kI = 0.0; // no output for integrated error
+    slot0Configs.kD = 0.05; // A velocity error of 1 rps results in 0.1 V output
 
     // set Motion Magic settings
     var motionMagicConfigs = talonFXConfigs.MotionMagic;
@@ -61,25 +63,18 @@ public class ArmSubsystem extends SubsystemBase {
     motionMagicConfigs.MotionMagicJerk =
         ArmConstants.kArmTargetJerk; // Target jerk of 1600 rps/s/s (0.1 seconds
 
-    m_ArmMotor1.getConfigurator().apply(talonFXConfigs);
-    m_ArmMotor2.getConfigurator().apply(talonFXConfigs);
-    TalonUtil.setBrakeMode(m_ArmMotor1);
-    TalonUtil.setBrakeMode(m_ArmMotor2);
     // Maybe put these booleans in constants
-    m_ArmMotor1.setInverted(false);
-    m_ArmMotor2.setInverted(true);
 
     // Ensure that arm is zeroed
     calibrateTalonEncoder();
   }
 
   public double getArmEncoder() {
-    return m_ArmMotor1.getPosition().getValueAsDouble()
-        * Constants.ArmConstants.kMotorEncoderToDegrees;
+    return inputs.armMotor1Pos * Constants.ArmConstants.kMotorEncoderToDegrees;
   }
 
   public double getRawArmEncoder() {
-    return m_ArmMotor1.getPosition().getValueAsDouble();
+    return inputs.armMotor1Pos;
   }
 
   /** Used to constantly update the angle (0 - 90) of the arm with a supplier. */
@@ -89,8 +84,8 @@ public class ArmSubsystem extends SubsystemBase {
     double targetPositionInRotation =
         targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
     MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
-    m_ArmMotor1.setControl(m_request);
-    m_ArmMotor2.setControl(m_follow);
+    io.setArmMotor1Request(m_request);
+    io.setArmMotor2Follow(m_follow);
   }
 
   /** Used to set the arm to a certain constant angle (0 - 90). */
@@ -100,8 +95,8 @@ public class ArmSubsystem extends SubsystemBase {
     double targetPositionInRotation =
         targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
     MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
-    m_ArmMotor1.setControl(m_request);
-    m_ArmMotor2.setControl(m_follow);
+    io.setArmMotor1Request(m_request);
+    io.setArmMotor2Follow(m_follow);
   }
 
   public void configArmAngleSupplier(DoubleSupplier supplier) {
@@ -118,7 +113,7 @@ public class ArmSubsystem extends SubsystemBase {
    * there is no need to use this function.
    */
   public void zeroArmEncoder() {
-    m_ArmMotor1.setPosition(0.0);
+    // m_ArmMotor1.setPosition(0.0);
   }
 
   /**
@@ -126,19 +121,22 @@ public class ArmSubsystem extends SubsystemBase {
    * encoder according to that position.
    */
   public void calibrateTalonEncoder() {
-    double delta =
-        ArmConstants.kCanCoderZeroPosition - m_ArmEncoder.getAbsolutePosition().getValueAsDouble();
-    m_ArmMotor1.setPosition(delta * ArmConstants.kCanCoderToArmMotorRatio);
+    double delta = ArmConstants.kCanCoderZeroPosition - inputs.armCancoderPos;
+    io.setArmMotor1Pos(delta * ArmConstants.kCanCoderToArmMotorRatio);
   }
 
   /** This is pretty janky ngl */
   public void setArmSpeed(double speed) {
     speed = speed *= 0.6;
     speed = applyLimits(speed);
-    m_ArmMotor1.set(speed);
-    m_ArmMotor2.setControl(m_follow);
+    io.setArmMotor1Speed(speed);
+    io.setArmMotor2Follow(m_follow);
   }
 
+  /**
+   * Stops the current speed value from breaking the arm if the arm in past the bottom or top
+   * limits.
+   */
   public double applyLimits(double speed) {
     if (getArmEncoder() < botLimit && speed < 0) { // getArmEncoder() - 0.5f <= 0 && speed < 0
       return 0;
@@ -175,10 +173,10 @@ public class ArmSubsystem extends SubsystemBase {
           break;
       }
     }
-    Logger.recordOutput("Arm/Arm encoder", m_ArmEncoder.getAbsolutePosition().getValueAsDouble());
+    Logger.recordOutput("Arm/Arm encoder", inputs.armCancoderPos);
     Logger.recordOutput("Arm/Arm Angle (0-90)", getArmEncoder());
     Logger.recordOutput("Arm/Arm Radians", Math.toRadians(getArmEncoder()));
-    Logger.recordOutput("Arm/Arm motor encoder", m_ArmMotor1.getPosition().getValueAsDouble());
+    Logger.recordOutput("Arm/Arm motor encoder", inputs.armMotor1Pos);
     SmartDashboard.putNumber("Arm Angle (0-90)", getArmEncoder());
   }
 }

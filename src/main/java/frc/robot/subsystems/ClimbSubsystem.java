@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -14,9 +13,9 @@ import org.littletonrobotics.junction.Logger;
 
 public class ClimbSubsystem extends SubsystemBase {
 
+  // The string pots that we had to get rid of due to them breaking constantly. //
   // public final AnalogPotentiometer m_WinchPotRight = new AnalogPotentiometer(1);
   // public final AnalogPotentiometer m_WinchPotLeft = new AnalogPotentiometer(0);
-
   // public final AnalogPotentiometer m_WinchStringPotRight = new AnalogPotentiometer(2);
   // public final AnalogPotentiometer m_WinchStringPotLeft = new AnalogPotentiometer(3);
 
@@ -30,15 +29,6 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public final double trapMotorStartingPos = m_TrapMotor.getEncoder().getPosition();
 
-  // public final Servo m_WinchRightServo = new Servo(0);
-  // public final Servo m_WinchLeftServo = new Servo(1);
-
-  private VelocityVoltage m_request = new VelocityVoltage(0);
-  // public double rightLimitMotor = m_WinchMotorRight.getPosition().getValueAsDouble() + 767.0239;
-  // public double leftLimitMotor = m_WinchMotorLeft.getPosition().getValueAsDouble() - 748.43;
-
-  // public boolean winchEnabled = true;
-
   public ClimbSubsystem() {
     m_WinchMotorLeft.setNeutralMode(NeutralModeValue.Brake);
     m_WinchMotorRight.setNeutralMode(NeutralModeValue.Brake);
@@ -46,6 +36,10 @@ public class ClimbSubsystem extends SubsystemBase {
     m_WinchMotorLeft.setInverted(true);
     m_WinchMotorRight.setInverted(false);
   }
+
+  // The function below made the climb motors stop when the string pots reached a desried distace,
+  // //
+  // but the string pots broke multiple times during competition so this is commented out. //
 
   // public double applyWinchLimits(boolean left, double speed) {
   //   if (left) {
@@ -71,6 +65,10 @@ public class ClimbSubsystem extends SubsystemBase {
   //   }
   // }
 
+  /**
+   * Uses the trap string pot to prevent the bar from going over the limit. Had to stop using it
+   * because that string pot broke too.
+   */
   public double applyTrapLimits(double speed) {
     if (m_TrapPot.get() > Constants.ClimbConstants.TrapBotLimit
         || m_TrapPot.get() < Constants.ClimbConstants.TrapTopLimit) {
@@ -80,6 +78,10 @@ public class ClimbSubsystem extends SubsystemBase {
     }
   }
 
+  /**
+   * Uses the relative encoder on the trap motor to automatically set the bar to the desired encoder
+   * value.
+   */
   public void setTrapMotorPosition(double targetPosition) {
     double currentPosition = m_TrapMotor.getEncoder().getPosition();
 
@@ -90,11 +92,13 @@ public class ClimbSubsystem extends SubsystemBase {
     }
   }
 
+  /** Exactly what the function title entails. */
   public void setTrapSpeed(double speed) {
     // m_TrapMotor.set(applyTrapLimits(speed));
     m_TrapMotor.set(speed);
   }
 
+  /** Exactly what the function title entails. */
   public void setRightWinchSpeed(double speed) {
     // m_WinchMotorRight.set(applyWinchLimits(false, speed));
     m_WinchMotorRight.set(speed);
@@ -102,6 +106,7 @@ public class ClimbSubsystem extends SubsystemBase {
     Logger.recordOutput("Climb/RightWinchSpeed", speed);
   }
 
+  /** Exactly what the function title entails. */
   public void setLeftWinchSpeed(double speed) {
     // m_WinchMotorLeft.set(applyWinchLimits(true, speed));
     m_WinchMotorLeft.set(speed);

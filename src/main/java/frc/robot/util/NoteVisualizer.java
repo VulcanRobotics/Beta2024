@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.drive.Drive;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -33,8 +34,6 @@ import org.littletonrobotics.junction.Logger;
 public class NoteVisualizer {
   private static final Translation3d blueSpeaker = new Translation3d(0.225, 5.55, 2.1);
   private static final Translation3d redSpeaker = new Translation3d(16.317, 5.55, 2.1);
-  private static final Transform3d launcherTransform =
-      new Transform3d(0.35, 0, 0.8, new Rotation3d(0.0, Units.degreesToRadians(0.0), 0.0));
   private static final double shotSpeed = 5.0; // Meters per sec
   private static Supplier<Pose2d> robotPoseSupplier = () -> new Pose2d();
 
@@ -42,12 +41,18 @@ public class NoteVisualizer {
     robotPoseSupplier = supplier;
   }
 
-  public static Command shoot(Drive drive) {
+  public static Command shoot(Drive drive, ArmSubsystem arm) {
     return new ScheduleCommand( // Branch off and exit immediately
         Commands.defer(
                 () -> {
+                  double x = 0.64 * Math.cos(Math.PI * 2 * arm.getArmEncoder() / 360);
+                  double z = 0.64 * Math.sin(Math.PI * 2 * arm.getArmEncoder() / 360);
+
                   final Pose3d startPose =
-                      new Pose3d(drive.getPose()).transformBy(launcherTransform);
+                      new Pose3d(drive.getPose())
+                          .transformBy(
+                              new Transform3d(
+                                  x, 0, z, new Rotation3d(0.0, Units.degreesToRadians(0.0), 0.0)));
                   final boolean isRed =
                       DriverStation.getAlliance().isPresent()
                           && DriverStation.getAlliance().get().equals(Alliance.Red);

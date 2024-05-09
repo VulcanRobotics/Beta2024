@@ -26,7 +26,7 @@ public class ShooterTargeting {
                 .onlyWhile(() -> shooter.intakeSensor.get())
                 .withTimeout(2.0),
             new ShootCommand(shooter, arm, drive),
-            NoteVisualizer.shoot(drive))
+            NoteVisualizer.shoot(drive, arm))
         .onlyWhile(() -> shooter.intakeSensor.get())
         .onlyWhile(() -> shooter.intakeSensor.get());
   }

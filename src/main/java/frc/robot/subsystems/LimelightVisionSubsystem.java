@@ -15,7 +15,7 @@ public class LimelightVisionSubsystem extends SubsystemBase {
       // Create the vision system simulation which handles cameras and targets on the field.
     }
   }
-
+  /** Grabs the x value from the limelight and returns it for other functions to uitilize */
   public static double limelightNoteTrack() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
@@ -23,6 +23,10 @@ public class LimelightVisionSubsystem extends SubsystemBase {
     return x;
   }
 
+  /**
+   * Grabs the x value from the limelight and returns it for other functions to uitilize. It does
+   * return empty though if the camera does not see any notes (returning an x value of 0).
+   */
   public static Optional<Double> getNoteDistLL() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");

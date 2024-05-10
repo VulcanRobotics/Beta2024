@@ -4,7 +4,10 @@ Team 1218's new robot code repository for FRC 2024 season, Crescendo:
     * https://github.com/Mechanical-Advantage/AdvantageKit/releases
 
 ## Overview
-This year, we made a LOT of changes from last year in terms of software. All software features of the robot will be listed below, but here I will summarize the significant jumps from last year. A top priority this year was truly dialing in our swerve drive and autos. This meant implementing PathPlanner and effective vision, neither of which we had last year. Another large priotity was implementing logging and simulation through the AdvantageKit framework and AdvantageScope logging software. In 2022, we had our own logging solution; in 2023, we did not log anything at all; this year's implementation has been far easier and more effective than anything else we have used.
+This year, we made a LOT of changes from last year in terms of software. All software features of the robot will be listed below, but here I will summarize the significant jumps from last year. A top priority this year was truly dialing in our swerve drive and autos. This meant implementing PathPlanner and effective vision, neither of which we had last year. Another large priotity was implementing logging and simulation through the AdvantageKit framework and AdvantageScope logging software. In 2022, we had our own logging solution; in 2023, we did not log anything at all; this year's implementation has been far easier and more effective than anything else we have used. The following are some of the unique features we have implemented:
+* NavX implementation for AdvantageKit
+* PhotonVision camera integration with the AdvantageKit IO architecture
+* Accurate shooting using purely pose estimation
 
 ## Swerve
 Our swerve code this year is a big jump from our last season. Instead of writing our own swerve code, we adopted another team's and have put an emphasis on accurate pose estimation, effective logging and simulation, and path-planned autos.
@@ -41,4 +44,3 @@ The climber we decided to use was made from carbon-fiber boat hooks, which allow
 ## Shooting and Trapping in Action
 Below is what I would consider to be a good showcase of what our code allowed us to do in teleop by the end of the season:
 https://github.com/VulcanRobotics/Beta2024/assets/58490916/7c328b0c-fe46-4b72-b677-d904e0d45e66
-

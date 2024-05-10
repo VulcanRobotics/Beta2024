@@ -13,8 +13,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ArmIO {
@@ -30,10 +28,10 @@ public interface ArmIO {
   public default void updateInputs(ArmIOInputs inputs) {}
 
   /** Run the drive motor at the specified voltage. */
-  public default void setArmMotor1Request(MotionMagicVoltage request) {}
+  public default void setArmMotor1Request(double position) {}
 
   /** Run the turn motor at the specified voltage. */
-  public default void setArmMotor2Follow(Follower follow) {}
+  public default void setArmMotor2Follow() {}
 
   /** Enable or disable brake mode on the drive motor. */
   public default void setArmMotor1BrakeMode(boolean enable) {}

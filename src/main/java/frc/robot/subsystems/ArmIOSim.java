@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -38,8 +36,9 @@ public class ArmIOSim implements ArmIO {
   private boolean wasNotAuto = true;
 
   public ArmIOSim() {
-    controller = new PIDController(0.0, 0.0, 0.0);
+    controller = new PIDController(0.9, 0.0, 0.0);
     sim.setState(0.0, 0.0);
+    controller.reset();
   }
 
   @Override
@@ -63,12 +62,12 @@ public class ArmIOSim implements ArmIO {
   }
 
   @Override
-  public void setArmMotor1Request(MotionMagicVoltage request) {
-    sim.setInputVoltage(request.FeedForward);
+  public void setArmMotor1Request(double position) {
+    sim.setInputVoltage(controller.calculate(sim.getAngleRads(), Units.degreesToRadians(position)));
   }
 
   @Override
-  public void setArmMotor2Follow(Follower follow) {}
+  public void setArmMotor2Follow() {}
 
   @Override
   public void setArmMotor1BrakeMode(boolean enable) {}
@@ -84,7 +83,7 @@ public class ArmIOSim implements ArmIO {
 
   @Override
   public void setArmMotor1Speed(double speed) {
-    sim.setInput(speed);
+    sim.setInputVoltage(12 * speed);
   }
 
   @Override

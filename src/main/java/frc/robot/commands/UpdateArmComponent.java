@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.drive.Drive;
@@ -31,15 +32,15 @@ public class UpdateArmComponent extends Command {
     Logger.recordOutput(
         "Arm Component",
         new Pose3d(
-            drive.getPose().getX(),
-            drive.getPose().getY(),
-            0.8,
+            0.1,
+            -0.39,
+            0.85,
             new Rotation3d(
-                0,
-                Math.toRadians(armSubsystem.getArmEncoder()),
-                drive.getRotation().getRadians())));
+                Units.degreesToRadians(180),
+                Units.degreesToRadians(0),
+                Units.degreesToRadians(90))));
   }
-
+  // Math.toRadians(armSubsystem.getArmEncoder())
   @Override
   public void end(boolean interrupted) {}
 

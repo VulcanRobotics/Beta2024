@@ -24,6 +24,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.util.TalonUtil;
 
 /**
@@ -52,6 +53,7 @@ public class ArmIOTalonFX implements ArmIO {
   private final double TURN_GEAR_RATIO = 150.0 / 7.0;
 
   private final boolean isTurnMotorInverted = true;
+  private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
 
   public ArmIOTalonFX() {
     armMotor_1 = new TalonFX(15, "rio");
@@ -101,14 +103,14 @@ public class ArmIOTalonFX implements ArmIO {
   }
 
   @Override
-  public void setArmMotor1Request(MotionMagicVoltage request) {
-    armMotor_1.setControl(request);
+  public void setArmMotor1Request(double position) {
+    armMotor_1.setControl(new MotionMagicVoltage(position));
   }
 
   @Override
-  public void setArmMotor2Follow(Follower follow) {
+  public void setArmMotor2Follow() {
     // Comment this out to read encoder offsets
-    armMotor_2.setControl(follow);
+    armMotor_2.setControl(m_follow);
   }
 
   @Override

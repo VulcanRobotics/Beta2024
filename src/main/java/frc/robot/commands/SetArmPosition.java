@@ -31,6 +31,8 @@ public class SetArmPosition extends Command {
     addRequirements(armSubsystem);
     this.armSubsystem = armSubsystem;
     this.supplier = doubleSupplier;
+    this.inputs = armSubsystem.inputs;
+    this.io = armSubsystem.io;
 
     // The following might be redundant code
     double targetPositionInDegrees = doubleSupplier.getAsDouble();
@@ -52,8 +54,8 @@ public class SetArmPosition extends Command {
     this.m_request = m_request.withPosition(targetPositionInRotation);
     this.goalPosition = targetPositionInRotation;
 
-    io.setArmMotor1Request(m_request);
-    io.setArmMotor2Follow(m_follow);
+    io.setArmMotor1Request(targetPositionInRotation);
+    io.setArmMotor2Follow();
   }
 
   @Override

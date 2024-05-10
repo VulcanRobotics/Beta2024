@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -31,8 +30,8 @@ public class ArmSubsystem extends SubsystemBase {
   public static Pose3d armComponent = new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0));
   public static double armAngle = 0.0;
 
-  private ArmIO io;
-  private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
+  public ArmIO io;
+  public ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
 
   public ArmSubsystem() {
 
@@ -83,9 +82,9 @@ public class ArmSubsystem extends SubsystemBase {
     targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
     double targetPositionInRotation =
         targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
-    MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
-    io.setArmMotor1Request(m_request);
-    io.setArmMotor2Follow(m_follow);
+    // MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
+    io.setArmMotor1Request(targetPositionInRotation);
+    io.setArmMotor2Follow();
   }
 
   /** Used to set the arm to a certain constant angle (0 - 90). */
@@ -94,9 +93,9 @@ public class ArmSubsystem extends SubsystemBase {
     targetPositionInDegrees = MathUtil.clamp(targetPositionInDegrees, 0, 90);
     double targetPositionInRotation =
         targetPositionInDegrees * 1 / Constants.ArmConstants.kMotorEncoderToDegrees;
-    MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
-    io.setArmMotor1Request(m_request);
-    io.setArmMotor2Follow(m_follow);
+    // MotionMagicVoltage m_request = new MotionMagicVoltage(targetPositionInRotation);
+    io.setArmMotor1Request(targetPositionInRotation);
+    io.setArmMotor2Follow();
   }
 
   public void configArmAngleSupplier(DoubleSupplier supplier) {
@@ -130,7 +129,7 @@ public class ArmSubsystem extends SubsystemBase {
     speed = speed *= 0.6;
     speed = applyLimits(speed);
     io.setArmMotor1Speed(speed);
-    io.setArmMotor2Follow(m_follow);
+    io.setArmMotor2Follow();
   }
 
   /**

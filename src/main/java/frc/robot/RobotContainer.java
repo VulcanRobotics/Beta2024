@@ -263,7 +263,8 @@ public class RobotContainer {
                     () -> -driverController.getLeftX(),
                     drive::calculateShootingPose),
                 Commands.run(
-                    () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
+                    () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem),
+                new UpdateArmComponent(armSubsystem, drive)));
 
     // driverController
     //     .b()

@@ -34,7 +34,7 @@ import org.littletonrobotics.junction.Logger;
 public class NoteVisualizer {
   private static final Translation3d blueSpeaker = new Translation3d(0.225, 5.55, 2.1);
   private static final Translation3d redSpeaker = new Translation3d(16.317, 5.55, 2.1);
-  private static final double shotSpeed = 5.0; // Meters per sec
+  private static final double shotSpeed = 10; // Meters per sec
   private static Supplier<Pose2d> robotPoseSupplier = () -> new Pose2d();
 
   public static void setRobotPoseSupplier(Supplier<Pose2d> supplier) {
@@ -45,22 +45,43 @@ public class NoteVisualizer {
     return new ScheduleCommand( // Branch off and exit immediately
         Commands.defer(
                 () -> {
-                  double x = 0.64 * Math.cos(Math.PI * 2 * arm.getArmEncoder() / 360);
-                  double z = 0.64 * Math.sin(Math.PI * 2 * arm.getArmEncoder() / 360);
+                  double x = 0.8 * Math.cos(Math.PI * 2 * (arm.getArmEncoder() + 10) / 360);
+                  double z = 0.8 * Math.sin(Math.PI * 2 * (arm.getArmEncoder() + 10) / 360);
 
-                  final Pose3d startPose =
-                      new Pose3d(drive.getPose())
-                          .transformBy(
-                              new Transform3d(
-                                  x, 0, z, new Rotation3d(0.0, Units.degreesToRadians(0.0), 0.0)));
                   final boolean isRed =
                       DriverStation.getAlliance().isPresent()
                           && DriverStation.getAlliance().get().equals(Alliance.Red);
+
+                  Pose3d tempPose =
+                      new Pose3d(drive.getPose())
+                          .transformBy(
+                              new Transform3d(
+                                  x, 0, z, new Rotation3d(0.0, Units.degreesToRadians(0), 0.0)));
+
+                  double angle =
+                      Math.atan(
+                          2.1
+                              / tempPose
+                                  .getTranslation()
+                                  .getDistance(isRed ? redSpeaker : blueSpeaker));
+
+                  final Pose3d startPose =
+                      new Pose3d(drive.getPose())
+                          .transformBy(new Transform3d(x, 0, z, new Rotation3d(0.0, angle, 0.0)));
+
+                  // startPose.transformBy(new Transform3d(0, 0, 0, new Rotation3d(0, angle, 0)));
+
                   final Pose3d endPose =
-                      new Pose3d(isRed ? redSpeaker : blueSpeaker, startPose.getRotation());
+                      new Pose3d(
+                          isRed ? redSpeaker : blueSpeaker,
+                          startPose.getRotation().plus(new Rotation3d(0, -angle, 0)));
+
+                  /* final Pose3d endPose =
+                  new Pose3d(isRed ? redSpeaker : blueSpeaker, startPose.getRotation());*/
 
                   final double duration =
                       startPose.getTranslation().getDistance(endPose.getTranslation()) / shotSpeed;
+
                   final Timer timer = new Timer();
                   timer.start();
                   return Commands.run(
@@ -68,7 +89,15 @@ public class NoteVisualizer {
                             Logger.recordOutput(
                                 "NoteVisualizer",
                                 new Pose3d[] {
-                                  startPose.interpolate(endPose, timer.get() / duration)
+                                  startPose.interpolate(
+                                      endPose.plus(
+                                          new Transform3d(
+                                              0,
+                                              0,
+                                              -1.5 * timer.get() * timer.get()
+                                                  + (arm.getArmEncoder()) / 60,
+                                              new Rotation3d())),
+                                      timer.get() / duration)
                                 });
                           })
                       .until(() -> timer.hasElapsed(duration))

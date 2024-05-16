@@ -36,7 +36,7 @@ public class ArmIOSim implements ArmIO {
   private boolean wasNotAuto = true;
 
   public ArmIOSim() {
-    controller = new PIDController(0.9, 0.0, 0.0);
+    controller = new PIDController(10, 0.0, 0.0);
     sim.setState(0.0, 0.0);
     controller.reset();
   }

@@ -33,8 +33,8 @@ public class UpdateArmComponent extends Command {
     Logger.recordOutput(
         "Arm Component",
         new Pose3d(
-            -0.3, // drive.getPose().getX() / 128,
-            0.0, // drive.getPose().getY() / 128,
+            -0.25, // drive.getPose().getX() / 128,
+            0.0, // 0.0, // drive.getPose().getY() / 128,
             0.25,
             new Rotation3d(
                 Units.degreesToRadians(180),

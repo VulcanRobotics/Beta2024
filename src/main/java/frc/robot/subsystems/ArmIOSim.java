@@ -58,7 +58,7 @@ public class ArmIOSim implements ArmIO {
     inputs.armCancoderPos = sim.getAngleRads();
 
     // Reset input
-    sim.setInputVoltage(0.0);
+    // sim.setInputVoltage(0.0);
   }
 
   @Override

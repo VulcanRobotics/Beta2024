@@ -339,7 +339,7 @@ public class RobotContainer {
 
     armSubsystem.setDefaultCommand(
         new ParallelCommandGroup(
-            WinchCommands.winchDrive(armSubsystem, () -> driverController.getLeftY()),
+            WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()),
             new UpdateArmComponent(armSubsystem, drive)));
 
     climbSubsystem.setDefaultCommand(

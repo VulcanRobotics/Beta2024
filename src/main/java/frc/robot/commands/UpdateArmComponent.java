@@ -29,16 +29,17 @@ public class UpdateArmComponent extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     Logger.recordOutput(
         "Arm Component",
         new Pose3d(
-            0.1,
-            -0.39,
-            0.85,
+            -0.3, // drive.getPose().getX() / 128,
+            0.0, // drive.getPose().getY() / 128,
+            0.25,
             new Rotation3d(
                 Units.degreesToRadians(180),
-                Units.degreesToRadians(0),
-                Units.degreesToRadians(90))));
+                Units.degreesToRadians(-armSubsystem.getArmEncoder() + 45),
+                Units.degreesToRadians(0))));
   }
   // Math.toRadians(armSubsystem.getArmEncoder())
   @Override

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ArmConstants.ArmStates;
+import frc.robot.Robot;
 import frc.robot.util.*;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
@@ -69,7 +70,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getArmEncoder() {
-    return inputs.armMotor1Pos * Constants.ArmConstants.kMotorEncoderToDegrees;
+    if (Robot.isSimulation()) {
+      return Math.toDegrees(inputs.armMotor1Pos);
+    } else {
+      return inputs.armMotor1Pos * Constants.ArmConstants.kMotorEncoderToDegrees;
+    }
   }
 
   public double getRawArmEncoder() {
@@ -146,6 +151,8 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void periodic() {
+
+    io.updateInputs(inputs);
 
     if (getArmEncoder() > 70.0) {
       inAmpPosition = true;

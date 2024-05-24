@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.util.TalonUtil;
 import org.littletonrobotics.junction.Logger;
 
 /** Subsystem class for the shooter and intake. */
@@ -52,6 +53,8 @@ public class ShooterSubsystem extends SubsystemBase {
     slot0Configs.kD = 0.0;
     leftMotor.getConfigurator().apply(slot0Configs, 0.050);
     rightMotor.getConfigurator().apply(slot0Configs, 0.050);
+    TalonUtil.setCoastMode(leftMotor);
+    TalonUtil.setCoastMode(rightMotor);
 
     sysId =
         new SysIdRoutine(

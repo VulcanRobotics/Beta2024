@@ -43,4 +43,3 @@ The climber we decided to use was made from carbon-fiber boat hooks, which allow
 
 ## Shooting and Trapping in Action
 [Here](https://github.com/VulcanRobotics/Beta2024/assets/58490916/7c328b0c-fe46-4b72-b677-d904e0d45e66) is what I would consider to be a good showcase of what our code allowed us to do in teleop by the end of the season.
-

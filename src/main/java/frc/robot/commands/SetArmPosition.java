@@ -20,7 +20,8 @@ public class SetArmPosition extends Command {
   private MotionMagicVoltage m_request;
   // This control request will allow the second motor on the arm to match the one that is guiding.
   private Follower m_follow =
-      new Follower(ArmConstants.kGuideMotorPort, ArmConstants.kArm2Inverted);
+      // 2539 was here -matthew, anshu, asa
+      new Follower(14 /*ArmConstants.kGuideMotorPort*/, ArmConstants.kArm2Inverted);
 
   public SetArmPosition(ArmSubsystem armSubsystem, DoubleSupplier doubleSupplier) {
     addRequirements(armSubsystem);

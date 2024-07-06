@@ -1,10 +1,13 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,12 +22,12 @@ import org.littletonrobotics.junction.Logger;
 
 /** Contains all arm funcionality */
 public class ArmSubsystem extends SubsystemBase {
-  public final TalonFX m_ArmMotor1 = new TalonFX(15, "rio");
-  public final TalonFX m_ArmMotor2 = new TalonFX(14, "rio");
+  public final TalonFX m_ArmMotor1 = new TalonFX(14, "rio");
+  public final TalonFX m_ArmMotor2 = new TalonFX(15, "rio");
 
   public final CANcoder m_ArmEncoder = new CANcoder(13, "rio");
 
-  private Follower m_follow = new Follower(ArmConstants.kGuideMotorPort, true);
+  private Follower m_follow = new Follower(14, true);
 
   public boolean inAmpPosition = false;
 
@@ -38,6 +41,12 @@ public class ArmSubsystem extends SubsystemBase {
 
   public ArmSubsystem() {
     var talonFXConfigs = new TalonFXConfiguration();
+
+    // var cancoderConfig = new CANcoderConfiguration();
+    // cancoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+    // m_ArmEncoder.getConfigurator().apply(cancoderConfig);
+
+    // m_ArmMotor2.setControl(m_follow);
 
     // set slot 0 gains
 
@@ -62,7 +71,7 @@ public class ArmSubsystem extends SubsystemBase {
     TalonUtil.setBrakeMode(m_ArmMotor1);
     TalonUtil.setBrakeMode(m_ArmMotor2);
     // Maybe put these booleans in constants
-    m_ArmMotor1.setInverted(false);
+    m_ArmMotor1.setInverted(true);
     m_ArmMotor2.setInverted(true);
 
     // Ensure that arm is zeroed

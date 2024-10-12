@@ -19,19 +19,12 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.ArmConstants.ArmStates;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drive.Drive;
@@ -57,11 +50,6 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
-  // private final Flywheel flywheel;
-  public ShooterSubsystem shooterSubsystem;
-  private final ArmSubsystem armSubsystem;
-  private final ClimbSubsystem climbSubsystem;
-  // private final PhotonVisionSubsystem vision;
   private final VisionSubsystem vision;
 
   // Controller
@@ -85,11 +73,6 @@ public class RobotContainer {
                 new ModuleIOTalonFX(2),
                 new ModuleIOTalonFX(3));
 
-        // flywheel = new Flywheel(new FlywheelIOSim());
-        shooterSubsystem = new ShooterSubsystem();
-        armSubsystem = new ArmSubsystem();
-        climbSubsystem = new ClimbSubsystem();
-        // vision = new PhotonVisionSubsystem(drive);
         vision = new VisionSubsystem(drive);
         break;
 
@@ -102,11 +85,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
-        // flywheel = new Flywheel(new FlywheelIOSim());
-        shooterSubsystem = new ShooterSubsystem();
-        armSubsystem = new ArmSubsystem();
-        climbSubsystem = new ClimbSubsystem();
-        // vision = new PhotonVisionSubsystem(drive);
+
         vision = new VisionSubsystem(drive);
         break;
 
@@ -119,41 +98,12 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        // flywheel = new Flywheel(new FlywheelIO() {});
-        shooterSubsystem = new ShooterSubsystem();
-        armSubsystem = new ArmSubsystem();
-        climbSubsystem = new ClimbSubsystem();
-        // vision = new PhotonVisionSubsystem(drive);
+
         vision = new VisionSubsystem(drive);
         break;
     }
 
     // Set up auto routines
-
-    NamedCommands.registerCommand("Intake", new IntakeCommand(shooterSubsystem));
-    NamedCommands.registerCommand("IntakeNoDeadline", new IntakeCommand(shooterSubsystem));
-
-    NamedCommands.registerCommand(
-        "RampShooter",
-        Commands.runOnce(
-            () ->
-                shooterSubsystem.setShooterVelocity(
-                    Constants.ShooterConstants.kShooterTargetVelocity),
-            shooterSubsystem));
-
-    NamedCommands.registerCommand(
-        "KillShooter",
-        Commands.runOnce(() -> shooterSubsystem.setShooterVelocity(0.0), shooterSubsystem));
-
-    NamedCommands.registerCommand(
-        "ArmToIntake", new SetArmPosition(armSubsystem, () -> 0).withTimeout(2));
-
-    NamedCommands.registerCommand(
-        "ArmToAmp", new SetArmPosition(armSubsystem, () -> 90).withTimeout(2));
-
-    NamedCommands.registerCommand(
-        "AutoTargetShoot",
-        ShooterTargeting.shootAtTarget(drive, shooterSubsystem, armSubsystem).withTimeout(3.0));
 
     NamedCommands.registerCommand(
         "NoteTrackMode",
@@ -161,21 +111,6 @@ public class RobotContainer {
             () -> {
               PPHolonomicDriveController.setRotationTargetOverride(drive::calculateIntakeAngle);
             }));
-
-    NamedCommands.registerCommand(
-        "Rev", new RevCommand(shooterSubsystem, armSubsystem, drive).withTimeout(3));
-
-    NamedCommands.registerCommand(
-        "Shoot", new ShootCommand(shooterSubsystem, armSubsystem, drive).withTimeout(3));
-
-    NamedCommands.registerCommand(
-        "RevShoot",
-        new SequentialCommandGroup(
-                new IntakeCommand(shooterSubsystem),
-                new ParallelDeadlineGroup(
-                    new ShootCommand(shooterSubsystem, armSubsystem, drive),
-                    new RevCommand(shooterSubsystem, armSubsystem, drive)))
-            .withTimeout(3.0));
 
     NamedCommands.registerCommand(
         "OverrideRotationAim",
@@ -188,32 +123,6 @@ public class RobotContainer {
         "UsePathRotation",
         Commands.runOnce(
             () -> PPHolonomicDriveController.setRotationTargetOverride(() -> Optional.empty())));
-
-    NamedCommands.registerCommand(
-        "AimArmShoot", ShooterTargeting.aimArmAndShoot(drive, shooterSubsystem, armSubsystem));
-
-    NamedCommands.registerCommand(
-        "IntakeState",
-        Commands.runOnce(() -> armSubsystem.setArmState(ArmStates.INTAKE), armSubsystem));
-
-    NamedCommands.registerCommand(
-        "ShootingState",
-        Commands.runOnce(() -> armSubsystem.setArmState(ArmStates.SHOOTING), armSubsystem));
-
-    NamedCommands.registerCommand(
-        "ShootThenIntake",
-        new ShootCommand(shooterSubsystem, armSubsystem, drive)
-            .onlyWhile(shooterSubsystem::hasNote)
-            .andThen(
-                Commands.runOnce(
-                    () -> armSubsystem.setArmState(ArmStates.INTAKE), shooterSubsystem))
-            .andThen(new IntakeCommand(shooterSubsystem)));
-
-    NamedCommands.registerCommand(
-        "ResetState",
-        Commands.runOnce(() -> armSubsystem.setArmState(ArmStates.DRIVER), armSubsystem));
-
-    // NamedCommands.registerCommand("ToggleShoot", new ShootToggle(shooterSubsystem).asProxy());
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -228,8 +137,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    Trigger rumbleTrigger = new Trigger(shooterSubsystem::hasNote);
 
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
@@ -260,34 +167,7 @@ public class RobotContainer {
                     drive,
                     () -> -driverController.getLeftY(),
                     () -> -driverController.getLeftX(),
-                    drive::calculateShootingPose),
-                Commands.run(
-                    () -> armSubsystem.setArmPosition(drive::getArmShootingAngle), armSubsystem)));
-
-    // driverController
-    //     .b()
-    //     .whileTrue(
-    //         new ParallelCommandGroup(
-    //             DriveCommands.driveWhileAiming(
-    //                 drive,
-    //                 () -> -driverController.getLeftY(),
-    //                 () -> -driverController.getLeftX(),
-    //                 drive::calculateShootingDirectPose),
-    //             Commands.run(
-    //                 () -> armSubsystem.setArmPosition(drive::getArmShootingAngle),
-    // armSubsystem)));
-
-    driverController
-        .rightBumper()
-        .whileTrue(
-            new ParallelDeadlineGroup(
-                new IntakeCommand(shooterSubsystem),
-                DriveCommands.driveWhileAiming(
-                        drive,
-                        () -> -driverController.getLeftY(),
-                        () -> -driverController.getLeftX(),
-                        drive::getShuttlePoseConstant)
-                    .alongWith(new SetArmPosition(armSubsystem, () -> 10.0))));
+                    drive::calculateShootingPose)));
 
     driverController
         .rightTrigger()
@@ -308,93 +188,10 @@ public class RobotContainer {
 
     driverController.leftBumper().whileTrue(DriveCommands.driveToAmp(drive, drive::getPose));
 
-    driverController.povUp().onTrue(new InstantCommand(() -> ArmConstants.kVariable += 0.1));
-    driverController.povDown().onTrue(new InstantCommand(() -> ArmConstants.kVariable -= 0.1));
-
-    // Both controllers will rumble for a second when they intake a note.
-    rumbleTrigger.onTrue(
-        Commands.runOnce(
-                () -> {
-                  driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
-                })
-            .andThen(new WaitCommand(1.0))
-            .finallyDo(
-                () -> {
-                  driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
-                }));
-
-    rumbleTrigger.onTrue(
-        Commands.runOnce(
-                () -> {
-                  operatorController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
-                })
-            .andThen(new WaitCommand(1.0))
-            .finallyDo(
-                () -> {
-                  operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
-                }));
-
     // Operator
 
-    armSubsystem.setDefaultCommand(
-        WinchCommands.winchDrive(armSubsystem, () -> operatorController.getLeftY()));
-
-    climbSubsystem.setDefaultCommand(
-        ClimbCommands.winchDrive(
-            climbSubsystem,
-            () -> operatorController.getRightY(),
-            () -> operatorController.getRightX()));
-
-    // Manual Arm Controls
-    operatorController
-        .x()
-        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseIntake));
-    operatorController
-        .a()
-        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseTrap));
-    operatorController
-        .y()
-        .whileTrue(new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseSource));
-
-    operatorController
-        .b()
-        .whileTrue(
-            new ParallelCommandGroup(
-                ClimbCommands.raiseToLowChain(climbSubsystem),
-                new SetArmPosition(armSubsystem, () -> ArmConstants.kArmPoseAmp)));
-    // operatorController.b().onFalse(ClimbCommands.stopTrapBar(climbSubsystem));
-
-    // operatorController
-    //     .povUp()
-    //     .whileTrue(new InstantCommand(() -> climbSubsystem.m_TrapMotor.set(0.25f)));
-    // operatorController.povUp().onFalse(new InstantCommand(() ->
-    // climbSubsystem.m_TrapMotor.set(0)));
-
-    operatorController
-        .povUp()
-        .whileTrue(new InstantCommand(() -> climbSubsystem.setTrapSpeed(0.25)));
-    operatorController.povUp().onFalse(new InstantCommand(() -> climbSubsystem.setTrapSpeed(0)));
-
-    operatorController
-        .povDown()
-        .whileTrue(new InstantCommand(() -> climbSubsystem.setTrapSpeed(-0.25)));
-
-    operatorController.povDown().onFalse(new InstantCommand(() -> climbSubsystem.setTrapSpeed(0)));
-
-    operatorController
-        .rightStick()
-        .onTrue(Commands.runOnce(() -> shooterSubsystem.SetIntake(-0.02f), shooterSubsystem));
-
     // Shooter and intake commands
-    operatorController
-        .rightTrigger()
-        .whileTrue(new RevCommand(shooterSubsystem, armSubsystem, drive));
 
-    operatorController
-        .rightBumper()
-        .whileTrue(new ShootCommand(shooterSubsystem, armSubsystem, drive));
-    operatorController.leftTrigger().whileTrue(new IntakeCommand(shooterSubsystem));
-    operatorController.leftBumper().whileTrue(new DispenseCommand(shooterSubsystem));
     operatorController
         .button(7)
         .onTrue(
@@ -422,13 +219,8 @@ public class RobotContainer {
     drive.isUsingVision = mode;
   }
 
-  public void configArm() {
-    armSubsystem.configArmAngleSupplier(drive::getArmShootingAngle);
-    armSubsystem.setArmState(ArmStates.DRIVER);
-  }
-
   public void configSubsystems() {
-    configArm();
+    // configArm();
   }
 
   /**

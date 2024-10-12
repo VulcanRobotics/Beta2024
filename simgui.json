@@ -41,7 +41,7 @@
         },
         "apriltag": {
           "arrows": false,
-          "image": "",
+          "image": "tag-green.png",
           "length": 0.0,
           "width": 0.0
         },
@@ -60,13 +60,142 @@
         "top": 79,
         "visibleTargetPoses": {
           "arrows": false,
-          "image": "",
+          "image": "tag-blue.png",
           "length": 0.0,
           "selectable": false,
           "width": 0.0
         },
+        "vision estimate": {
+          "arrowWeight": 2.0,
+          "weight": 2.0
+        },
         "width": 16.541748046875,
         "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": {
+        "BackLeftCam": {
+          "arrowColor": [
+            0.029411792755126953,
+            0.0,
+            1.0,
+            255.0
+          ],
+          "arrowWeight": 1.0,
+          "color": [
+            0.0,
+            0.0,
+            1.0,
+            255.0
+          ],
+          "weight": 1.0
+        },
+        "BackRightCam": {
+          "arrowColor": [
+            1.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "arrowWeight": 1.0,
+          "color": [
+            1.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "weight": 1.0
+        },
+        "EstimatedRobotModules": {
+          "arrowColor": [
+            0.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "arrowSize": 25,
+          "arrowWeight": 0.0,
+          "selectable": false,
+          "style": "Hidden"
+        },
+        "FrontLeftCam": {
+          "arrowColor": [
+            1.0,
+            0.0,
+            0.0,
+            255.0
+          ],
+          "arrowWeight": 1.0,
+          "color": [
+            1.0,
+            0.0,
+            0.0,
+            255.0
+          ],
+          "weight": 1.0
+        },
+        "FrontRightCam": {
+          "arrowColor": [
+            0.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "arrowWeight": 1.0,
+          "color": [
+            0.0,
+            1.0,
+            0.0,
+            255.0
+          ],
+          "weight": 1.0
+        },
+        "apriltag": {
+          "image": "/Users/youngmoo/Documents/GitHub/photonvision/photonlib-java-examples/swervedriveposeestsim/tag-green.png",
+          "length": 0.4099999964237213,
+          "width": 0.34299999475479126
+        },
+        "bottom": 1476,
+        "cameras": {
+          "arrowColor": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "arrowSize": 25,
+          "arrowWeight": 1.0,
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            255.0
+          ],
+          "style": "Hidden",
+          "weight": 1.0
+        },
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "visibleTargetPoses": {
+          "arrowWeight": 1.0,
+          "arrows": false,
+          "color": [
+            0.0,
+            255.0,
+            239.99998474121094,
+            255.0
+          ],
+          "image": "/Users/youngmoo/Documents/GitHub/photonvision/photonlib-java-examples/swervedriveposeestsim/tag-blue.png",
+          "length": 0.4099999964237213,
+          "weight": 1.0,
+          "width": 0.34299999475479126
+        },
+        "width": 16.541748046875,
+        "window": {
+          "name": "Sim Field",
           "visible": true
         }
       }
@@ -74,8 +203,5 @@
   },
   "NetworkTables Info": {
     "visible": true
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

@@ -30,7 +30,7 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
 
-    if (shooterSubsystem.intakeSensor.get()) { // TURN BACK ON
+    if (shooterSubsystem.intakeSensor.get() && !shooterSubsystem.intakeOverride) { // TURN BACK ON
       shooterSubsystem.SetIntake(0);
       shooterSubsystem.SetFeeder(0);
     } else {

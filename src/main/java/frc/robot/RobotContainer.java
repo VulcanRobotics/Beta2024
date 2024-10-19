@@ -345,6 +345,12 @@ public class RobotContainer {
             () -> operatorController.getRightY(),
             () -> operatorController.getRightX()));
 
+    operatorController
+        .povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> shooterSubsystem.intakeOverride = !shooterSubsystem.intakeOverride));
+
     // Manual Arm Controls
     operatorController
         .x()

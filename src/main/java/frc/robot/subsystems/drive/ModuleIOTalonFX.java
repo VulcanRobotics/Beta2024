@@ -73,7 +73,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         driveTalon = new TalonFX(21, "DriveSubsystemCANivore");
         turnTalon = new TalonFX(25, "DriveSubsystemCANivore");
         cancoder = new CANcoder(35, "DriveSubsystemCANivore");
-        absoluteEncoderOffset = Rotation2d.fromDegrees(97.41);
+        absoluteEncoderOffset = Rotation2d.fromDegrees(-85.239 + 180); // was 97.41
         /*  (Constants.name == "Swift")
         ? 101.8
         : 108.465 + 180); // 108.465 + 180 - heather // -78.17 + 180 - swift */

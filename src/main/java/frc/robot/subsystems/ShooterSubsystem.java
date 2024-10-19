@@ -42,6 +42,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean upToSpeed;
 
+  public boolean intakeOverride;
+
   public static boolean hasNote;
 
   public ShooterSubsystem() {
@@ -128,6 +130,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("m1 velocity", leftMotor.getVelocity().getValueAsDouble());
     SmartDashboard.putBoolean("Shooter up to Speed", upToSpeed);
     SmartDashboard.putBoolean("Has Note", intakeSensor.get());
+    SmartDashboard.putBoolean("Intake Override", intakeOverride);
 
     // SmartDashboard.putNumber("Upper Intake Speed", savedIntakeUpperSpeed);
     // SmartDashboard.putNumber("Lower Intake Speed", savedIntakeLowerSpeed);
